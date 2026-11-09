@@ -25,6 +25,14 @@
 
 window.VERZIJE = [
   { datum: "2026-11-09", velika: false, nove: [
+    "Nova strana \"Naš kraj\": sve priče o mestima, ljudima i istoriji Limana 2 na jednom mestu, sa karticama.",
+    "Šest novih priča: Boško Buha, OŠ \"Jovan Popović\", FK Kabel, Štrand, Veslački klub \"Danubius 1885\" i Žuta kuća - sa fotografijama, zanimljivostima i dugmetom za slanje fotografije ili sećanja.",
+    "Na dnu svake priče poseban deo \"Izvori\": odakle je svaka fotografija (broj u uglu fotografije odgovara spisku), gde ima još fotografija i odakle je tekst.",
+  ], dorade: [
+    "\"Priča o Limanu 2\" spojena sa \"Liman pre Limana\": dodati pruga na mestu Bulevara, Trčika na Fruškogorskoj, kuće bez kanalizacije i zanimljivosti, a delovi o školi i Dunavu vode na svoje priče - ništa se ne ponavlja.",
+    "\"Nekad i sad\" na naslovnoj postalo je \"Naš kraj\" (fotografija koja se okreće ostaje, ispod su tri priče), a u meniju i podnožju stoji \"Naš kraj\".",
+  ] },
+  { datum: "2026-11-09", velika: false, nove: [
     "Instagram Zbora u podnožju svake strane, uz Facebook i e-poštu.",
     "Novo podnožje u tri kolone: ko vodi sajt, linkovi sajta i \"Prati nas\" (Instagram, Facebook, Piši Zboru), a ispod verzija sajta i napomena da sajt ne prati posetioce.",
   ], dorade: [

@@ -111,7 +111,9 @@
       veza.hidden = true;
       return;
     }
-    veza.href = "mailto:" + ADRESA_ZBORA;
+    // data-tema (npr. "Naš kraj: Štrand") ide u naslov poruke, da Zbor zna o čemu se piše
+    var tema = veza.getAttribute("data-tema");
+    veza.href = "mailto:" + ADRESA_ZBORA + (tema ? "?subject=" + encodeURIComponent(tema) : "");
     veza.title = ADRESA_ZBORA;
   });
 
