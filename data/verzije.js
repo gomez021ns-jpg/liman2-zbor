@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-09", velika: false, nove: [], dorade: [
+    "Žuta kuća je dobila pravu fotografiju - kuću sa muralom na fasadi - na kartici, na naslovnoj i na vrhu priče.",
+  ] },
+  { datum: "2026-11-09", velika: false, nove: [], dorade: [
     "\"Naš kraj\" lepše izgleda: slike na karticama idu od ivice do ivice, kartice su u ravnim redovima, a Žuta kuća, koja nema slobodnu fotografiju, dobila je žuti plakat sa kućicom umesto sive ploče.",
     "Poziv \"Pošalji fotografiju ili sećanje\" na dnu priča je u svetlom okviru sa ikonicom fotoaparata i crvenim dugmetom.",
     "Posle svake objave pregledač odmah povlači nove stilove - više se ne dešava da se nova strana vidi sa starim izgledom.",

@@ -1933,32 +1933,6 @@ a.kartica-slika {
 a.kartica-slika .kartica-slika-img { transition: transform .4s ease; }
 .kartica--kraj:hover a.kartica-slika .kartica-slika-img { transform: scale(1.04); }
 
-/* Žuta kuća nema slobodnu fotografiju: žuti plakat sa kućicom (znak, ne crtež prave kuće) */
-.kartica-slika--plakat,
-.plakat {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background:
-    repeating-linear-gradient(135deg, rgb(0 0 0 / .045) 0 12px, transparent 12px 24px),
-    #f2c230;
-  color: #2a2205;
-  text-align: center;
-}
-.plakat-kuca { width: 46px; height: 40px; }
-.plakat-ime {
-  font: 700 22px/1.1 "Space Grotesk", sans-serif;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.plakat-godine { font: 600 14px/1 Inter, sans-serif; letter-spacing: .12em; }
-.plakat { aspect-ratio: 16 / 7; border-radius: 8px; }
-.plakat .plakat-kuca { width: 72px; height: 63px; }
-.plakat .plakat-ime { font-size: 34px; }
-.plakat .plakat-godine { font-size: 17px; }
-
 /* zaglavlje strane "Naš kraj": dugme ne sme da se zalepi za kartice */
 #price .zaglavlje-red { align-items: flex-end; gap: 16px 32px; }
 .kartice--kraj {
