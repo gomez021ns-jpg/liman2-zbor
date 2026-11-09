@@ -1922,18 +1922,54 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
 
 
 /* ===== Naš kraj (od 9. 11. 2026): strana nas-kraj.html, priče kraj-*.html i liman-2.html ===== */
-a.kartica-slika { display: block; color: inherit; text-decoration: none; }
-.kartica-slika--tekst {
+/* slika na kartici priče ide od ivice do ivice (bez okvira od 8 px koji ima prazna kartica vesti) */
+a.kartica-slika {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+}
+a.kartica-slika .kartica-slika-img { transition: transform .4s ease; }
+.kartica--kraj:hover a.kartica-slika .kartica-slika-img { transform: scale(1.04); }
+
+/* Žuta kuća nema slobodnu fotografiju: žuti plakat sa kućicom (znak, ne crtež prave kuće) */
+.kartica-slika--plakat,
+.plakat {
   display: flex !important;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f2c230;
-  color: #1f1a05;
-  font: 700 26px/1 "Space Grotesk", sans-serif;
-  letter-spacing: .04em;
+  gap: 6px;
+  background:
+    repeating-linear-gradient(135deg, rgb(0 0 0 / .045) 0 12px, transparent 12px 24px),
+    #f2c230;
+  color: #2a2205;
+  text-align: center;
 }
-.kartice--kraj { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
-.kraj-napomena { margin-top: 18px; }
+.plakat-kuca { width: 46px; height: 40px; }
+.plakat-ime {
+  font: 700 22px/1.1 "Space Grotesk", sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.plakat-godine { font: 600 14px/1 Inter, sans-serif; letter-spacing: .12em; }
+.plakat { aspect-ratio: 16 / 7; border-radius: 8px; }
+.plakat .plakat-kuca { width: 72px; height: 63px; }
+.plakat .plakat-ime { font-size: 34px; }
+.plakat .plakat-godine { font-size: 17px; }
+
+/* zaglavlje strane "Naš kraj": dugme ne sme da se zalepi za kartice */
+#price .zaglavlje-red { align-items: flex-end; gap: 16px 32px; }
+.kartice--kraj {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 22px;
+}
+.kartice--kraj .kartica-telo { flex: 1; }
+.kartice--kraj .kartica-veza-tekst { margin-top: auto; padding-top: 4px; }
+.kraj-napomena { margin-top: 20px; }
 
 /* broj fotografije u uglu - odgovara spisku "Izvori fotografija" na dnu priče */
 .kraj-slika,
@@ -1977,25 +2013,43 @@ a.kartica-slika { display: block; color: inherit; text-decoration: none; }
 
 /* poziv da komšije pošalju fotografiju ili sećanje */
 .poziv-kraj {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 14px 20px;
-  margin-top: 6px;
-  padding: 18px 20px;
+  gap: 16px 24px;
+  margin-top: 10px;
+  padding: 22px 24px 22px 84px;
   border-radius: var(--radijus);
-  background: rgb(182 42 34 / .07);
-  border: 1px dashed rgb(182 42 34 / .45);
+  background: #fbf1ef;
+  border: 1px solid rgb(182 42 34 / .18);
 }
-.poziv-kraj p { flex: 1 1 320px; font-style: italic; }
-.zapisnik .poziv-kraj .dugme { color: var(--bela); }
+/* fotoaparat u crvenom krugu */
+.poziv-kraj::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8h3l2-3h6l2 3h3v11H4z'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3C/svg%3E") center / 22px no-repeat,
+    var(--crvena);
+}
+.poziv-kraj p { flex: 1 1 300px; color: var(--ink-2); line-height: 1.55; }
+.zapisnik .poziv-kraj .dugme { color: var(--bela); flex: none; }
+@media (max-width: 560px) {
+  .poziv-kraj { padding: 76px 18px 18px; }
+  .poziv-kraj::before { left: 18px; top: 18px; }
+}
 
 /* Izvori - poseban deo na dnu priče */
-.izvori { font-size: 14px; gap: 8px; }
+.izvori { max-width: 760px; font-size: 14px; gap: 8px; }
 .izvori h2 { margin: 0 0 4px; }
 .izvori h3 { margin: 12px 0 2px; font-size: 15px; }
 .izvori-lista { margin: 0; padding-left: 22px; display: grid; gap: 5px; color: var(--ink-2); }
-.zapisnik .izvori-lista--red, .izvori-lista--red { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.zapisnik .izvori-lista--red, .izvori-lista--red { list-style: none; padding: 0; display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
 .izvori-dodatak,
 .izvori-napomena { color: var(--ink-2); }
 .izvori-napomena { margin-top: 10px !important; font-size: 13px; }

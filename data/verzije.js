@@ -24,6 +24,11 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-09", velika: false, nove: [], dorade: [
+    "\"Naš kraj\" lepše izgleda: slike na karticama idu od ivice do ivice, kartice su u ravnim redovima, a Žuta kuća, koja nema slobodnu fotografiju, dobila je žuti plakat sa kućicom umesto sive ploče.",
+    "Poziv \"Pošalji fotografiju ili sećanje\" na dnu priča je u svetlom okviru sa ikonicom fotoaparata i crvenim dugmetom.",
+    "Posle svake objave pregledač odmah povlači nove stilove - više se ne dešava da se nova strana vidi sa starim izgledom.",
+  ] },
   { datum: "2026-11-09", velika: false, nove: [
     "Nova strana \"Naš kraj\": sve priče o mestima, ljudima i istoriji Limana 2 na jednom mestu, sa karticama.",
     "Šest novih priča: Boško Buha, OŠ \"Jovan Popović\", FK Kabel, Štrand, Veslački klub \"Danubius 1885\" i Žuta kuća - sa fotografijama, zanimljivostima i dugmetom za slanje fotografije ili sećanja.",
