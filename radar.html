@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Komšijski radar - Liman 2, MZ Boško Buha</title>
+<meta name="description" content="Mapa prijava komunalnih problema na Limanu 2: rasveta, smeće, parking, zelenilo, ulice, vodovod, kanalizacija, grejanje, buka, životinje i drugo. Prijavi problem, prati status i vidi šta čeka predugo.">
+<meta name="theme-color" content="#b62a22">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/ikona-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:title" content="Komšijski radar - Liman 2, MZ Boško Buha">
+<meta property="og:description" content="Mapa prijava komunalnih problema na Limanu 2: rasveta, smeće, parking, zelenilo, ulice, vodovod, kanalizacija, grejanje, buka, životinje i drugo. Prijavi problem i prati status.">
+<meta property="og:image" content="assets/og-slika.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+<script src="podesavanja.js" defer></script>
+<script src="data/verzije.js" defer></script>
+<script src="verzije.js" defer></script>
+<script src="vendor/leaflet/leaflet.js" defer></script>
+<script src="data/granica.js" defer></script>
+<script src="data/prijave.js" defer></script>
+<script src="data/ustanove.js" defer></script>
+<script src="radar-osnova.js" defer></script>
+<script src="radar.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="preskoci" href="#radar-mapa">Preskoči meni, idi na mapu</a>
+
+<header class="header">
+  <div class="omot">
+    <a class="brend" href="index.html">
+      <img class="brend-logo" src="assets/logo.png" alt="" width="44" height="44">
+      <span class="brend-ime">LIMAN <span class="brend-broj">2</span></span>
+      <span class="brend-mz">MZ Boško Buha</span>
+    </a>
+    <nav class="nav" aria-label="Glavni meni">
+      <a href="index.html#zbor">Zbor građana</a>
+      <a href="radar.html" aria-current="page">Komšijski radar</a>
+      <a href="index.html#telefoni">Telefoni</a>
+      <a href="index.html#aktuelno">Aktuelno i akcije</a>
+      <a href="index.html#predlozi">Predlozi</a>
+      <a href="index.html#nekad">Nekad i sad</a>
+    </nav>
+    <a class="dugme dugme--crveno" href="#prijavi">Prijavi problem</a>
+  </div>
+</header>
+
+<main>
+<section class="sekcija sekcija--uvod">
+  <h1 class="naslov-1">Prijave iz kraja, na jednom mestu</h1>
+  <p class="uvod">Mapa komunalnih problema Limana 2: označiš problem, izabereš kome ide prijava i
+    pratiš svaki korak - od prijave do odgovora.</p>
+  <ul class="legenda legenda--velika">
+    <li><span class="legenda-tacka legenda-tacka--prijavljeno" aria-hidden="true"></span>Prijavljeno</li>
+    <li><span class="legenda-tacka legenda-tacka--prosledjeno" aria-hidden="true"></span>Prosleđeno nadležnima</li>
+    <li><span class="legenda-tacka legenda-tacka--odgovor" aria-hidden="true"></span>Stigao odgovor</li>
+    <li><span class="legenda-tacka legenda-tacka--reseno" aria-hidden="true"></span>Rešeno</li>
+    <li><span class="legenda-tacka legenda-tacka--odbijeno" aria-hidden="true"></span>Odbijeno</li>
+  </ul>
+</section>
+
+<section class="sekcija sekcija--tesna">
+  <div class="filteri" role="group" aria-label="Filteri prijava">
+    <div class="filter">
+      <label for="filter-vrsta">Vrsta problema</label>
+      <select id="filter-vrsta">
+        <option value="">Sve vrste</option>
+      </select>
+    </div>
+    <div class="filter">
+      <label for="filter-status">Status</label>
+      <select id="filter-status">
+        <option value="">Svi statusi</option>
+      </select>
+    </div>
+    <label class="filter filter--potvrda">
+      <input id="filter-predugo" type="checkbox">
+      <span>Samo one koje čekaju predugo (preko 30 dana)</span>
+    </label>
+    <p class="filter-brojac" id="radar-brojac" role="status"></p>
+  </div>
+</section>
+
+<section class="sekcija sekcija--tesna" id="prijavi">
+  <h2 class="naslov-2">Prijavi problem</h2>
+  <p class="tekst">Klikni na mapu gde je problem (tačku možeš posle da prevučeš), izaberi vrstu i opiši šta se dešava.
+    Ista mapa pokazuje i prijave iz kraja: tačke u bojama su prijave, a tvoja tačka za prijavu je drugačija.
+    Zatim izaberi kome šalješ prijavu: nadležnoj ustanovi ili Zboru - kopija uvek ide Zboru, da prijava uđe u radar.
+    E-pošta prijavioca se ne prikazuje javno.</p>
+
+  <div class="prijava-mreza">
+    <div class="prijava-mreza-mapa">
+      <div class="mapa mapa--radar" id="radar-mapa" data-radar="pun"
+           aria-label="Mapa prijava komunalnih problema na Limanu 2 - klikni da izabereš tačku svoje prijave"></div>
+      <p class="odabir-koordinate" id="odabir-koordinate">Tačka nije izabrana - klikni na mapu.</p>
+      <button class="dugme dugme--obrub" type="button" id="moja-lokacija">Koristi moju lokaciju</button>
+      <p class="sitno">Dugme za lokaciju radi kad je sajt otvoren preko servera (ili https); ako
+        stranu otvoriš dvoklikom na fajl, pregledač blokira lokaciju - tada klikni tačku na mapi.
+        Računar često zna lokaciju samo po internetu, pa tačka ume da bude daleko: proveri je i
+        pomeri marker (ili klikni tačno mesto na mapi).</p>
+      <p class="sitno">Mapa i podaci: &copy; OpenStreetMap saradnici (ODbL). Granica mesne zajednice je iz
+        OpenStreetMap-a. Za prikaz mape potrebna je veza sa internetom; ako se pločice ne učitaju, sajt
+        koristi rezervni izvor.</p>
+    </div>
+
+    <form class="dijalog-forma forma-radar" id="forma-radar" novalidate>
+      <label for="radar-vrsta">Vrsta problema</label>
+      <select id="radar-vrsta" name="vrsta" required>
+        <option value="">Izaberi vrstu</option>
+      </select>
+
+      <label for="radar-ustanova">Kome šalješ prijavu?</label>
+      <select id="radar-ustanova" name="ustanova" required>
+        <option value="">Izaberi ustanovu</option>
+      </select>
+      <p class="sitno" id="ustanova-opis">Prijava ide e-poštom izabrane ustanove, a kopija Zboru - da uđe u radar.</p>
+
+      <label for="radar-opis">Šta se dešava? (do 500 znakova)</label>
+      <textarea id="radar-opis" name="opis" rows="5" maxlength="500" required placeholder="Kratko opiši problem i od kada traje."></textarea>
+      <p class="brojac" id="opis-broj">0 / 500</p>
+
+      <label for="radar-foto">Fotografija (nije obavezna)</label>
+      <input id="radar-foto" name="fotografija" type="file" accept="image/*">
+      <p class="sitno">Fotografija se smanjuje na najviše 1600 piksela i briše podatke o lokaciji i uređaju.
+        Registarske tablice se zamućuju pre objave.</p>
+      <img class="foto-pregled" id="foto-pregled" alt="Pregled pripremljene fotografije" hidden>
+      <a class="veza-jaka" id="foto-preuzmi" href="#" download hidden>Preuzmi pripremljenu fotografiju</a>
+      <button class="dugme dugme--obrub" type="button" id="foto-ocisti" hidden>Ukloni fotografiju</button>
+
+      <label for="radar-eposta">Tvoja e-pošta (da ti mogu odgovoriti)</label>
+      <input id="radar-eposta" name="eposta" type="email" required placeholder="ime@primer.rs">
+      <p class="sitno">Ne prikazuje se na sajtu - ide u poruci koju šalješ, da ustanova ili Zbor mogu da ti odgovore.</p>
+
+      <p class="dijalog-status" id="radar-status" role="status"></p>
+
+      <div class="dijalog-dugmad">
+        <button class="dugme dugme--akcenat" type="submit">Pošalji prijavu</button>
+        <a class="dugme dugme--obrub" href="#radar-lista-sekcija">Nazad na prijave</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="sekcija sekcija--tesna" id="radar-lista-sekcija">
+  <h2 class="naslov-2">Prijave</h2>
+  <div class="kartice kartice--prijave" id="radar-lista"></div>
+</section>
+
+<section class="sekcija sekcija--tesna">
+  <h2 class="naslov-2">Čeka predugo</h2>
+  <p class="tekst">Prijave bez odgovora duže od 30 dana. Ovo je lista koju komšije najviše gledaju.</p>
+  <ul class="lista-predugo" id="radar-predugo"></ul>
+</section>
+</main>
+
+<footer class="podnozje">
+  <div class="omot omot--podnozje">
+    <div class="podnozje-brend">
+      <img src="assets/logo.png" alt="" width="40" height="40">
+      <p>Sajt vode komšije sa Limana 2, uz podršku Zbora građana MZ Boško Buha, udruženja građana
+        "Andergrand" i <a href="https://undergrandradio.com/" target="_blank" rel="noopener">UnderGRAND radija</a>.
+        Podaci mape: © OpenStreetMap saradnici.</p>
+    </div>
+    <nav class="podnozje-veze" aria-label="Podnožje">
+      <button type="button" data-dijalog="pravila">Pravila objavljivanja</button>
+      <button type="button" data-podeli>Podeli stranu</button>
+      <a href="zapisnici.html">Zapisnici zborova</a>
+      <a href="liman-2.html">Priča o Limanu 2</a>
+      <a href="https://www.facebook.com/profile.php?id=61574829249878" data-facebook
+         target="_blank" rel="noopener">Facebook stranica Zbora</a>
+      <a href="#" data-eposta>Kontakt</a>
+      <a href="index.html">Naslovna</a>
+    </nav>
+  </div>
+</footer>
+
+<dialog class="dijalog dijalog--detalj" id="dlg-detalj">
+  <div class="dijalog-forma">
+    <h2 class="skriveno">Detalji prijave</h2>
+    <div id="detalj-sadrzaj"></div>
+    <div class="dijalog-dugmad">
+      <button class="dugme dugme--obrub" type="button" data-zatvori>Zatvori</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="dijalog" id="dlg-pravila" aria-labelledby="dlg-pravila-naslov">
+  <div class="dijalog-forma">
+    <h2 id="dlg-pravila-naslov">Pravila objavljivanja</h2>
+    <div class="dijalog-tekst">
+      <p>Sajt vode komšije sa Limana 2 uz podršku Zbora građana MZ "Boško Buha". Objavljuje se ono
+        što pošalju komšije, Zbor i mesna zajednica - bez oglasa i bez stranačkih materijala.</p>
+      <p><strong>Šta se objavljuje:</strong></p>
+      <ul>
+        <li>vesti iz kraja, najave akcija i zborova i izveštaji sa održanih akcija,</li>
+        <li>zapisnici zborova i odluke, onako kako su zapisane,</li>
+        <li>predlozi komšija i prijave komunalnih problema iz Komšijskog radara,</li>
+        <li>fotografije sa akcija i iz arhive kraja.</li>
+      </ul>
+      <p><strong>Kako se potpisuje:</strong> tekst nosi ime autora ili "komšija" ako autor ne želi
+        ime, a fotografija ime onoga ko ju je poslao. Tuđi tekst i tuđu fotografiju ne objavljujemo
+        bez dozvole autora.</p>
+      <p><strong>Šta se ne objavljuje:</strong></p>
+      <ul>
+        <li>lični podaci - adrese, telefoni i e-pošta prijavioca; u zapisnicima stoji samo ime
+          govornika, onako kako je zapisano,</li>
+        <li>uvrede, govor mržnje i neproverene optužbe na račun imenovanih ljudi,</li>
+        <li>stranački i izborni materijal, oglasi i reklame,</li>
+        <li>fotografije na kojima se čitaju registarske tablice - tablice zamućujemo pre objave;
+          lica na snimcima sa javnih akcija i zborova mogu da se vide.</li>
+      </ul>
+      <p><strong>Ispravke:</strong> ako je nešto pogrešno objavljeno, javi nam se - tekst se
+        ispravlja ili sklanja. Piši na <a href="#" data-eposta>e-poštu Zbora</a>.</p>
+      <p><strong>Komšijski radar:</strong> prijava je javna na mapi (vrsta problema, tačka, opis i
+        status), bez imena i kontakta prijavioca. Status menjaju moderator i Zbor, a svaka promena
+        se vidi u istoriji prijave.</p>
+    </div>
+    <div class="dijalog-dugmad">
+      <button class="dugme dugme--akcenat" type="button" data-zatvori>Zatvori</button>
+    </div>
+  </div>
+</dialog>
+</body>
+</html>
