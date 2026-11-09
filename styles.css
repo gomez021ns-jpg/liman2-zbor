@@ -1368,7 +1368,58 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
 
 /* Podnožje */
 .podnozje { background: var(--podnozje); color: var(--podnozje-tekst); }
-.omot--podnozje { font-size: 14px; gap: 16px 32px; padding: 32px 24px; }
+/* Tri kolone (od 9. 11. 2026): ko vodi sajt / Sajt / Prati nas, pa donja traka sa verzijom */
+.omot--podnozje { display: block; font-size: 14px; padding: 40px 24px 20px; }
+.podnozje-kolone {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px 40px;
+}
+.podnozje-ime { display: flex; align-items: center; gap: 14px; }
+.podnozje-ime img {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--crvena-svetla);
+}
+.podnozje-ime span { display: flex; flex-direction: column; font-size: 13px; line-height: 1.35; }
+.podnozje-ime b {
+  color: #ffffff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+}
+.podnozje-recenica { max-width: 46ch; line-height: 1.55; }
+.podnozje-naslov {
+  margin: 4px 0 12px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--crvena-na-crnom);
+}
+.podnozje-veze ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.podnozje-dno {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / .1);
+}
+.podnozje-dno .podnozje-verzija { flex: 0 1 auto; }
+.podnozje-privatnost { margin: 0; font-size: 13px; color: var(--podnozje-tekst); opacity: .85; }
+@media (max-width: 760px) {
+  .podnozje-kolone { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .podnozje-brend { grid-column: 1 / -1; }
+}
+@media (max-width: 420px) {
+  .podnozje-kolone { grid-template-columns: minmax(0, 1fr); }
+}
 
 /* Ikonice uz linkove u podnožju: jedan crtež (maska) po linku, boja prati tekst */
 .podnozje-veze a::before,
@@ -1393,18 +1444,18 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
 .podnozje-veze a[href="liman-2.html"] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 21V6l6-3v18M11 21V9l8 3v9'/%3E%3Cpath d='M8 9v.01M8 13v.01M15 14v.01M15 18v.01'/%3E%3C/svg%3E"); }
 .podnozje-veze a[href="index.html"] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 11l8-7 8 7'/%3E%3Cpath d='M6 10v10h12V10'/%3E%3C/svg%3E"); }
 .podnozje-veze a[href*="facebook"] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M13.5 21v-7h2.4l.4-3h-2.8V9.2c0-.9.3-1.5 1.6-1.5h1.3V5.1c-.3 0-1.2-.1-2.1-.1-2.1 0-3.6 1.3-3.6 3.7V11H8.3v3h2.4v7h2.8z'/%3E%3C/svg%3E"); }
+.podnozje-veze a[href*="instagram"] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M17.2 6.8v.01'/%3E%3C/svg%3E"); }
 .podnozje-veze a[data-eposta] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18v12H3z'/%3E%3Cpath d='M3 7l9 6 9-6'/%3E%3C/svg%3E"); }
 /* radio u rečenici podnožja (UnderGRAND radija) */
 .podnozje-brend a { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3Cpath d='M7.5 7.5a6.5 6.5 0 0 0 0 9M16.5 7.5a6.5 6.5 0 0 1 0 9'/%3E%3C/svg%3E"); }
 .podnozje-brend a::before { vertical-align: -3px; }
 
-.podnozje-brend { display: flex; align-items: center; gap: 12px; }
+.podnozje-brend { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .podnozje-brend p { margin: 0; }
 /* link u rečenici podnožja (npr. UnderGRAND radio) */
 .podnozje-brend a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .podnozje-brend a:hover { color: var(--akcent-svetli); }
 
-.podnozje-veze { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .podnozje-veze a,
 .podnozje-veze button {
   color: #ffffff;
@@ -1413,12 +1464,15 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
   background: none;
   border: 0;
   padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-align: left;
+  text-decoration: none;
+  text-underline-offset: 4px;
   cursor: pointer;
 }
 .podnozje-veze a:hover,
-.podnozje-veze button:hover { color: var(--akcent-svetli); }
+.podnozje-veze button:hover { color: var(--akcent-svetli); text-decoration: underline; }
+.podnozje-veze a:focus-visible,
+.podnozje-veze button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
 
 /* Dijalozi: prijava problema i predlog */
 .dijalog {
@@ -1533,7 +1587,6 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
   .dijalog-forma { padding: 20px; }
   .dijalog-forma h2 { font-size: 21px; }
   .dijalog-dugmad .dugme { flex: 1 1 100%; }
-  .podnozje-veze { gap: 8px 16px; }
 }
 
 /* ===== Blagi 3D efekti (od 9. 11. 2026, isprobano na probnoj strani) =====
@@ -1627,7 +1680,7 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
   font: 600 13px/1 Inter, sans-serif;
   box-shadow: 0 4px 10px rgb(0 0 0 / .25);
 }
-.okret figcaption { font-size: 13px; color: var(--prigusen); }
+.okret figcaption { font-size: 13px; color: var(--na-crvenoj-blaza); }
 
 /* 3. Fotografija ispod naslovne ide sporije od strane (app.js postavlja --pomak, do ±45 px;
       slika je 100 px viša od pojasa pa se ivica nikad ne vidi) */

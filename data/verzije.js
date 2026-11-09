@@ -25,6 +25,12 @@
 
 window.VERZIJE = [
   { datum: "2026-11-09", velika: false, nove: [
+    "Instagram Zbora u podnožju svake strane, uz Facebook i e-poštu.",
+    "Novo podnožje u tri kolone: ko vodi sajt, linkovi sajta i \"Prati nas\" (Instagram, Facebook, Piši Zboru), a ispod verzija sajta i napomena da sajt ne prati posetioce.",
+  ], dorade: [
+    "Potpis ispod fotografije \"Nekad i sad\" se sada jasno vidi na crvenoj podlozi.",
+  ] },
+  { datum: "2026-11-09", velika: false, nove: [
     "\"Nekad i sad\" na naslovnoj: klik na staru fotografiju je okrene i pokaže Liman 2 danas, a još jedan klik je vrati.",
     "Blagi 3D izgled: kartice vesti se nagnu ka mišu, fotografija ispod naslova ide sporije dok se skroluje, kartica \"Sledeći zbor\" se izdigne kao ulaznica, a puna dugmad imaju debljinu i utonu na klik.",
   ], dorade: [

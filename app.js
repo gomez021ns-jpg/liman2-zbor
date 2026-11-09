@@ -124,6 +124,15 @@
     veza.href = P.facebookStranica;
   });
 
+  // Instagram nalog Zbora: adresa iz podesavanja.js
+  document.querySelectorAll("[data-instagram]").forEach(function (veza) {
+    if (!P.instagram) {
+      (veza.closest("li") || veza).hidden = true;
+      return;
+    }
+    veza.href = P.instagram;
+  });
+
   // Kartica "Sledeći zbor": podaci iz podesavanja.js (ništa se ne izmišlja)
   function kaoDatum(iso) {
     var d = new Date(iso + "T00:00:00");

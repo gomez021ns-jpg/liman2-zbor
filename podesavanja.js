@@ -6,6 +6,9 @@ window.LIMAN2 = {
   // Facebook stranica Zbora (link u podnožju svih strana)
   facebookStranica: "https://www.facebook.com/profile.php?id=61574829249878",
 
+  // Instagram nalog Zbora (link u podnožju svih strana)
+  instagram: "https://www.instagram.com/zbor_boskobuha/",
+
   // Zapisnici sa zborova su strane na sajtu (zapisnici.html) - Google Drive fascikla se
   // više ne koristi, pa ovde nema adrese.
 

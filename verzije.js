@@ -57,7 +57,8 @@
   // Red sa brojem verzije ide u podnožje svake strane. Ubacuje se iz koda, a ne piše se u
   // svakom HTML-u: jedan izvor istine, pa broj ne može da se raziđe od strane do strane.
   function uPodnozje() {
-    var omot = document.querySelector(".podnozje .omot");
+    // donja traka podnožja (.podnozje-dno), a ako je nema - kraj omota
+    var omot = document.querySelector(".podnozje .podnozje-dno") || document.querySelector(".podnozje .omot");
     if (!omot || omot.querySelector(".podnozje-verzija")) { return; }
     var red = document.createElement("p");
     red.className = "podnozje-verzija";
@@ -65,7 +66,7 @@
     red.innerHTML = "Verzija sajta <b>v" + bezbedno(najnovija.v) + "</b> · " +
       bezbedno(formatDatum(najnovija.datum)) + " · " +
       '<a href="verzije.html">Šta je novo</a>';
-    omot.appendChild(red);
+    omot.insertBefore(red, omot.firstChild);
   }
 
   // verzije.html: cela istorija, najnovija verzija na vrhu.
