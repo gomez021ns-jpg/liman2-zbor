@@ -1536,9 +1536,149 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
   .podnozje-veze { gap: 8px 16px; }
 }
 
+/* ===== Blagi 3D efekti (od 9. 11. 2026, isprobano na probnoj strani) =====
+   Naginjanje kartica i dubinu fotografije pokreće app.js; sve se gasi uz "smanji animacije". */
+
+/* 1. Kartice vesti se naginju ka mišu (do 4°, app.js postavlja --rx/--ry i odsjaj --gx/--gy).
+      Samo mišem - na dodir kartica stoji ravno. */
+.kartica {
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform .45s cubic-bezier(.2, .8, .2, 1), box-shadow .45s ease;
+}
+.kartica.je-nagnuta {
+  --ty: -3px;
+  transition: transform .08s linear, box-shadow .2s ease;
+  box-shadow: 0 18px 34px rgb(0 0 0 / .28);
+  will-change: transform;
+}
+.kartica::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgb(255 255 255 / .35), transparent 55%);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.kartica.je-nagnuta::after { opacity: 1; }
+
+/* 2. "Nekad i sad" - fotografija se okrene i pokaže Liman 2 danas (dugme, radi i na dodir
+      i tastaturom; app.js menja .je-okrenut i aria-pressed) */
+.okret {
+  margin: 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 340px;
+  min-width: 0;
+}
+.okret-scena {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1400px;
+  border-radius: 8px;
+}
+.okret-scena:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.okret-telo {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform .8s cubic-bezier(.3, .1, .2, 1);
+}
+.okret.je-okrenut .okret-telo { transform: rotateY(180deg); }
+.okret-strana {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgb(0 0 0 / .3);
+}
+.okret-strana img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.okret-strana--sad { transform: rotateY(180deg); }
+.okret-oznaka {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / .72);
+  color: #ffffff;
+  font: 600 12px/1 "Space Grotesk", sans-serif;
+  letter-spacing: .08em;
+}
+.okret-uputstvo {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111111;
+  font: 600 13px/1 Inter, sans-serif;
+  box-shadow: 0 4px 10px rgb(0 0 0 / .25);
+}
+.okret figcaption { font-size: 13px; color: var(--prigusen); }
+
+/* 3. Fotografija ispod naslovne ide sporije od strane (app.js postavlja --pomak, do ±45 px;
+      slika je 100 px viša od pojasa pa se ivica nikad ne vidi) */
+.foto-pojas { overflow: hidden; }
+.foto-pojas img {
+  height: 440px;
+  margin: -50px 0;
+  transform: translateY(var(--pomak, 0px));
+}
+
+/* 4. Kartica "Sledeći zbor" se izdigne kao ulaznica */
+.kartica-zbor {
+  transform: perspective(1000px) rotateX(0deg) translateY(0);
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s ease;
+  box-shadow: 0 1px 0 rgb(255 255 255 / .06) inset, 0 2px 0 #000000, 0 18px 40px rgb(0 0 0 / .22);
+}
+.kartica-zbor:hover {
+  transform: perspective(1000px) rotateX(4deg) translateY(-6px);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .06) inset, 0 2px 0 #000000, 0 30px 50px rgb(0 0 0 / .35);
+}
+
+/* 5. Puna dugmad imaju "debljinu" - donju ivicu, pa na klik utonu */
+.dugme--akcenat,
+.dugme--crveno,
+.dugme--bela,
+.dugme--svetlo {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .25), 0 4px 0 rgb(0 0 0 / .32), 0 6px 12px rgb(0 0 0 / .18);
+}
+.dugme--akcenat:hover,
+.dugme--crveno:hover,
+.dugme--bela:hover,
+.dugme--svetlo:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .25), 0 5px 0 rgb(0 0 0 / .32), 0 10px 18px rgb(0 0 0 / .22);
+}
+.dugme--akcenat:active,
+.dugme--crveno:active,
+.dugme--bela:active,
+.dugme--svetlo:active {
+  transform: translateY(4px);
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / .2), 0 0 0 rgb(0 0 0 / .32);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  /* bez naginjanja, izdizanja i pomeranja; okretanje "Nekad i sad" ostaje, ali bez animacije */
+  .kartica,
+  .kartica-zbor,
+  .kartica-zbor:hover,
+  .foto-pojas img { transform: none !important; }
 }
 
 /* Štampa: bez menija i dugmadi */

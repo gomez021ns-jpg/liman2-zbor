@@ -24,6 +24,12 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-09", velika: false, nove: [
+    "\"Nekad i sad\" na naslovnoj: klik na staru fotografiju je okrene i pokaže Liman 2 danas, a još jedan klik je vrati.",
+    "Blagi 3D izgled: kartice vesti se nagnu ka mišu, fotografija ispod naslova ide sporije dok se skroluje, kartica \"Sledeći zbor\" se izdigne kao ulaznica, a puna dugmad imaju debljinu i utonu na klik.",
+  ], dorade: [
+    "Ko u podešavanjima telefona ili računara ima uključeno \"smanji animacije\", ne vidi naginjanje ni pomeranje.",
+  ] },
   { datum: "2026-11-09", velika: false, nove: [], dorade: [
     "Navodnici u istoriji izmena i u poruci o lokaciji na radaru su sada pravi (\" \"), kao u ostatku sajta.",
   ] },

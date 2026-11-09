@@ -887,4 +887,70 @@
     }, { passive: true });
     oznaci();
   }
+
+  /* ===== Blagi 3D efekti (stil je u styles.css, "Blagi 3D efekti") =====
+     Ko u sistemu ima uključeno "smanji animacije", ne dobija naginjanje ni pomeranje. */
+  var smanjiPokrete = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 1. Kartice vesti se naginju ka mišu (do 4°). Kartice crta app.js posle učitavanja, pa je
+  //    osluškivač na document. Samo za miš - na dodir nema "prelaza", kartica stoji ravno.
+  if (!smanjiPokrete && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var NAGIB = 4;
+    var nagnuta = null;
+    var ispravi = function (k) {
+      if (!k) { return; }
+      k.classList.remove("je-nagnuta");
+      k.style.removeProperty("--rx");
+      k.style.removeProperty("--ry");
+    };
+    document.addEventListener("pointermove", function (e) {
+      var k = e.target.closest ? e.target.closest(".kartica") : null;
+      if (k !== nagnuta) { ispravi(nagnuta); nagnuta = k; }
+      if (!k) { return; }
+      var r = k.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width;    // 0..1
+      var y = (e.clientY - r.top) / r.height;    // 0..1
+      k.classList.add("je-nagnuta");
+      k.style.setProperty("--ry", ((x - 0.5) * 2 * NAGIB).toFixed(2) + "deg");
+      k.style.setProperty("--rx", ((0.5 - y) * 2 * NAGIB).toFixed(2) + "deg");
+      k.style.setProperty("--gx", (x * 100).toFixed(1) + "%");
+      k.style.setProperty("--gy", (y * 100).toFixed(1) + "%");
+    });
+    document.documentElement.addEventListener("pointerleave", function () {
+      ispravi(nagnuta);
+      nagnuta = null;
+    });
+  }
+
+  // 2. "Nekad i sad" - klik (dodir, Enter, razmak) okrene fotografiju: nekad / danas
+  document.querySelectorAll(".okret").forEach(function (okret) {
+    var scena = okret.querySelector(".okret-scena");
+    if (!scena) { return; }
+    scena.addEventListener("click", function () {
+      var okrenut = okret.classList.toggle("je-okrenut");
+      scena.setAttribute("aria-pressed", okrenut ? "true" : "false");
+    });
+  });
+
+  // 3. Fotografija ispod naslovne ide sporije od strane (do ±45 px; slika je viša od pojasa)
+  var pojasDubina = document.querySelector(".foto-pojas");
+  var slikaDubina = pojasDubina && pojasDubina.querySelector("img");
+  if (slikaDubina && !smanjiPokrete) {
+    var cekaDubina = false;
+    var pomeriDubinu = function () {
+      cekaDubina = false;
+      var r = pojasDubina.getBoundingClientRect();
+      var visina = window.innerHeight;
+      if (r.bottom < 0 || r.top > visina || !r.height) { return; }
+      // -1 kad je pojas na vrhu ekrana, +1 kad je na dnu
+      var t = ((r.top + r.height / 2) / visina) * 2 - 1;
+      slikaDubina.style.setProperty("--pomak", (t * 45).toFixed(1) + "px");
+    };
+    window.addEventListener("scroll", function () {
+      if (!cekaDubina) { cekaDubina = true; window.requestAnimationFrame(pomeriDubinu); }
+    }, { passive: true });
+    window.addEventListener("resize", pomeriDubinu);
+    slikaDubina.addEventListener("load", pomeriDubinu);
+    pomeriDubinu();
+  }
 })();
