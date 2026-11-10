@@ -40,11 +40,15 @@
   var STATUSI = {
     // boje su namerno van crvene porodice sajta (crvena je pozadina i akcenat):
     // sve imaju ≥4.5:1 sa belim slovom na znački
+    primljeno: { naziv: "Primljeno", boja: "#55615f" },
+    proverava_se: { naziv: "Proverava se", boja: "#1f4fa0" },
+    u_radu: { naziv: "U rešavanju", boja: "#694394" },
+    zatvoreno: { naziv: "Zatvoreno", boja: "#55615f" },
     prijavljeno: { naziv: "Prijavljeno", boja: "#8a5200" },
-    prosledjeno: { naziv: "Prosleđeno nadležnima", boja: "#1f4fa0" },
+    prosledjeno: { naziv: "Prosleđeno nadležnima", boja: "#985000" },
     odgovor: { naziv: "Stigao odgovor", boja: "#0d5f68" },
     reseno: { naziv: "Rešeno", boja: "#2d6b52" },
-    odbijeno: { naziv: "Odbijeno", boja: "#55615f" }
+    odbijeno: { naziv: "Odbijeno od nadležnih institucija", boja: "#a12b2b" }
   };
 
   // ---- pomoćne ----
@@ -165,11 +169,31 @@
       .addTo(mapa);
   }
 
+  // Ivice poligona pripadaju području, kao i u serverskoj proveri.
+  function uGranici(lat, lon) {
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || GRANICA.length < 3) return false;
+    var inside = false, previous = GRANICA[GRANICA.length - 1];
+    for (var i = 0; i < GRANICA.length; i++) {
+      var current = GRANICA[i], ay = previous[0], ax = previous[1], by = current[0], bx = current[1];
+      var cross = (lon - ax) * (by - ay) - (lat - ay) * (bx - ax);
+      if (Math.abs(cross) <= 1e-12 && lon >= Math.min(ax,bx)-1e-10 && lon <= Math.max(ax,bx)+1e-10 && lat >= Math.min(ay,by)-1e-10 && lat <= Math.max(ay,by)+1e-10) return true;
+      if ((ay > lat) !== (by > lat) && lon < (bx - ax) * (lat - ay) / (by - ay) + ax) inside = !inside;
+      previous = current;
+    }
+    return inside;
+  }
+
   // ---- delovi stranice ----
+  function prikaziPodrsku(prijava) {
+    var zavrseni = ["prosledjeno", "u_radu", "odgovor", "reseno", "odbijeno", "zatvoreno"];
+    return zavrseni.indexOf(prijava.status) === -1 && !(prijava.istorija || []).some(function (event) {
+      return zavrseni.indexOf(event.status) !== -1;
+    });
+  }
   function htmlKartica(prijava, opcije) {
     var status = statusInfo(prijava);
     var dana = danaOd(prijava.datum);
-    var meta = (VRSTE[prijava.vrsta] || "Prijava") + " · prijavljeno " + formatDatum(prijava.datum);
+    var meta = (VRSTE[prijava.vrsta] || "Prijava") + " · " + (prijava.adresa || 'Lokacija na mapi') + " · prijavljeno " + formatDatum(prijava.datum);
     var podrske = prijava.podrske
       ? prijava.podrske + " komšija podržava"
       : "još bez podrške";
@@ -180,21 +204,71 @@
           (predugo(prijava) ? '<span class="znacka znacka--predugo">čeka predugo</span>' : '') +
         '</p>' +
         '<h3>' + bezbedno(skrati(prijava.opis, 90)) + '</h3>' +
+        (prijava.na_mapi === false ? '<p class="prijava-meta">Rešena prijava je u arhivi; više nije prikazana na mapi.</p>' : '') +
         '<p class="prijava-meta">' + bezbedno(meta) + ' · ' + dodajDane(dana) + '</p>' +
-        '<p class="prijava-meta">' + bezbedno(podrske) + '</p>' +
+        (prikaziPodrsku(prijava) ? '<p class="prijava-meta">' + bezbedno(podrske) + '</p>' : '') +
         (opcije && opcije.dugme === false ? '' :
           '<button class="veza-jaka prijava-otvori" type="button" data-prijava="' +
-            bezbedno(prijava.id) + '">Otvori prijavu</button>') +
+            bezbedno(prijava.id) + '">Otvori prijavu</button>' +
+          (prikaziPodrsku(prijava) ? '<button class="dugme dugme--akcenat" type="button" data-prijava="' + bezbedno(prijava.id) + '" data-odmah-podrzi>Podrži prijavu</button>' : '')) +
       '</article>';
+  }
+
+  function podesiVisinuTabele(el) {
+    if (el._radarObserver) el._radarObserver.disconnect();
+    var table = el.querySelector('.radar-tabela');
+    if (!table || table.tBodies[0].rows.length <= 10) {
+      el.style.maxHeight = '';
+      return;
+    }
+    var frame = 0;
+    function izmeri() {
+      frame = 0;
+      var rows = table.tBodies[0].rows;
+      if (!table.isConnected || rows.length <= 10) return;
+      var height = table.tHead.getBoundingClientRect().height + 2;
+      for (var i = 0; i < 10; i++) height += rows[i].getBoundingClientRect().height;
+      var value = Math.ceil(height) + 'px';
+      if (el.style.maxHeight !== value) el.style.maxHeight = value;
+    }
+    function zakazi() { if (!frame) frame = requestAnimationFrame(izmeri); }
+    if (window.ResizeObserver) {
+      el._radarObserver = new ResizeObserver(zakazi);
+      el._radarObserver.observe(el);
+      el._radarObserver.observe(table);
+    }
+    izmeri();
   }
 
   function nacrtajListu(el, prijave, opcije) {
     if (!el) { return; }
     if (!prijave.length) {
+      if (el._radarObserver) el._radarObserver.disconnect();
+      el.style.maxHeight = '';
       el.innerHTML = '<p class="lista-prazna">Nema prijava za izabrane filtere.</p>';
       return;
     }
-    el.innerHTML = prijave.map(function (p) { return htmlKartica(p, opcije); }).join("");
+    var redovi = prijave.map(function(prijava) {
+      var status = statusInfo(prijava), id = bezbedno(prijava.id);
+      var prikazPodrske = prikaziPodrsku(prijava);
+      var aktivnosti = opcije && opcije.dugme === false ? '' :
+        '<button class="veza-jaka prijava-otvori" type="button" data-prijava="' + id + '">Detalji</button>' +
+        (prikazPodrske ? '<button class="radar-tabela-podrzi" type="button" data-prijava="' + id + '" data-odmah-podrzi>Podrži</button>' : '');
+      return '<tr>' +
+        '<td><time datetime="' + bezbedno(prijava.datum) + '">' + bezbedno(formatDatum(prijava.datum)) + '</time></td>' +
+        '<td><strong>' + bezbedno(skrati(prijava.opis, 90)) + '</strong><span class="radar-tabela-dodatno">' + bezbedno(VRSTE[prijava.vrsta] || 'Prijava') + '</span></td>' +
+        '<td>' + bezbedno(prijava.adresa || 'Lokacija na mapi') + '</td>' +
+        '<td><span class="znacka" style="--boja:' + status.boja + '">' + bezbedno(status.naziv) + '</span>' +
+          (predugo(prijava) ? '<span class="znacka znacka--predugo">čeka predugo</span>' : '') +
+          (prijava.na_mapi === false ? '<span class="radar-tabela-dodatno">Više nije na mapi</span>' : '') +
+          (prikazPodrske ? '<span class="radar-tabela-dodatno">' + (Number(prijava.podrske) || 0) + ' podrški</span>' : '') + '</td>' +
+        '<td><div class="radar-tabela-akcije">' + aktivnosti + '</div></td>' +
+      '</tr>';
+    }).join('');
+    el.innerHTML = '<table class="radar-tabela"><caption class="skriveno">Spisak prijava, od najnovije ka najstarijoj</caption>' +
+      '<thead><tr><th scope="col">Datum</th><th scope="col">Prijava</th><th scope="col">Lokacija</th><th scope="col">Status</th><th scope="col">Akcije</th></tr></thead>' +
+      '<tbody>' + redovi + '</tbody></table>';
+    podesiVisinuTabele(el);
   }
 
   window.RADAR = {
@@ -211,6 +285,8 @@
     ikona: ikona,
     markerZa: markerZa,
     htmlKartica: htmlKartica,
+    uGranici: uGranici,
+    prikaziPodrsku: prikaziPodrsku,
     nacrtajListu: nacrtajListu
   };
 })();

@@ -39,7 +39,7 @@ window.VESTI = [
     id: "usvojeni-zakljucci-sa-poslednjeg-zbora",
     datum: "2025-10-26",
     vrsta: "ZBOR GRAĐANA · 26. 10. 2025.",
-    naslov: "Usvojeni zaključci sa poslednjeg zbora",
+    naslov: "Usvojeni zaključci sa zbora 26. oktobra 2025.",
     uvod: "Pregled dogovorenog i ko je za šta zadužen, uz ceo zapisnik.",
     slike: ["assets/zbor-2025-10-26.jpg"],
     alt: "Zbor građana MZ Boško Buha, 26. oktobar 2025.",

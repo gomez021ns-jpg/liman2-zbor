@@ -149,34 +149,21 @@
   }
 
   var kada = document.querySelector("[data-zbor-kada]");
-  if (kada) {
+  function prikaziSledeciZbor() {
+    if (!kada) return;
     var sledeci = P.sledeciZbor || {};
     var imaDatum = !!(sledeci.datum && sledeci.datum.length);
-    kada.textContent = imaDatum
-      ? kaoDatum(sledeci.datum) + (sledeci.vreme ? " u " + sledeci.vreme : "")
-      : "Još nije zakazan";
-
+    kada.textContent = imaDatum ? kaoDatum(sledeci.datum) + (sledeci.vreme ? " u " + sledeci.vreme : "") : "Još nije zakazan";
     var gde = document.querySelector("[data-zbor-gde]");
-    if (gde) {
-      if (imaDatum && sledeci.mesto) {
-        gde.textContent = sledeci.mesto;
-        gde.hidden = false;
-      } else {
-        gde.hidden = true;
-      }
-    }
-
+    if (gde) { gde.hidden = !(imaDatum && sledeci.mesto); gde.textContent = sledeci.mesto || ''; }
     var red = document.querySelector("[data-zbor-red]");
     if (red) {
       var tacke = sledeci.dnevniRed || [];
-      if (imaDatum && tacke.length) {
-        red.textContent = "Dnevni red: " + tacke.join(" · ");
-        red.hidden = false;
-      } else {
-        red.hidden = true;
-      }
+      red.hidden = !(imaDatum && tacke.length);
+      red.textContent = tacke.length ? "Dnevni red: " + tacke.join(" · ") : '';
     }
   }
+  prikaziSledeciZbor();
 
   /* ---------- "Podeli stranu": sistemski prozor ili kopiranje linka ----------
      Nema spoljnog servisa ni praćenja: link se deli preko telefona/pregledača. */
@@ -333,19 +320,38 @@
     window.setTimeout(function () { URL.revokeObjectURL(adresa); }, 1000);
   }
 
-  // Dugme stoji u kartici "Sledeći zbor"; vidi se samo kad zbor ima datum
+  // Kalendar i prikaz uvek čitaju isti, poslednji potvrđeni termin.
   var dugmeKalendar = document.querySelector("[data-kalendar]");
+  function osveziKalendar() {
+    if (dugmeKalendar) dugmeKalendar.hidden = !napraviIcs(P.sledeciZbor || {});
+  }
   if (dugmeKalendar) {
-    var sledeciZaKalendar = P.sledeciZbor || {};
-    var ics = napraviIcs(sledeciZaKalendar);
-    if (!ics) {
-      dugmeKalendar.hidden = true;
-    } else {
-      dugmeKalendar.hidden = false;
-      dugmeKalendar.addEventListener("click", function () {
-        preuzmiIcs(ics, sledeciZaKalendar.datum);
-      });
+    dugmeKalendar.addEventListener("click", function () {
+      var termin = P.sledeciZbor || {}, ics = napraviIcs(termin);
+      if (ics) preuzmiIcs(ics, termin.datum);
+    });
+    osveziKalendar();
+  }
+  if (kada && location.protocol !== 'file:') {
+    var terminSekvenca = 0;
+    function osveziTermin() {
+      var broj = ++terminSekvenca;
+      fetch('/api/assembly', {cache:'no-store'}).then(function(response) {
+        if (!response.ok) throw new Error('API');
+        return response.json();
+      }).then(function(termin) {
+        if (broj !== terminSekvenca || !termin || !termin.datum || !termin.vreme) return;
+        P.sledeciZbor = {datum:termin.datum, vreme:termin.vreme, mesto:termin.mesto || '', dnevniRed:[]};
+        prikaziSledeciZbor(); osveziKalendar();
+      }).catch(function() { /* Pri nedostupnom serveru ostaje postojeći prikaz. */ });
     }
+    osveziTermin();
+    if (window.EventSource) {
+      var zborDogadjaji = new EventSource('/api/events');
+      zborDogadjaji.addEventListener('update', osveziTermin);
+      window.addEventListener('pagehide', function() { zborDogadjaji.close(); }, {once:true});
+    }
+    document.addEventListener('visibilitychange', function() { if (!document.hidden) osveziTermin(); });
   }
 
   /* ---------- Zarobljavanje fokusa u pregledima (a11y) ----------

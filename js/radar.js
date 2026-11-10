@@ -1,8 +1,26 @@
 /* Komšijski radar - logika stranice.
    Koristi radar-osnova.js. Radi u dva režima:
    data-radar="kompakt" - pregled na naslovnoj strani; data-radar="pun" - cela strana radara. */
-(function () {
+(async function () {
   "use strict";
+  var stanjeApi = {};
+  var statusApi = document.getElementById('radar-api-status');
+  fetch('/api/health', {cache:'no-store'}).then(function(r) { return r.json(); }).then(function(data) {
+    stanjeApi = data;
+    if (statusApi && data.mail_mode !== 'smtp') statusApi.textContent = 'Test režim: mejl obaveštenja se ne šalju na stvarne adrese.';
+  }).catch(function() {});
+  var odgovorApi;
+  while (true) {
+    try {
+      odgovorApi = await fetch('/api/reports', {cache:'no-store', signal:typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(12000) : undefined});
+      if (!odgovorApi.ok) throw new Error('API');
+      window.PRIJAVE = await odgovorApi.json();
+      break;
+    } catch (greska) {
+      if (statusApi) statusApi.textContent = 'Radar trenutno nije dostupan. Pokušavamo ponovo…';
+      await new Promise(function(resolve) { setTimeout(resolve, 3000); });
+    }
+  }
 
   var R = window.RADAR;
   var P = window.LIMAN2 || {};
@@ -11,7 +29,7 @@
   if (!R) { return; }
 
   var SVE = (window.PRIJAVE || []).slice().sort(function (a, b) {
-    return String(b.datum || "").localeCompare(String(a.datum || ""));
+    return (b.kreirano || 0) - (a.kreirano || 0) || String(b.datum || "").localeCompare(String(a.datum || ""));
   });
 
   // Jedna mapa na strani: pregled prijava i izbor tačke za novu prijavu su ISTA mapa.
@@ -64,7 +82,7 @@
     }).slice(0, 3);
 
     if (mapa) {
-      SVE.forEach(function (prijava) {
+      SVE.filter(function(prijava) { return prijava.na_mapi !== false; }).forEach(function (prijava) {
         var marker = R.markerZa(prijava, mapa);
         marker.bindPopup(popupHtml(prijava));
         marker.on("popupopen", function () {
@@ -91,7 +109,7 @@
           return '<a class="prijava" href="radar.html#p-' + R.bezbedno(prijava.id) + '">' +
             '<span class="znacka" style="--boja:' + status.boja + '">' + R.bezbedno(status.naziv) + '</span>' +
             '<h3>' + R.bezbedno(R.skrati(prijava.opis, 70)) + '</h3>' +
-            '<p class="prijava-meta">' + (prijava.podrske || 0) + ' komšija podržava · ' +
+            '<p class="prijava-meta">' + (R.prikaziPodrsku(prijava) ? (prijava.podrske || 0) + ' komšija podržava · ' : '') +
               (R.predugo(prijava) ? '<b>čeka predugo</b>' : 'pre ' + R.dodajDane(R.danaOd(prijava.datum))) +
             '</p></a>';
         }).join("");
@@ -113,7 +131,7 @@
 
   // ---- cela strana radara ----
   function pokreniPunu(el) {
-    var mapa = R.napraviMapu(el, { pomeranje: true, tocak: true });
+    var mapa = R.napraviMapu(el, { pomeranje: true, tocak: !document.querySelector(".radar-naslovna") });
     MAPA_STRANE = mapa;                        // istu mapu koristi i obrazac za izbor tačke prijave
     var sloj = mapa ? L.layerGroup().addTo(mapa) : null;
     var lista = document.getElementById("radar-lista");
@@ -123,28 +141,9 @@
     var filterStatus = document.getElementById("filter-status");
     var filterPredugo = document.getElementById("filter-predugo");
 
-    // nema nijedne prijave - filteri nemaju šta da filtriraju, pa se sklanjaju zajedno sa sekcijom
-    // (da ne ostane prazna traka i veliki razmak između uvoda i mapa)
-    if (!SVE.length) {
-      var trakaFiltera = document.querySelector(".filteri");
-      if (trakaFiltera) {
-        var sekcijaFiltera = trakaFiltera.closest ? trakaFiltera.closest("section") : null;
-        if (sekcijaFiltera) { sekcijaFiltera.hidden = true; } else { trakaFiltera.hidden = true; }
-      }
-      if (lista) {
-        // bez dugmeta: "Prijavi problem" stoji u zaglavlju (uvek vidljivo) i obrazac je odmah ispod
-        lista.innerHTML = praznoHtml("", "Trenutno nema prijava",
-          "Radar je prazan - nijedan problem iz kraja još nije prijavljen. Ako znaš za problem " +
-          "(rasveta, smeće, parking, zelenilo, trotoar), prijavi ga i prati šta se dešava.");
-      }
-      if (listaPredugo) {
-        // kad nema nijedne prijave, ni sekcija "Čeka predugo" nema šta da pokaže - sklanja se cela
-        var sekcijaPredugo = listaPredugo.closest ? listaPredugo.closest("section") : null;
-        if (sekcijaPredugo) { sekcijaPredugo.hidden = true; }
-      }
-      if (brojac) { brojac.textContent = ""; }
-      return;
-    }
+    var trakaFiltera = document.querySelector('.filteri');
+    var sekcijaFiltera = trakaFiltera && trakaFiltera.closest('section');
+    var sekcijaPredugo = listaPredugo && listaPredugo.closest('section');
 
     // padajuće liste se pune iz podataka, da se ne raziđu sa spiskom vrsta i statusa
     if (filterVrsta) {
@@ -177,14 +176,20 @@
 
       if (sloj) {
         sloj.clearLayers();
-        prikazi.forEach(function (prijava) {
+        prikazi.filter(function(prijava) { return prijava.na_mapi !== false; }).forEach(function (prijava) {
           var marker = R.markerZa(prijava, sloj);
           marker.bindPopup(popupHtml(prijava));
           marker.on("click", function () { otvoriDetalj(prijava.id, true); });
         });
       }
 
-      R.nacrtajListu(lista, prikazi);
+      if (sekcijaFiltera) sekcijaFiltera.hidden = !SVE.length;
+      if (sekcijaPredugo) sekcijaPredugo.hidden = !SVE.length;
+      if (lista && !SVE.length) {
+        if (lista._radarObserver) lista._radarObserver.disconnect();
+        lista.style.maxHeight = '';
+        lista.innerHTML = praznoHtml('', 'Trenutno nema prijava', 'Još nema objavljenih prijava. Ako znaš za problem u kraju, prijavi ga.');
+      } else { R.nacrtajListu(lista, prikazi); }
       if (brojac) {
         brojac.textContent = prikazi.length + " od " + SVE.length + " prijava";
       }
@@ -222,7 +227,7 @@
       var fotografija = prijava.fotografija
         ? '<img class="detalj-foto" src="data/fotografije/' + R.bezbedno(prijava.fotografija) +
           '" alt="Fotografija uz prijavu">'
-        : '<div class="detalj-foto detalj-foto--nema">Fotografija nije priložena</div>';
+        : '';
       var istorija = (prijava.istorija || []).map(function (korak) {
         var stanje = R.statusInfo(korak);
         return '<li><span class="detalj-korak" style="--boja:' + stanje.boja + '">' +
@@ -242,18 +247,9 @@
         fotografija +
         '<h3 class="detalj-podnaslov">Tok prijave</h3>' +
         '<ol class="detalj-istorija">' + istorija + '</ol>' +
-        '<p class="detalj-podrske">' + (prijava.podrske || 0) + ' komšija podržava</p>' +
-        '<p class="detalj-napomena">Podrška jednim klikom (uz potvrdu e-poštom) stiže sa serverom. ' +
-          'Prijave objavljuje moderator, a lica i tablice na fotografijama se zamućuju pre objave.</p>' +
-        '<div class="detalj-deljenje">' +
-          '<input id="detalj-link" type="text" readonly value="' + R.bezbedno(linkPrijave(prijava.id)) + '">' +
-          '<button class="dugme dugme--obrub" type="button" id="detalj-kopiraj">Kopiraj link</button>' +
-        '</div>' +
-        // sa diska (file://) je ovo putanja sa ovog računara - komšija ne može da je otvori
-        (location.protocol === "file:"
-          ? '<p class="detalj-napomena">Ovo je link sa tvog računara - radi samo na njemu. ' +
-            'Link za deljenje komšijama radi kad sajt bude na internetu.</p>'
-          : '') +
+        (R.prikaziPodrsku(prijava) ? '<p class="detalj-podrske">' + (prijava.podrske || 0) + ' komšija podržava</p>' +
+          '<button class="dugme dugme--akcenat" type="button" id="podrzi-dugme">Podrži prijavu</button>' +
+          '<form id="podrzi-forma" hidden><label for="podrzi-email">Tvoja e-pošta</label><input id="podrzi-email" type="email" autocomplete="email" maxlength="254" required placeholder="ime@primer.rs"><p class="detalj-napomena">Poslaćemo ti link za potvrdu podrške. Adresa nije javna.</p><button class="dugme dugme--akcenat" type="submit">Pošalji link za potvrdu</button><p id="podrzi-status" role="status"></p></form>' : '') +
         '<p class="detalj-status" role="status"></p>';
     }
 
@@ -272,21 +268,28 @@
       }
       centrirajNa(id);
 
-      var kopiraj = document.getElementById("detalj-kopiraj");
-      var poruka = sadrzaj.querySelector(".detalj-status");
-      if (kopiraj) {
-        kopiraj.addEventListener("click", function () {
-          var polje = document.getElementById("detalj-link");
-          function javi(tekst) { if (poruka) { poruka.textContent = tekst; } }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(polje.value).then(
-              function () { javi("Link je kopiran."); },
-              function () { polje.select(); javi("Kopiraj ručno: Ctrl+C."); }
-            );
-          } else {
-            polje.select();
-            javi("Kopiraj ručno: Ctrl+C.");
-          }
+      var dugmePodrska = document.getElementById("podrzi-dugme");
+      var formaPodrska = document.getElementById("podrzi-forma");
+      if (dugmePodrska && formaPodrska) {
+        dugmePodrska.addEventListener("click", function () {
+          dugmePodrska.hidden = true; formaPodrska.hidden = false;
+          document.getElementById("podrzi-email").focus();
+        });
+        formaPodrska.addEventListener("submit", async function (event) {
+          event.preventDefault();
+          var input = document.getElementById("podrzi-email");
+          var message = document.getElementById("podrzi-status");
+          var submit = formaPodrska.querySelector('button[type="submit"]');
+          if (!input.reportValidity()) return;
+          submit.disabled = true; message.textContent = "Šaljemo link…";
+          try {
+            var response = await fetch('/api/support/request', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({report_id:id,email:input.value.trim()})});
+            var data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Slanje nije uspelo.');
+            input.hidden = true; formaPodrska.querySelector('label').hidden = true;
+            formaPodrska.querySelector('.detalj-napomena').hidden = true; submit.hidden = true;
+            message.textContent = data.message + (stanjeApi.mail_mode === 'test' ? ' Test režim: poruka je sačuvana lokalno, nije poslata.' : '');
+          } catch (err) { message.textContent = err.message || 'Slanje nije uspelo.'; submit.disabled = false; }
         });
       }
     }
@@ -319,9 +322,54 @@
       if (!dugme) { return; }
       dogadjaj.preventDefault();
       otvoriDetalj(dugme.getAttribute("data-prijava"), true);
+      if (dugme.hasAttribute("data-odmah-podrzi")) {
+        var podrska = document.getElementById("podrzi-dugme");
+        if (podrska) podrska.click();
+      }
     });
 
     osvezi();
+    // Prikaži prijave i kada su izvan početnog kadra granice naselja.
+    if (mapa && SVE.some(function(p) { return p.na_mapi !== false; })) {
+      var granice = mapa.getBounds();
+      SVE.forEach(function(p) { if (p.na_mapi !== false && Array.isArray(p.lokacija)) granice.extend(p.lokacija); });
+      mapa.fitBounds(granice, {padding:[18,18], maxZoom:15, animate:false});
+    }
+    if (mapa && window.ResizeObserver) {
+      var observer = new ResizeObserver(function() { mapa.invalidateSize({pan:false}); });
+      observer.observe(el);
+    }
+    var prethodniPodaci = JSON.stringify(SVE);
+    var trajeOsvezavanje = false, ponovno = false;
+    async function osveziPodatke() {
+      if (trajeOsvezavanje) { ponovno = true; return; }
+      trajeOsvezavanje = true;
+      try {
+        var response = await fetch('/api/reports', {cache:'no-store'});
+        if (!response.ok) throw new Error('API');
+        var podaci = await response.json();
+        podaci.sort(function(a,b) { return (b.kreirano || 0) - (a.kreirano || 0) || String(b.datum || '').localeCompare(String(a.datum || '')); });
+        var noviPodaci = JSON.stringify(podaci);
+        if (noviPodaci !== prethodniPodaci) {
+          var poznati = new Set(SVE.filter(function(p) { return p.na_mapi !== false; }).map(function(p) { return p.id; }));
+          var dodate = podaci.filter(function(p) { return p.na_mapi !== false && !poznati.has(p.id) && Array.isArray(p.lokacija); });
+          prethodniPodaci = noviPodaci; SVE = podaci; window.PRIJAVE = podaci;
+          osvezi();
+          if (mapa && dodate.some(function(p) { return !mapa.getBounds().contains(p.lokacija); })) {
+            var kadar = mapa.getBounds(); dodate.forEach(function(p) { kadar.extend(p.lokacija); });
+            mapa.fitBounds(kadar, {padding:[18,18], animate:false});
+          }
+        }
+      } catch (_) { /* Sačuvaj poslednji prikaz; veza će pokušati ponovo. */ }
+      finally { trajeOsvezavanje = false; if (ponovno) { ponovno = false; osveziPodatke(); } }
+    }
+    if (window.EventSource) {
+      var dogadjaji = new EventSource('/api/events');
+      dogadjaji.addEventListener('update', osveziPodatke);
+      window.addEventListener('pagehide', function() { dogadjaji.close(); }, {once:true});
+      window.addEventListener('pageshow', function(e) { if (e.persisted) location.reload(); });
+    } else { setInterval(osveziPodatke, 10000); }
+    document.addEventListener('visibilitychange', function() { if (!document.hidden) osveziPodatke(); });
 
     // duboki link: radar.html#p-<id> otvara prijavu odmah
     if (location.hash.indexOf("#p-") === 0 && poId(location.hash.replace("#p-", ""))) {
@@ -418,6 +466,17 @@
     }
 
     function postaviTacku(lat, lon, centriraj, tacnost) {
+      if (!R.uGranici(lat, lon)) {
+        tacka = null;
+        if (marker && mapa) { mapa.removeLayer(marker); marker = null; }
+        if (krugTacnosti && mapa) { mapa.removeLayer(krugTacnosti); krugTacnosti = null; }
+        var blizuVan = document.getElementById('radar-blizu');
+        if (blizuVan) { blizuVan.hidden = true; blizuVan.textContent = ''; }
+        if (koordinate) koordinate.textContent = 'Lokacija je van označene granice. Izaberi tačku unutar područja MZ Boško Buha.';
+        if (status) status.textContent = 'Prijave su moguće samo unutar označene granice.';
+        return false;
+      }
+      if (status) status.textContent = '';
       tacka = [lat, lon];
       if (mapa) {
         if (!marker) {
@@ -461,6 +520,19 @@
         }
       }
       ispisiTacku();
+      var blizu = document.getElementById('radar-blizu');
+      if (blizu) {
+        var kandidati = SVE.filter(function (p) {
+          var dy = (p.lokacija[0] - lat) * 111000;
+          var dx = (p.lokacija[1] - lon) * 78000;
+          return Math.sqrt(dx * dx + dy * dy) < 150;
+        }).slice(0, 4);
+        blizu.hidden = !kandidati.length;
+        blizu.innerHTML = kandidati.length ? '<strong>Prijave u blizini — proveri da li problem već postoji:</strong>' + kandidati.map(function(p) {
+          return '<p><button type="button" class="veza-jaka prijava-otvori" data-prijava="' + R.bezbedno(p.id) + '">' + R.bezbedno(R.skrati(p.opis, 90)) + '</button></p>';
+        }).join('') : '';
+      }
+      return true;
     }
 
     if (mapa) {
@@ -502,7 +574,7 @@
         if (status) { status.textContent = "Tražim lokaciju…"; }
         navigator.geolocation.getCurrentPosition(function (polozaj) {
           var tacnost = polozaj.coords.accuracy || 0;
-          postaviTacku(polozaj.coords.latitude, polozaj.coords.longitude, true, tacnost);
+          if (!postaviTacku(polozaj.coords.latitude, polozaj.coords.longitude, true, tacnost)) return;
           if (status) {
             var m = Math.round(tacnost);
             if (m > 150) {
@@ -574,13 +646,11 @@
       dogadjaj.preventDefault();
 
       var nedostaje = [];
-      if (!tacka) { nedostaje.push("tačka na mapi"); }
+      if (!tacka || !R.uGranici(tacka[0], tacka[1])) { nedostaje.push("tačka unutar označene granice na mapi"); }
       if (!poljeVrsta || !poljeVrsta.value) { nedostaje.push("vrsta problema"); }
       if (!poljeOpis || !poljeOpis.value.trim()) { nedostaje.push("opis"); }
       var eposta = poljeEposta ? poljeEposta.value.trim() : "";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(eposta)) { nedostaje.push("e-pošta"); }
-      var primalac = poljeUstanova ? ustanovaPoId(poljeUstanova.value) : null;
-      if (!primalac) { nedostaje.push("ustanova kojoj šalješ prijavu"); }
       if (nedostaje.length) {
         if (status) { status.textContent = "Popuni: " + nedostaje.join(", ") + "."; }
         return;
@@ -595,48 +665,37 @@
         poslato: new Date().toISOString()
       };
 
-      /* FAZA 2 - kad bude server i baza:
-         fetch("/api/prijave", { method: "POST", body: ... })
-         Server tada šalje link za potvrdu na e-poštu (važi 24 sata), prijava se
-         objavljuje posle potvrde i odobrenja moderatora, a podrška ide istim putem
-         (jedan glas po e-mail adresi). Do tada prijava ide Zboru e-poštom. */
-
-      var telo = [
-        "Prijava problema sa sajta Liman 2 (Komšijski radar)",
-        "",
-        "Kome: " + primalac.naziv + " (" + primalac.email + ")",
-        "Vrsta: " + (R.VRSTE[podaci.vrsta] || podaci.vrsta),
-        "Tačka: " + podaci.lokacija[0].toFixed(5) + ", " + podaci.lokacija[1].toFixed(5),
-        "Na mapi: https://www.openstreetmap.org/?mlat=" + podaci.lokacija[0] +
-          "&mlon=" + podaci.lokacija[1] +
-          "#map=18/" + podaci.lokacija[0] + "/" + podaci.lokacija[1],
-        "",
-        "Opis:",
-        podaci.opis,
-        "",
-        "E-pošta za potvrdu i obaveštenja: " + eposta,
-        ociscenaFotografija
-          ? "Fotografija je pripremljena - prikači preuzetu kopiju uz ovu poruku (nema podatke o lokaciji)."
-          : "Bez fotografije."
-      ].join("\n");
-
-      if (!primalac.email) {
-        if (status) { status.textContent = "Izaberi kome šalješ prijavu (spisak ustanova je u obrascu)."; }
-        return;
+      var submit = forma.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = true;
+      if (status) status.textContent = "Šaljemo prijavu…";
+      function posalji(fotografija) {
+        return fetch('/api/reports', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({vrsta:podaci.vrsta, opis:podaci.opis, eposta:podaci.eposta,
+            lat:tacka[0], lon:tacka[1], adresa:(document.getElementById('radar-adresa').value || '').trim(),
+            fotografija:fotografija})
+        }).then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || 'Slanje nije uspelo'); return d; }); });
       }
-      // kopija ide Zboru, osim kad je Zbor i primalac
-      var adresaZbora = primalac.email !== ADRESA ? ADRESA : "";
-      var kopija = adresaZbora ? "&cc=" + encodeURIComponent(adresaZbora) : "";
-
-      window.location.href = "mailto:" + primalac.email +
-        "?subject=" + encodeURIComponent("Prijava problema: " + (R.VRSTE[podaci.vrsta] || podaci.vrsta)) +
-        "&body=" + encodeURIComponent(telo) + kopija;
-
-      if (status) {
-        status.textContent = "Otvara se program za poštu: prijava ide na " + primalac.email +
-          (adresaZbora ? " (kopija Zboru: " + adresaZbora + ")" : "") +
-          ". Pošalji poruku i prikači fotografiju ako je imaš.";
+      function gotovo(fotografija) {
+        posalji(fotografija).then(function (result) {
+          forma.reset(); tacka = null;
+          if (marker && mapa) { mapa.removeLayer(marker); marker = null; }
+          if (krugTacnosti && mapa) { mapa.removeLayer(krugTacnosti); krugTacnosti = null; }
+          ociscenaFotografija = null;
+          if (pregled) pregled.hidden = true;
+          if (preuzmi) preuzmi.hidden = true;
+          if (ocistiFoto) ocistiFoto.hidden = true;
+          ispisiTacku(); if (brojacOpisa) brojacOpisa.textContent = '0 / 500';
+          if (status) status.textContent = result.message + ' Broj prijave: ' + result.id + '.';
+        }).catch(function (e) { if (status) status.textContent = e.message + ' Pokušaj ponovo.'; })
+          .finally(function () { if (submit) submit.disabled = false; });
       }
+      if (ociscenaFotografija) {
+        var reader = new FileReader();
+        reader.onload = function () { gotovo(String(reader.result).split(',')[1]); };
+        reader.onerror = function () { if (status) status.textContent = 'Fotografiju nije moguće pročitati.'; if (submit) submit.disabled = false; };
+        reader.readAsDataURL(ociscenaFotografija);
+      } else { gotovo(null); }
     });
   }
 

@@ -18,20 +18,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=ec929f11">
-<link rel="stylesheet" href="css/styles.css?v=cd9c115a">
+<link rel="stylesheet" href="css/styles.css?v=meni-full-1">
 <script src="podesavanja.js?v=7dc7f1c5" defer></script>
 <script src="data/verzije.js?v=6341cb8c" defer></script>
 <script src="js/verzije.js?v=e758a674" defer></script>
 <script src="vendor/leaflet/leaflet.js?v=5a640ff8" defer></script>
 <script src="data/granica.js?v=31e62037" defer></script>
 <script src="data/prijave.js?v=e645cce5" defer></script>
-<script src="data/vesti.js?v=81671613" defer></script>
-<script src="js/radar-osnova.js?v=f071f0c8" defer></script>
-<script src="js/radar.js?v=a8d241c5" defer></script>
-<script src="js/app.js?v=12baba6e" defer></script>
+<script src="data/ustanove.js?v=4706f8fa" defer></script>
+<script src="data/vesti.js?v=redizajn-20261110" defer></script>
+<script src="js/radar-osnova.js?v=tabela-2" defer></script>
+<script src="js/radar.js?v=tabela-2" defer></script>
+<script src="js/app.js?v=zbor-termin-1" defer></script>
+<script src="js/hero-mozaik.js?v=2" defer></script>
+<script src="js/bista-scroll.js?v=4" defer></script>
 </head>
 <body>
-<a class="preskoci" href="#aktuelno">Preskoči meni, idi na sadržaj</a>
+<a class="preskoci" href="#sadrzaj">Preskoči meni, idi na sadržaj</a>
 
 <header class="header">
   <div class="omot">
@@ -41,27 +44,30 @@
       <span class="brend-mz">MZ Boško Buha</span>
     </a>
     <nav class="nav" aria-label="Glavni meni">
-      <a href="#zbor">Zbor građana</a>
-      <a href="#radar">Komšijski radar</a>
-      <a href="#telefoni">Telefoni</a>
-      <a href="#aktuelno">Aktuelno i akcije</a>
-      <a href="#predlozi">Predlozi</a>
-      <a href="#nas-kraj">Naš kraj</a>
+      <a id="zbor" href="zbor.html">Zbor građana</a>
+      <a href="radar.html">Komšijski radar</a>
+      <a href="arhiva.html">Aktuelno</a>
+      <a href="kontakti.html">Kontakti</a>
+      <a href="nas-kraj/index.html">Naš kraj</a>
     </nav>
-    <a class="dugme dugme--crveno" href="radar.html#prijavi">Prijavi problem</a>
+    <a class="dugme dugme--crveno" href="#prijavi">Prijavi problem</a>
   </div>
 </header>
 
-<main>
+<main id="sadrzaj">
 <section class="hero">
+  <div class="hero-fotografija" role="img" aria-label="Prvi zbor građana MZ Boško Buha, 30. mart 2025. na Bronksu"></div>
+  <div class="hero-mozaik" aria-hidden="true">
+  </div>
   <div class="omot omot--hero">
     <div class="hero-tekst">
       <p class="natpis">NEZAVISNI SAJT GRAĐANA LIMANA 2</p>
-      <h1 class="hero-naslov">Naš kraj.<br>Naša stvar.</h1>
-      <p class="hero-uvod">Vesti iz kraja, akcije, zapisnici zbora i prijave problema na jednom mestu, koje ne nestaje posle tri dana kao objava na Facebook-u.</p>
+      <h1 class="hero-skriven-naslov">Liman 2 — Zbor građana MZ Boško Buha</h1>
+      <h2 class="hero-naslov">Naš kraj.<br>Naša stvar.</h2>
+      <p class="hero-uvod">Informacije, akcije i komšijske inicijative za Liman 2, na jednom mestu.</p>
       <div class="dugmad">
-        <a class="dugme dugme--bela" href="#radar">Otvori Komšijski radar</a>
-        <a class="dugme dugme--obrub" href="#akcije">Pogledaj akcije</a>
+        <a class="dugme dugme--bela" href="#prijavi">Prijavi problem</a>
+        <a class="dugme dugme--obrub" href="zbor.html">Upoznaj zbor</a>
       </div>
     </div>
 
@@ -79,284 +85,87 @@
     </article>
   </div>
 
-  <div class="foto-pojas" data-foto-pojas hidden>
-    <img src="assets/foto-pojas.jpg" alt="Prvi zbor građana MZ Boško Buha, 30. mart 2025, Bronx">
-    <p class="foto-pojas-potpis">Prvi zbor građana, 30. mart 2025, Bronx · fotografija sa zbora</p>
-  </div>
 
-  <div class="traka-cinjenice" data-cinjenice hidden>
-    <div class="omot omot--cinjenice">
-      <p class="cinjenica">
-        <span class="cinjenica-broj">30. 3. 2025.</span>
-        <span class="cinjenica-natpis">prvi zbor, Bronx</span>
-      </p>
-      <p class="cinjenica">
-        <span class="cinjenica-broj" data-broj-odluka>6</span>
-        <span class="cinjenica-natpis">odluka sa prvog zbora</span>
-      </p>
-      <p class="cinjenica">
-        <span class="cinjenica-broj" data-broj-prijava>0</span>
-        <span class="cinjenica-natpis">prijava u Komšijskom radaru</span>
-      </p>
-      <a class="cinjenica" href="zapisnici/index.html">
-        <span class="cinjenica-broj">Zapisnici</span>
-        <span class="cinjenica-natpis">javni, za svaki zbor</span>
-      </a>
-    </div>
-  </div>
 </section>
 
-<section class="sekcija sekcija--tesna" id="zbor">
-  <p class="natpis">ZBOR GRAĐANA</p>
-  <h2 class="naslov-2">Neposredna demokratija u našem kraju</h2>
-  <p class="uvod">Zbor građana je oblik neposredne demokratije: komšije se okupe, rasprave o bitnim
-    pitanjima svoje mesne zajednice i same odluče - javno, uz otvorenu raspravu i bez skrivene agende.</p>
+<section class="sekcija sekcija--tesna radar-naslovna" id="prijavi"><span id="radar"></span>
+  <p class="natpis">KOMŠIJSKI RADAR</p>
+  <h2 class="naslov-2">Zajedno rešavamo probleme u kraju</h2>
+  <p class="uvod">Vidi prijave komšija ili prijavi problem u tri koraka.</p>
+  <ol class="radar-koraci"><li><b>1. Označi mesto</b><span>Dodirni ili klikni na mapu.</span></li><li><b>2. Opiši problem</b><span>Izaberi vrstu i ukratko opiši šta nije u redu.</span></li><li><b>3. Pošalji prijavu</b><span>Zbor prima prijavu, pregleda je i obaveštava te o promenama.</span></li></ol>
+  <p class="radar-pregled-veza"><a href="#radar-lista-sekcija">Pogledaj postojeće prijave ↓</a> · <a href="radar.html">Otvori Radar na posebnoj stranici →</a></p>
 
-  <ul class="razlozi">
-    <li>
-      <span class="razlog-broj" aria-hidden="true">1</span>
-      <h3>Direktno odlučivanje</h3>
-      <p>Građani raspravljaju o lokalnim problemima i predlažu konkretna rešenja - o njima se glasa na licu mesta, a ne u kancelarijama.</p>
-    </li>
-    <li>
-      <span class="razlog-broj" aria-hidden="true">2</span>
-      <h3>Transparentnost</h3>
-      <p>Sve odluke se donose javno, uz otvorenu raspravu. Nema dogovora u četiri oka ni skrivene agende.</p>
-    </li>
-    <li>
-      <span class="razlog-broj" aria-hidden="true">3</span>
-      <h3>Povezanost zajednice</h3>
-      <p>Okupljanje na zborovima jača solidarnost i osećaj zajedničke odgovornosti za kraj u kome živimo.</p>
-    </li>
-    <li>
-      <span class="razlog-broj" aria-hidden="true">4</span>
-      <h3>Jačanje demokratije</h3>
-      <p>Građani preuzimaju kontrolu nad pitanjima koja ih se tiču, umesto da čekaju odluke "odozgo".</p>
-    </li>
-    <li>
-      <span class="razlog-broj" aria-hidden="true">5</span>
-      <h3>Veći pritisak na institucije</h3>
-      <p>Kada se građani organizuju i zajednički odlučuju, njihov glas postaje jači i teže ga je ignorisati.</p>
-    </li>
-  </ul>
-
-  <div class="zbor-cta">
-    <p class="zbor-cta-tekst">Pridruži se Zboru građana i budi deo promena. Zajedno gradimo pravedniju,
-      transparentniju i snažniju zajednicu - jer naš glas treba da se čuje.</p>
-    <div class="dugmad">
-      <a class="dugme dugme--bela" href="#prvi-zbor">Kako je izgledao prvi zbor</a>
-      <a class="dugme dugme--obrub" href="https://www.facebook.com/profile.php?id=61574829249878"
-         data-facebook target="_blank" rel="noopener">Prati Zbor na Facebook-u</a>
-    </div>
-  </div>
-</section>
-
-<section class="sekcija sekcija--tesna" id="prvi-zbor">
-  <div class="zbor-prica">
-    <div class="zbor-prica-tekst">
-      <p class="natpis">PRVI ZBOR GRAĐANA · 30. MART 2025.</p>
-      <h2 class="naslov-2">Sve je počelo na Bronxu</h2>
-      <p class="tekst">Na prvom zboru MZ "Boško Buha" okupili su se građani Limana II sa zajedničkim
-        ciljem: da se izbore za svoja prava i unaprede život u svojoj zajednici. Svaki glas se čuo,
-        a odluke su donete transparentnim glasanjem - bez unapred pripremljenih zaključaka.</p>
-      <p class="tekst">Zbor nije jednokratni protest: to je mesto gde se odluke donose, zapisuju i
-        proveravaju. Zato su zapisnici javni -
-        <a href="zapisnici/2026-06-16.html">zapisnik sa osmog zbora (16. 6. 2026)</a> možeš
-        pročitati ovde, a svi zapisnici stoje u
-        <a href="zapisnici/index.html">spisku zapisnika</a>.</p>
-      <p class="tekst">Kad novi zbor bude zakazan, datum, vreme i dnevni red stajaće u
-        <a href="#sledeci-zbor">kartici na vrhu strane</a>.</p>
+  <div class="prijava-mreza">
+    <div class="prijava-mreza-mapa">
+      <div class="mapa mapa--radar" id="radar-mapa" data-radar="pun"
+           aria-label="Mapa prijava komunalnih problema na Limanu 2 - klikni da izabereš tačku svoje prijave"></div>
+      <div id="radar-blizu" class="radar-blizu" hidden></div>
+      <p class="odabir-koordinate" id="odabir-koordinate">Tačka nije izabrana - klikni na mapu.</p>
+      <button class="dugme dugme--obrub" type="button" id="moja-lokacija">Koristi moju lokaciju</button>
+      <p class="sitno">Proveri označeno mesto: lokacija uređaja može biti neprecizna. Tačku možeš pomeriti na mapi.</p>
+      <p class="sitno">Mapa i podaci: &copy; OpenStreetMap saradnici (ODbL). Granica mesne zajednice je iz
+        OpenStreetMap-a. Za prikaz mape potrebna je veza sa internetom; ako se pločice ne učitaju, sajt
+        koristi rezervni izvor.</p>
     </div>
 
-    <div class="odluke">
-      <p class="odluke-natpis">KLJUČNE TEME I ODLUKE</p>
-      <ol class="odluke-lista">
-        <li><strong>Isplata plata nastavnicima OŠ "Jovan Popović"</strong>
-          <span>Zahtev Gradu za hitnu isplatu - deca i nastavnici ne smeju da čekaju.</span></li>
-        <li><strong>Saradnja sa MZ Liman I</strong>
-          <span>Udružujemo snage protiv izgradnje SPC kod Štranda.</span></li>
-        <li><strong>Opoziv Saveta MZ "Boško Buha"</strong>
-          <span>Ne pristajemo na netransparentnost i zatvorene prostorije naše mesne zajednice.</span></li>
-        <li><strong>Podrška studentima</strong>
-          <span>Njihova borba je i naša borba.</span></li>
-        <li><strong>Provera biračkih spiskova</strong>
-          <span>Ne želimo lažne glasače.</span></li>
-        <li><strong>Rešavanje vodosnabdevanja</strong>
-          <span>Vreme je da se reši ovaj gorući problem.</span></li>
-      </ol>
-    </div>
-  </div>
+    <form class="dijalog-forma forma-radar" id="forma-radar" novalidate>
+      <p id="radar-api-status" role="status"></p>
+      <label for="radar-vrsta">Vrsta problema</label>
+      <select id="radar-vrsta" name="vrsta" required>
+        <option value="">Izaberi vrstu</option>
+      </select>
 
-  <div class="galerija" data-galerija>
-    <p class="natpis">FOTOGRAFIJE SA PRVOG ZBORA · 30. MART 2025.</p>
-    <ul class="galerija-lista">
-      <li><a href="assets/prvi-zbor/foto-01.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-01.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 1"
-             width="267" height="400" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-02.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-02.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 2"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-03.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-03.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 3"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-04.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-04.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 4"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-05.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-05.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 5"
-             width="267" height="400" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-06.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-06.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 6"
-             width="267" height="400" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-07.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-07.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 7"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-08.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-08.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 8"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-09.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-09.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 9"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-10.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-10.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 10"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-11.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-11.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 11"
-             width="400" height="267" loading="lazy"></a></li>
-      <li><a href="assets/prvi-zbor/foto-12.jpg" target="_blank" rel="noopener">
-        <img src="assets/prvi-zbor/mala/foto-12.jpg" alt="Prvi zbor građana, 30. mart 2025. - fotografija 12"
-             width="400" height="267" loading="lazy"></a></li>
-    </ul>
-    <p class="galerija-potpis">Klik na fotografiju otvara veću verziju. Fotografije poslao <strong>Goran Stepančev</strong>.</p>
-  </div>
-</section>
+<label for="radar-adresa">Ulica ili obližnje mesto (nije obavezno)</label>
+      <input id="radar-adresa" name="adresa" maxlength="200" placeholder="npr. kod škole Jovan Popović">
+      <label for="radar-opis">Šta se dešava? (do 500 znakova)</label>
+      <textarea id="radar-opis" name="opis" rows="5" maxlength="500" required placeholder="Kratko opiši problem i od kada traje."></textarea>
+      <p class="brojac" id="opis-broj">0 / 500</p>
 
-<section class="sekcija" id="radar">
-  <div class="radar-zaglavlje">
-    <div class="radar-opis">
-      <h2 class="naslov-2">Komšijski radar</h2>
-      <p class="tekst">Prijave komunalnih problema na mapi Limana 2 - rasveta, smeće, parking, zelenilo,
-        ulice i trotoari. Za svaku prijavu se vidi status i koliko dugo čeka.</p>
-    </div>
-    <ul class="legenda">
-      <li><span class="legenda-tacka legenda-tacka--prijavljeno" aria-hidden="true"></span>Prijavljeno</li>
-      <li><span class="legenda-tacka legenda-tacka--prosledjeno" aria-hidden="true"></span>Prosleđeno nadležnima</li>
-      <li><span class="legenda-tacka legenda-tacka--reseno" aria-hidden="true"></span>Rešeno</li>
-    </ul>
-  </div>
+      <label for="radar-foto">Fotografija (nije obavezna)</label>
+      <input id="radar-foto" name="fotografija" type="file" accept="image/*">
+      <p class="sitno">Fotografija ostaje dostupna samo ovlašćenim članovima Zbora. Podaci o lokaciji i uređaju se uklanjaju.</p>
+      <img class="foto-pregled" id="foto-pregled" alt="Pregled pripremljene fotografije" hidden>
+      <a class="veza-jaka" id="foto-preuzmi" href="#" download hidden>Preuzmi pripremljenu fotografiju</a>
+      <button class="dugme dugme--obrub" type="button" id="foto-ocisti" hidden>Ukloni fotografiju</button>
 
-  <div class="radar-telo">
-    <div class="mapa" id="mapa-radar" data-radar="kompakt"
-         aria-label="Mapa prijava komunalnih problema na Limanu 2"></div>
+      <label for="radar-eposta">Tvoja e-pošta (da ti mogu odgovoriti)</label>
+      <input id="radar-eposta" name="eposta" type="email" required placeholder="ime@primer.rs">
+      <p class="sitno">Ne prikazuje se javno. Koristimo je za potvrdu i obaveštenja o prijavi.</p>
 
-    <div class="radar-lista">
-      <div class="zaglavlje-red">
-        <p class="natpis natpis--siv">NAJPODRŽANIJE PRIJAVE</p>
-        <a class="veza-jaka" href="radar.html">Ceo radar →</a>
+      <p class="dijalog-status" id="radar-status" role="status"></p>
+
+      <div class="dijalog-dugmad">
+        <button class="dugme dugme--akcenat" type="submit">Pošalji prijavu</button>
+        <a class="dugme dugme--obrub" href="#radar-lista-sekcija">Nazad na prijave</a>
       </div>
-      <div class="radar-lista-prijave" id="radar-lista"></div>
-      <p class="radar-broj" id="radar-broj"></p>
-      <a class="dugme dugme--akcenat" href="radar.html#prijavi">Prijavi problem</a>
-    </div>
+    </form>
   </div>
 </section>
 
-<section class="sekcija sekcija--tesna" id="telefoni">
-  <div class="zaglavlje-red">
-    <h2 class="naslov-2">Važni telefoni i adrese</h2>
-    <a class="veza-jaka" href="https://novisad.rs/lat/vazni-telefoni" target="_blank" rel="noopener">Ceo
-      spisak na sajtu Grada</a>
+<section class="sekcija sekcija--tesna">
+  <div class="filteri" role="group" aria-label="Filteri prijava">
+    <div class="filter">
+      <label for="filter-vrsta">Vrsta problema</label>
+      <select id="filter-vrsta">
+        <option value="">Sve vrste</option>
+      </select>
+    </div>
+    <div class="filter">
+      <label for="filter-status">Status</label>
+      <select id="filter-status">
+        <option value="">Svi statusi</option>
+      </select>
+    </div>
+    <label class="filter filter--potvrda">
+      <input id="filter-predugo" type="checkbox">
+      <span>Samo one koje čekaju predugo (preko 30 dana)</span>
+    </label>
+    <p class="filter-brojac" id="radar-brojac" role="status"></p>
   </div>
-  <p class="uvod">Kad problem u kraju ne rešava nadležni, ovo su brojevi i adrese na koje komšije zovu:
-    hitne službe, komunalna preduzeća i gradske uprave. Broj se zove jednim dodirom sa telefona, a adresa
-    otvara poruku u programu za poštu. U <a href="#radar">Komšijskom radaru</a> prijava ide direktno na
-    izabranu ustanovu, sa kopijom Zboru.</p>
-
-  <div class="telefoni">
-    <article class="telefoni-grupa telefoni-grupa--hitno">
-      <h3>Hitne službe</h3>
-      <ul class="telefoni-lista">
-        <li><span class="telefon-naziv">Policija</span><a class="telefon-broj" href="tel:192">192</a></li>
-        <li><span class="telefon-naziv">Vatrogasci</span><a class="telefon-broj" href="tel:193">193</a></li>
-        <li><span class="telefon-naziv">Hitna pomoć</span><a class="telefon-broj" href="tel:194">194</a></li>
-      </ul>
-      <p>Pozivaj sa bilo kog telefona, bez pozivnog broja grada.</p>
-    </article>
-
-    <article class="telefoni-grupa">
-      <h3>Komunalne službe</h3>
-      <ul class="telefoni-lista">
-        <li><span class="telefon-naziv">Čistoća - pozivni centar</span>
-          <a class="telefon-broj" href="tel:0800021029">0800/021-029</a></li>
-        <li><span class="telefon-naziv">Čistoća - reklamacije</span>
-          <a class="telefon-mail" href="mailto:cistoca.reklamacije@cistocans.co.rs">cistoca.reklamacije@cistocans.co.rs</a></li>
-        <li><span class="telefon-naziv">Vodovod i kanalizacija</span>
-          <a class="telefon-broj" href="tel:0800333021">0800/333-021</a>
-          <a class="telefon-mail" href="mailto:kontakt.centar@vikns.rs">kontakt.centar@vikns.rs</a></li>
-        <li><span class="telefon-naziv">Gušenje kanalizacije</span>
-          <a class="telefon-broj" href="tel:+38121442145">021/442-145</a></li>
-        <li><span class="telefon-naziv">Novosadska toplana</span>
-          <a class="telefon-broj" href="tel:0800100021">0800/100-021</a>
-          <a class="telefon-mail" href="mailto:osj@nstoplana.rs">osj@nstoplana.rs</a></li>
-        <li><span class="telefon-naziv">Toplana - curenje na instalacijama</span>
-          <a class="telefon-broj" href="tel:+381214881105">021/4881-105</a></li>
-        <li><span class="telefon-naziv">Gradsko zelenilo - održavanje</span>
-          <a class="telefon-broj" href="tel:+381212100266">021/21-00-266</a>
-          <a class="telefon-mail" href="mailto:odrzavanje@zelenilo.com">odrzavanje@zelenilo.com</a></li>
-        <li><span class="telefon-naziv">Parking servis</span>
-          <a class="telefon-broj" href="tel:+381214724140">021/472-41-40</a>
-          <a class="telefon-mail" href="mailto:office@parkingns.rs">office@parkingns.rs</a></li>
-      </ul>
-    </article>
-
-    <article class="telefoni-grupa">
-      <h3>Grad i gradske uprave</h3>
-      <ul class="telefoni-lista">
-        <li><span class="telefon-naziv">Gradska kuća - centrala</span>
-          <a class="telefon-broj" href="tel:+381214807777">021/480-77-77</a></li>
-        <li><span class="telefon-naziv">Uprava za komunalne poslove</span>
-          <a class="telefon-broj" href="tel:+38121420299">021/420-299</a></li>
-        <li><span class="telefon-naziv">Inspekcijski poslovi (komunalna inspekcija)</span>
-          <a class="telefon-broj" href="tel:+381214872444">021/4872-444</a>
-          <a class="telefon-mail" href="mailto:dispecer@inspekcija.novisad.rs">dispecer@inspekcija.novisad.rs</a></li>
-        <li><span class="telefon-naziv">Uprava za urbanizam i građevinske poslove</span>
-          <a class="telefon-broj" href="tel:+38121422644">021/422-644</a>
-          <a class="telefon-mail" href="mailto:urbanizam@uprava.novisad.rs">urbanizam@uprava.novisad.rs</a></li>
-        <li><span class="telefon-naziv">Uprava za imovinu i imovinsko-pravne poslove</span>
-          <a class="telefon-broj" href="tel:+381214890011">021/489-00-11</a>
-          <a class="telefon-mail" href="mailto:kontakt@imovina.novisad.rs">kontakt@imovina.novisad.rs</a></li>
-        <li><span class="telefon-naziv">Otvorena kancelarija za žalbe građana</span>
-          <a class="telefon-broj" href="tel:+38121526127">021/526-127</a>
-          <a class="telefon-mail" href="mailto:gradonacelnikns@novisad.rs">gradonacelnikns@novisad.rs</a></li>
-        <li><span class="telefon-naziv">Zaštitnik građana</span>
-          <a class="telefon-broj" href="tel:+38121420211">021/420-211</a>
-          <a class="telefon-mail" href="mailto:lokalni.ombudsman@novisad.rs">lokalni.ombudsman@novisad.rs</a></li>
-      </ul>
-    </article>
-
-    <article class="telefoni-grupa">
-      <h3>Prevoz i zdravlje</h3>
-      <ul class="telefoni-lista">
-        <li><span class="telefon-naziv">JGSP - red vožnje</span>
-          <a class="telefon-broj" href="tel:+38121527399">021/527-399</a></li>
-        <li><span class="telefon-naziv">JGSP - dispečer</span>
-          <a class="telefon-broj" href="tel:+381214896687">021/48-96-687</a></li>
-        <li><span class="telefon-naziv">JGSP - reklamacije</span>
-          <a class="telefon-broj" href="tel:0800211210">0800/211-210</a>
-          <a class="telefon-mail" href="mailto:reklamacije@gspns.rs">reklamacije@gspns.rs</a></li>
-        <li><span class="telefon-naziv">Dom zdravlja "Novi Sad"</span>
-          <a class="telefon-broj" href="tel:+381214879000">021/4879-000</a></li>
-        <li><span class="telefon-naziv">Klinički centar Vojvodine - centrala</span>
-          <a class="telefon-broj" href="tel:+381214843484">021/48-434-84</a></li>
-      </ul>
-    </article>
-  </div>
-
-  <p class="telefoni-napomena">Izvori: sajt Grada Novog Sada - strane "Važni telefoni" i gradske uprave
-    (novisad.rs) - i sajtovi JKP: Čistoća, Vodovod i kanalizacija, Novosadska toplana, Parking servis,
-    Gradsko zelenilo i JGSP. Ako se broj ili adresa promene, javi nam. Komunalni problem u kraju prvo
-    prijavi kroz <a href="#radar">Komšijski radar</a> - ako prijava već postoji, podrži je umesto da
-    otvaraš novu.</p>
+</section>
+<section class="sekcija sekcija--tesna" id="radar-lista-sekcija">
+  <h2 class="naslov-2">Prijave</h2>
+  <div class="radar-tabela-kontejner" id="radar-lista" tabindex="0" role="region" aria-label="Spisak prijava; pomeri vodoravno za ostale kolone"></div>
 </section>
 
 <section class="sekcija sekcija--tesna" id="aktuelno">
@@ -378,80 +187,16 @@
     </article>
   </div>
 </section>
-
 <section class="sekcija sekcija--tesna" id="predlozi">
   <div class="traka-predlozi">
     <div class="traka-predlozi-tekst">
       <h2>Imaš ideju za Liman 2?</h2>
-      <p>Predloži je komšijama. Najpodržaniji predlozi idu na dnevni red Zbora građana.</p>
+      <p>Predloži je komšijama. Predlog se šalje Zboru građana na razmatranje.</p>
     </div>
     <button class="dugme dugme--svetlo" type="button" data-dijalog="predlog">Pošalji predlog</button>
   </div>
-</section>
-
-<section class="sekcija sekcija--tesna" id="nas-kraj">
-  <div class="zbor-prica">
-    <div class="zbor-prica-tekst">
-      <p class="natpis">NAŠ KRAJ</p>
-      <h2 class="naslov-2">Liman 2 - od močvare do komšiluka</h2>
-      <p class="tekst">Pre zgrada bile su bare, pesak i vrbe. Posle rata niklo je planirano naselje - a s
-        njim Bronks, škola, pijaca i kej po kojima Liman 2 prepoznajemo. Priče o mestima, ljudima i
-        istoriji našeg kraja - od Boška Buhe do Štranda i Žute kuće.</p>
-      <p class="dugmad">
-        <a class="dugme dugme--bela" href="nas-kraj/index.html">Sve priče iz kraja</a>
-        <a class="dugme dugme--obrub" href="nas-kraj/liman-2.html">Priča o Limanu 2</a>
-      </p>
-    </div>
-  <figure class="okret">
-        <button class="okret-scena" type="button" aria-pressed="false"
-                aria-label="Okreni fotografiju: Liman 2 nekad i danas">
-          <span class="okret-telo">
-            <span class="okret-strana okret-strana--nekad">
-              <img src="assets/liman-2/foto-03.jpg" alt="Liman 2 - stara fotografija iz arhive"
-                   width="1200" height="865" loading="lazy">
-              <span class="okret-oznaka">NEKAD</span>
-            </span>
-            <span class="okret-strana okret-strana--sad">
-              <img src="assets/liman-2/uvod.jpg" alt="Liman 2 danas - pogled na naselje"
-                   width="1600" height="640" loading="lazy">
-              <span class="okret-oznaka">DANAS</span>
-            </span>
-          </span>
-          <span class="okret-uputstvo" aria-hidden="true">Okreni ↻</span>
-        </button>
-        <figcaption>Klikni na fotografiju: nekad i danas · foto: Gradski info, uz dozvolu</figcaption>
-      </figure>
-  </div>
-  <div class="kartice kartice--kraj">
-    <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="nas-kraj/bosko-buha.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/bosko-buha-01.jpg" alt="" loading="lazy"></a>
-      <div class="kartica-telo">
-        <p class="natpis">NAŠ KRAJ · IME NAŠE MZ</p>
-        <h3><a href="nas-kraj/bosko-buha.html">Ko je bio Boško Buha i zašto se naša mesna zajednica zove po njemu</a></h3>
-        <p>Dečak koji je u rat otišao sa petnaest godina, a iz njega se nije vratio. Ko je bio čovek po kome se zove naša mesna zajednica.</p>
-        <a class="kartica-veza-tekst" href="nas-kraj/bosko-buha.html">Pročitaj priču →</a>
-      </div>
-    </article>
-    <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="nas-kraj/strand.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/strand-01.jpg" alt="" loading="lazy"></a>
-      <div class="kartica-telo">
-        <p class="natpis">NAŠ KRAJ · DUNAV</p>
-        <h3><a href="nas-kraj/strand.html">Štrand: plaža koju je Crnjanski nazvao simbolom grada</a></h3>
-        <p>Plaža otvorena 1911, do koje se išlo tramvajčićem "trčikom", a koju je Crnjanski nazvao najvećim simbolom grada na Dunavu.</p>
-        <a class="kartica-veza-tekst" href="nas-kraj/strand.html">Pročitaj priču →</a>
-      </div>
-    </article>
-    <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="nas-kraj/zuta-kuca.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/zuta-kuca-01.jpg" alt="" loading="lazy"></a>
-      <div class="kartica-telo">
-        <p class="natpis">NAŠ KRAJ · KULTURA</p>
-        <h3><a href="nas-kraj/zuta-kuca.html">Žuta kuća: pet godina slobode na livadi kod Štranda</a></h3>
-        <p>Od 1988. do 1993. mala kuća na keju bila je mesto gde su se sretali slikari, muzičari i svi koji nisu znali gde bi drugde.</p>
-        <a class="kartica-veza-tekst" href="nas-kraj/zuta-kuca.html">Pročitaj priču →</a>
-      </div>
-    </article>
-  </div>
-</section>
+</section><section class="sekcija pocetna-kraj" id="nas-kraj"><div><p class="natpis">NAŠ KRAJ</p><h2 class="naslov-2">Priče koje čine Liman 2</h2><p>Od Bronksa i Štranda do ljudi i mesta koji su oblikovali naš komšiluk.</p><a class="dugme dugme--obrub" href="nas-kraj/index.html">Istraži naš kraj →</a></div><img src="assets/prvi-zbor/foto-01.jpg" alt="Komšije na prvom zboru građana Limana 2" loading="lazy"></section>
+<div class="sekcija stare-veze" id="prvi-zbor"><a href="zbor.html#prvi-zbor">Kako je izgledao prvi zbor →</a></div>
 </main>
 
 <footer class="podnozje">
@@ -469,6 +214,7 @@
         <h2 class="podnozje-naslov" id="podnozje-sajt">Sajt</h2>
         <ul>
           <li><a href="zapisnici/index.html" data-ikona="zapisnici">Zapisnici zborova</a></li>
+          <li><a id="telefoni" href="kontakti.html" data-ikona="kontakti">Korisni kontakti</a></li>
           <li><a href="nas-kraj/index.html" data-ikona="nas-kraj">Naš kraj</a></li>
           <li><button type="button" data-dijalog="pravila">Pravila objavljivanja</button></li>
           <li><button type="button" data-podeli>Podeli stranu</button></li>
@@ -490,6 +236,16 @@
     </div>
   </div>
 </footer>
+
+<dialog class="dijalog dijalog--detalj" id="dlg-detalj">
+  <div class="dijalog-forma">
+    <h2 class="skriveno">Detalji prijave</h2>
+    <div id="detalj-sadrzaj"></div>
+    <div class="dijalog-dugmad">
+      <button class="dugme dugme--obrub" type="button" data-zatvori>Zatvori</button>
+    </div>
+  </div>
+</dialog>
 
 <dialog class="dijalog" id="dlg-predlog" aria-labelledby="dlg-predlog-naslov">
   <form class="dijalog-forma" id="forma-predlog" novalidate>
