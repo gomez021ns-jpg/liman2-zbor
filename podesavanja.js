@@ -25,8 +25,8 @@ window.LIMAN2 = {
   // `zapisnik` je strana na sajtu (npr. "zapisnik-2025-10-26.html"); ako je prazan, link vodi
   // na spisak zapisnika (zapisnici.html).
   poslednjiZbor: {
-    datum: "2025-10-26",
-    zapisnik: "zapisnik-2025-10-26.html"
+    datum: "2026-06-16",
+    zapisnik: "zapisnik-2026-06-16.html"
   },
 
   // Mapa: centar je Liman 2 / MZ Boško Buha (OpenStreetMap)

@@ -24,6 +24,12 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-10", velika: false, nove: [
+    "Tri nova zapisnika: šesti zbor (22. 2. 2026), sedmi zbor (18. 5. 2026) i osmi zbor (16. 6. 2026) - u spisku zapisnika i svaki na svojoj strani.",
+  ], dorade: [
+    "Svi zapisnici su sada na latinici - i tri ranija koja su bila ćirilicom i osmi; tekst je prenet slovo za slovo, bez izmena.",
+    "Na naslovnoj i u kartici \"Sledeći zbor\" kao poslednji zbor stoji osmi zbor (16. 6. 2026), sa linkom na njegov zapisnik.",
+  ] },
   { datum: "2026-11-09", velika: false, nove: [], dorade: [
     "Žuta kuća je dobila pravu fotografiju - kuću sa muralom na fasadi - na kartici, na naslovnoj i na vrhu priče.",
   ] },
