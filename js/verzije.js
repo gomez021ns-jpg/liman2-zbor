@@ -4,6 +4,12 @@
 // Ubacuje red sa brojem verzije u podnožje svake strane i crta verzije.html.
 
 (function () {
+  // Koren sajta (folder iznad js/) - strana "Šta je novo" je u korenu, a ova skripta radi i na
+  // stranama iz podfoldera (zapisnici/, nas-kraj/, akcije/).
+  var KOREN = document.currentScript && document.currentScript.src
+    ? new URL("..", document.currentScript.src).href
+    : "";
+
   // Broj se računa iz cele istorije, od najstarijeg ka najnovijem:
   //   velika -> x raste, y i z padaju na nulu
   //   nove   -> y raste, z pada na nulu
@@ -65,7 +71,7 @@
     // formatDatum() već vraća tačku na kraju (9. 11. 2026.), pa se ovde ne dodaje druga.
     red.innerHTML = "Verzija sajta <b>v" + bezbedno(najnovija.v) + "</b> · " +
       bezbedno(formatDatum(najnovija.datum)) + " · " +
-      '<a href="verzije.html">Šta je novo</a>';
+      '<a href="' + KOREN + 'verzije.html">Šta je novo</a>';
     omot.insertBefore(red, omot.firstChild);
   }
 

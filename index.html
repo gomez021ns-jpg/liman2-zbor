@@ -18,17 +18,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=ec929f11">
-<link rel="stylesheet" href="styles.css?v=142b3173">
-<script src="podesavanja.js?v=f27354c9" defer></script>
-<script src="data/verzije.js?v=2413b2d8" defer></script>
-<script src="verzije.js?v=979363f7" defer></script>
+<link rel="stylesheet" href="css/styles.css?v=cd9c115a">
+<script src="podesavanja.js?v=7dc7f1c5" defer></script>
+<script src="data/verzije.js?v=6341cb8c" defer></script>
+<script src="js/verzije.js?v=e758a674" defer></script>
 <script src="vendor/leaflet/leaflet.js?v=5a640ff8" defer></script>
 <script src="data/granica.js?v=31e62037" defer></script>
 <script src="data/prijave.js?v=e645cce5" defer></script>
-<script src="data/vesti.js?v=997342a2" defer></script>
-<script src="radar-osnova.js?v=f071f0c8" defer></script>
-<script src="radar.js?v=a8d241c5" defer></script>
-<script src="app.js?v=ccf75fb0" defer></script>
+<script src="data/vesti.js?v=81671613" defer></script>
+<script src="js/radar-osnova.js?v=f071f0c8" defer></script>
+<script src="js/radar.js?v=a8d241c5" defer></script>
+<script src="js/app.js?v=12baba6e" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#aktuelno">Preskoči meni, idi na sadržaj</a>
@@ -71,7 +71,7 @@
       <p class="kartica-zbor-mesto" data-zbor-gde hidden></p>
       <p class="kartica-zbor-red" data-zbor-red hidden></p>
       <p class="kartica-zbor-mesto">Poslednji zbor: <span data-zbor-poslednji>16. 6. 2026.</span></p>
-      <a class="kartica-zbor-veza" data-zbor-zapisnik href="zapisnik-2026-06-16.html">Zapisnik
+      <a class="kartica-zbor-veza" data-zbor-zapisnik href="zapisnici/2026-06-16.html">Zapisnik
         sa poslednjeg zbora</a>
       <button class="kartica-zbor-veza kartica-zbor-kalendar" type="button" data-kalendar hidden>
         Dodaj u kalendar (.ics)
@@ -98,7 +98,7 @@
         <span class="cinjenica-broj" data-broj-prijava>0</span>
         <span class="cinjenica-natpis">prijava u Komšijskom radaru</span>
       </p>
-      <a class="cinjenica" href="zapisnici.html">
+      <a class="cinjenica" href="zapisnici/index.html">
         <span class="cinjenica-broj">Zapisnici</span>
         <span class="cinjenica-natpis">javni, za svaki zbor</span>
       </a>
@@ -161,9 +161,9 @@
         a odluke su donete transparentnim glasanjem - bez unapred pripremljenih zaključaka.</p>
       <p class="tekst">Zbor nije jednokratni protest: to je mesto gde se odluke donose, zapisuju i
         proveravaju. Zato su zapisnici javni -
-        <a href="zapisnik-2026-06-16.html">zapisnik sa osmog zbora (16. 6. 2026)</a> možeš
+        <a href="zapisnici/2026-06-16.html">zapisnik sa osmog zbora (16. 6. 2026)</a> možeš
         pročitati ovde, a svi zapisnici stoje u
-        <a href="zapisnici.html">spisku zapisnika</a>.</p>
+        <a href="zapisnici/index.html">spisku zapisnika</a>.</p>
       <p class="tekst">Kad novi zbor bude zakazan, datum, vreme i dnevni red stajaće u
         <a href="#sledeci-zbor">kartici na vrhu strane</a>.</p>
     </div>
@@ -398,8 +398,8 @@
         njim Bronks, škola, pijaca i kej po kojima Liman 2 prepoznajemo. Priče o mestima, ljudima i
         istoriji našeg kraja - od Boška Buhe do Štranda i Žute kuće.</p>
       <p class="dugmad">
-        <a class="dugme dugme--bela" href="nas-kraj.html">Sve priče iz kraja</a>
-        <a class="dugme dugme--obrub" href="liman-2.html">Priča o Limanu 2</a>
+        <a class="dugme dugme--bela" href="nas-kraj/index.html">Sve priče iz kraja</a>
+        <a class="dugme dugme--obrub" href="nas-kraj/liman-2.html">Priča o Limanu 2</a>
       </p>
     </div>
   <figure class="okret">
@@ -424,30 +424,30 @@
   </div>
   <div class="kartice kartice--kraj">
     <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="kraj-bosko-buha.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/bosko-buha-01.jpg" alt="" loading="lazy"></a>
+      <a class="kartica-slika" href="nas-kraj/bosko-buha.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/bosko-buha-01.jpg" alt="" loading="lazy"></a>
       <div class="kartica-telo">
         <p class="natpis">NAŠ KRAJ · IME NAŠE MZ</p>
-        <h3><a href="kraj-bosko-buha.html">Ko je bio Boško Buha i zašto se naša mesna zajednica zove po njemu</a></h3>
+        <h3><a href="nas-kraj/bosko-buha.html">Ko je bio Boško Buha i zašto se naša mesna zajednica zove po njemu</a></h3>
         <p>Dečak koji je u rat otišao sa petnaest godina, a iz njega se nije vratio. Ko je bio čovek po kome se zove naša mesna zajednica.</p>
-        <a class="kartica-veza-tekst" href="kraj-bosko-buha.html">Pročitaj priču →</a>
+        <a class="kartica-veza-tekst" href="nas-kraj/bosko-buha.html">Pročitaj priču →</a>
       </div>
     </article>
     <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="kraj-strand.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/strand-01.jpg" alt="" loading="lazy"></a>
+      <a class="kartica-slika" href="nas-kraj/strand.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/strand-01.jpg" alt="" loading="lazy"></a>
       <div class="kartica-telo">
         <p class="natpis">NAŠ KRAJ · DUNAV</p>
-        <h3><a href="kraj-strand.html">Štrand: plaža koju je Crnjanski nazvao simbolom grada</a></h3>
+        <h3><a href="nas-kraj/strand.html">Štrand: plaža koju je Crnjanski nazvao simbolom grada</a></h3>
         <p>Plaža otvorena 1911, do koje se išlo tramvajčićem "trčikom", a koju je Crnjanski nazvao najvećim simbolom grada na Dunavu.</p>
-        <a class="kartica-veza-tekst" href="kraj-strand.html">Pročitaj priču →</a>
+        <a class="kartica-veza-tekst" href="nas-kraj/strand.html">Pročitaj priču →</a>
       </div>
     </article>
     <article class="kartica kartica--kraj">
-      <a class="kartica-slika" href="kraj-zuta-kuca.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/zuta-kuca-01.jpg" alt="" loading="lazy"></a>
+      <a class="kartica-slika" href="nas-kraj/zuta-kuca.html" tabindex="-1" aria-hidden="true"><img class="kartica-slika-img" src="assets/nas-kraj/mala/zuta-kuca-01.jpg" alt="" loading="lazy"></a>
       <div class="kartica-telo">
         <p class="natpis">NAŠ KRAJ · KULTURA</p>
-        <h3><a href="kraj-zuta-kuca.html">Žuta kuća: pet godina slobode na livadi kod Štranda</a></h3>
+        <h3><a href="nas-kraj/zuta-kuca.html">Žuta kuća: pet godina slobode na livadi kod Štranda</a></h3>
         <p>Od 1988. do 1993. mala kuća na keju bila je mesto gde su se sretali slikari, muzičari i svi koji nisu znali gde bi drugde.</p>
-        <a class="kartica-veza-tekst" href="kraj-zuta-kuca.html">Pročitaj priču →</a>
+        <a class="kartica-veza-tekst" href="nas-kraj/zuta-kuca.html">Pročitaj priču →</a>
       </div>
     </article>
   </div>
@@ -468,8 +468,8 @@
       <nav class="podnozje-veze" aria-labelledby="podnozje-sajt">
         <h2 class="podnozje-naslov" id="podnozje-sajt">Sajt</h2>
         <ul>
-          <li><a href="zapisnici.html">Zapisnici zborova</a></li>
-          <li><a href="nas-kraj.html">Naš kraj</a></li>
+          <li><a href="zapisnici/index.html" data-ikona="zapisnici">Zapisnici zborova</a></li>
+          <li><a href="nas-kraj/index.html" data-ikona="nas-kraj">Naš kraj</a></li>
           <li><button type="button" data-dijalog="pravila">Pravila objavljivanja</button></li>
           <li><button type="button" data-podeli>Podeli stranu</button></li>
         </ul>

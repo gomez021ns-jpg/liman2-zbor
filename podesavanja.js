@@ -9,7 +9,7 @@ window.LIMAN2 = {
   // Instagram nalog Zbora (link u podnožju svih strana)
   instagram: "https://www.instagram.com/zbor_boskobuha/",
 
-  // Zapisnici sa zborova su strane na sajtu (zapisnici.html) - Google Drive fascikla se
+  // Zapisnici sa zborova su strane na sajtu (zapisnici/index.html) - Google Drive fascikla se
   // više ne koristi, pa ovde nema adrese.
 
   // Sledeći zbor: kad bude zakazan, popuni datum, vreme, mesto i dnevni red.
@@ -22,11 +22,11 @@ window.LIMAN2 = {
   },
 
   // Poslednji održani zbor i njegov zapisnik.
-  // `zapisnik` je strana na sajtu (npr. "zapisnik-2025-10-26.html"); ako je prazan, link vodi
-  // na spisak zapisnika (zapisnici.html).
+  // `zapisnik` je strana na sajtu, od korena (npr. "zapisnici/2025-10-26.html"); ako je prazan, link vodi
+  // na spisak zapisnika (zapisnici/index.html).
   poslednjiZbor: {
     datum: "2026-06-16",
-    zapisnik: "zapisnik-2026-06-16.html"
+    zapisnik: "zapisnici/2026-06-16.html"
   },
 
   // Mapa: centar je Liman 2 / MZ Boško Buha (OpenStreetMap)

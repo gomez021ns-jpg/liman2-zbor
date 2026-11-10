@@ -7,6 +7,12 @@
   var P = window.LIMAN2 || {};
   var ADRESA_ZBORA = P.adresaZbora || "";
 
+  // Koren sajta (folder iznad js/): strane su i u podfolderima (zapisnici/, nas-kraj/, akcije/),
+  // pa se veze koje pravi skripta grade od korena, a ne od strane na kojoj se nalazi.
+  var KOREN = document.currentScript && document.currentScript.src
+    ? new URL("..", document.currentScript.src).href
+    : "";
+
   function nadji(id) { return document.getElementById(id); }
 
   function otvoriDijalog(ime) {
@@ -545,11 +551,11 @@
   if (vezaZapisnik) {
     if (poslednji.zapisnik) {
       // zapisnik je na sajtu - otvara se u istom tabu
-      vezaZapisnik.href = poslednji.zapisnik;
+      vezaZapisnik.href = KOREN + poslednji.zapisnik;
       vezaZapisnik.removeAttribute("target");
       vezaZapisnik.removeAttribute("rel");
     } else {
-      vezaZapisnik.href = "zapisnici.html";        // spisak zapisnika (nema više Google Drive)
+      vezaZapisnik.href = KOREN + "zapisnici/index.html";   // spisak zapisnika
     }
   }
 
@@ -591,7 +597,7 @@
       // nema prijava: umesto "0 prijava" stoji poziv da se prva prijavi
       var stavka = brojPrijava.closest ? brojPrijava.closest(".cinjenica") : null;
       if (stavka) {
-        stavka.outerHTML = '<a class="cinjenica" href="radar.html#prijavi">' +
+        stavka.outerHTML = '<a class="cinjenica" href="' + KOREN + 'radar.html#prijavi">' +
           '<span class="cinjenica-broj">Prijavi prvi</span>' +
           '<span class="cinjenica-natpis">u Komšijskom radaru još nema prijava</span></a>';
       }

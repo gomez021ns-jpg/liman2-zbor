@@ -24,6 +24,11 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-10", velika: false, nove: [], dorade: [
+    "Sajt je sređen po folderima: zapisnici su u \"zapisnici\", priče u \"nas-kraj\", akcije u \"akcije\", a stil i skripte u \"css\" i \"js\" - adrese strana su kraće i jasnije.",
+    "Stari linkovi koje ste već podelili i dalje rade: sa stare adrese strana sama prebaci na novu.",
+    "Provera pre objave sada proverava i svaku vezu na svakoj strani, pa pokvaren link ne može da ode na web.",
+  ] },
   { datum: "2026-11-10", velika: false, nove: [
     "Tri nova zapisnika: šesti zbor (22. 2. 2026), sedmi zbor (18. 5. 2026) i osmi zbor (16. 6. 2026) - u spisku zapisnika i svaki na svojoj strani.",
   ], dorade: [
