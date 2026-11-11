@@ -12,11 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="css/styles.css?v=9fab1b31">
+<link rel="stylesheet" href="css/styles.css?v=f1aff49f">
 <script src="podesavanja.js?v=7dc7f1c5" defer></script>
-<script src="data/verzije.js?v=a2e67af3" defer></script>
+<script src="data/verzije.js?v=da4e977a" defer></script>
 <script src="js/verzije.js?v=c4a8ba88" defer></script>
-<script src="js/app.js?v=689ae765" defer></script>
+<script src="js/app.js?v=ae897459" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#verzije">Preskoči meni, idi na spisak verzija</a>
@@ -28,14 +28,14 @@
       <span class="brend-ime">LIMAN <span class="brend-broj">2</span></span>
       <span class="brend-mz">MZ Boško Buha</span>
     </a>
-    <nav class="nav" aria-label="Glavni meni">
+    <nav class="nav" id="glavni-meni" aria-label="Glavni meni">
       <a href="zbor.html">Zbor građana</a>
       <a href="radar.html">Komšijski radar</a>
       <a href="arhiva.html">Aktuelno</a>
       <a href="kontakti.html">Kontakti</a>
       <a href="nas-kraj/index.html">Naš kraj</a>
     </nav>
-    <a class="dugme dugme--crveno" href="radar.html#prijavi">Prijavi problem</a>
+    <button class="meni-dugme" type="button" aria-expanded="false" aria-controls="glavni-meni" aria-label="Otvori meni" hidden><span class="meni-crte" aria-hidden="true"></span></button>
   </div>
 </header>
 

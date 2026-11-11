@@ -25,6 +25,17 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "Uz \"Priče koje čine Liman 2\" na naslovnoj stoji mozaik fotografija iz priča - Liman 2 nekad, Žuta kuća, Štrand, pruga gde je danas Bulevar i Boško Buha; klik vodi na priču.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [
+    "Objave u \"Aktuelno i akcije\" Zbor sada može da unosi i kroz aplikaciju za moderatore, sa fotografijama - pojave se na naslovnoj i u arhivi.",
+    "Na telefonu je meni sakriven iza dugmeta ☰ u gornjem desnom uglu.",
+  ], dorade: [
+    "Dugme \"Prijavi problem\" je skinuto iz zaglavlja (ostaje na naslovnoj i u radaru), a meni je pomeren udesno.",
+    "Natpis na naslovnoj sada glasi \"Sajt nezavisnih građana Limana 2\".",
+    "Slike na karticama u \"Aktuelno i akcije\" vide se cele, bez odsecanja.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "Komšijski radar se prikazuje i kad server ne radi: mapa, granica i spisak su tu, a jasno piše da slanje prijava i podrške trenutno ne radi; kad se server vrati, strana se sama osveži.",
     "Prijava poslata posle ponoći više ne dobija jučerašnji datum - datum se računa po vremenu Novog Sada.",
     "Radar je zaštićen od zloupotrebe: sa iste adrese ne može da stigne gomila prijava ili zahteva za podršku, a na istu e-poštu ne može da ode gomila poruka.",

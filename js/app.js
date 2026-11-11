@@ -645,7 +645,7 @@
   // jedna kartica vesti - isti izgled i na naslovnoj i u arhivi
   function napraviKarticuVesti(vest) {
     var kartica = document.createElement("article");
-    kartica.className = "kartica";
+    kartica.className = "kartica kartica--vest";
 
     var slikeVesti = (vest.slike && vest.slike.length)
       ? vest.slike
@@ -653,6 +653,12 @@
     if (slikeVesti.length) {
       var okvir = document.createElement("div");
       okvir.className = "kartica-slika";
+      // zamućena kopija iste slike popunjava prostor oko nje (slika se vidi cela, bez odsecanja);
+      // apsolutna adresa, jer bi se relativna u CSS promenljivoj tumačila prema styles.css
+      try {
+        okvir.style.setProperty("--pozadina",
+          'url("' + new URL(slikeVesti[0], location.href).href.replace(/["\\]/g, "\\$&") + '")');
+      } catch (greska) { /* bez pozadine - slika se i dalje vidi cela */ }
 
       // sve fotografije su u jednoj grupi: prva se vidi na kartici, klik otvara pregled svih
       var grupa = document.createElement("div");
@@ -731,12 +737,22 @@
     return kartica;
   }
 
-  var vesti = (window.VESTI || []).slice().sort(function (a, b) {
-    return String(b.datum || "").localeCompare(String(a.datum || ""));   // najnovije prve
-  });
+  function poredajVesti(spisak) {
+    return spisak.slice().sort(function (a, b) {
+      return String(b.datum || "").localeCompare(String(a.datum || "")) ||   // najnovije prve
+        (b.kreirano || 0) - (a.kreirano || 0);
+    });
+  }
 
-  // naslovna: najviše 2 najnovije
   var kutijaAkcija = document.getElementById("akcije");
+  var arhiva = document.getElementById("arhiva-vesti");
+
+  // Crta naslovnu (najviše 2) i arhivu (sve ostale). Poziva se dvaput: odmah sa data/vesti.js,
+  // pa još jednom kad stignu vesti iz aplikacije za moderatora (servis, /api/vesti).
+  function prikaziVesti(vesti) {
+  if (kutijaAkcija) {
+    kutijaAkcija.querySelectorAll(".kartica--vest").forEach(function (k) { k.remove(); });
+  }
   if (kutijaAkcija && vesti.length) {
     var praznaKartica = kutijaAkcija.querySelector("[data-vest-prazna]");
     if (praznaKartica) { praznaKartica.hidden = true; }
@@ -746,8 +762,8 @@
   }
 
   // arhiva (arhiva.html): sve što nije na naslovnoj, najnovije prve
-  var arhiva = document.getElementById("arhiva-vesti");
   if (arhiva) {
+    arhiva.innerHTML = "";
     var starije = vesti.slice(NA_NASLOVNOJ);
     if (!starije.length) {
       arhiva.innerHTML = '<p class="lista-prazna">Arhiva je za sada prazna - sve objave su ' +
@@ -764,6 +780,58 @@
       starije.forEach(function (vest) { mreza.appendChild(napraviKarticuVesti(vest)); });
       arhiva.appendChild(mreza);
     }
+  }
+  }
+
+  prikaziVesti(poredajVesti(window.VESTI || []));
+
+  // Vesti koje Zbor unese kroz aplikaciju za moderatora stoje na servisu. Bez servisa (dvoklik,
+  // GitHub Pages) ostaju samo one iz data/vesti.js - ništa se ne kvari, samo ih nema.
+  if ((kutijaAkcija || arhiva) && location.protocol !== "file:") {
+    fetch("/api/vesti", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (saServisa) {
+        if (!Array.isArray(saServisa) || !saServisa.length) { return; }
+        var naServisu = {};
+        saServisa.forEach(function (v) { naServisu[v.id] = true; });
+        var staticke = (window.VESTI || []).filter(function (v) { return !naServisu[v.id]; });
+        prikaziVesti(poredajVesti(saServisa.concat(staticke)));
+        podesiUvode();
+      })
+      .catch(function () { /* servis nije tu - ostaju vesti iz data/vesti.js */ });
+  }
+
+  /* ---------- Meni na telefonu (dugme ☰ u zaglavlju) ----------
+     Dugme stoji u HTML-u sa `hidden`; tek ovde se otkriva, pa bez skripte meni ostaje vidljiv. */
+  var meniDugme = document.querySelector(".meni-dugme");
+  var zaglavlje = document.querySelector(".header");
+  if (meniDugme && zaglavlje) {
+    meniDugme.hidden = false;
+    document.documentElement.classList.add("ima-meni-dugme");
+    var postaviMeni = function (otvoren) {
+      zaglavlje.classList.toggle("meni-otvoren", otvoren);
+      meniDugme.setAttribute("aria-expanded", otvoren ? "true" : "false");
+      meniDugme.setAttribute("aria-label", otvoren ? "Zatvori meni" : "Otvori meni");
+    };
+    meniDugme.addEventListener("click", function () {
+      postaviMeni(!zaglavlje.classList.contains("meni-otvoren"));
+    });
+    // izbor stavke, Escape ili klik van zaglavlja zatvaraju meni
+    zaglavlje.addEventListener("click", function (dogadjaj) {
+      if (dogadjaj.target.closest && dogadjaj.target.closest(".nav a")) { postaviMeni(false); }
+    });
+    document.addEventListener("keydown", function (dogadjaj) {
+      if (dogadjaj.key === "Escape" && zaglavlje.classList.contains("meni-otvoren")) {
+        postaviMeni(false);
+        meniDugme.focus();
+      }
+    });
+    document.addEventListener("click", function (dogadjaj) {
+      if (!zaglavlje.contains(dogadjaj.target)) { postaviMeni(false); }
+    });
+    window.matchMedia("(min-width: 761px)").addEventListener("change", function (m) {
+      if (m.matches) { postaviMeni(false); }
+    });
   }
 
   /* ---------- Uvod na kartici: 6 redova i ceo tekst u pregledu ----------

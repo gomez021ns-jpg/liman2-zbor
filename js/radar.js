@@ -582,7 +582,7 @@
           return Math.sqrt(dx * dx + dy * dy) < 150;
         }).slice(0, 4);
         blizu.hidden = !kandidati.length;
-        blizu.innerHTML = kandidati.length ? '<strong>Prijave u blizini — proveri da li problem već postoji:</strong>' + kandidati.map(function(p) {
+        blizu.innerHTML = kandidati.length ? '<strong>Prijave u blizini - proveri da li problem već postoji:</strong>' + kandidati.map(function(p) {
           return '<p><button type="button" class="veza-jaka prijava-otvori" data-prijava="' + R.bezbedno(p.id) + '">' + R.bezbedno(R.skrati(p.opis, 90)) + '</button></p>';
         }).join('') : '';
       }

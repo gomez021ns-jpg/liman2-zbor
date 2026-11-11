@@ -18,9 +18,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=340720ef">
-<link rel="stylesheet" href="css/styles.css?v=9fab1b31">
+<link rel="stylesheet" href="css/styles.css?v=f1aff49f">
 <script src="podesavanja.js?v=7dc7f1c5" defer></script>
-<script src="data/verzije.js?v=a2e67af3" defer></script>
+<script src="data/verzije.js?v=da4e977a" defer></script>
 <script src="js/verzije.js?v=c4a8ba88" defer></script>
 <script src="vendor/leaflet/leaflet.js?v=5a640ff8" defer></script>
 <script src="data/granica.js?v=f2be40c7" defer></script>
@@ -28,8 +28,8 @@
 <script src="data/ustanove.js?v=4bca225e" defer></script>
 <script src="data/vesti.js?v=01dce49a" defer></script>
 <script src="js/radar-osnova.js?v=fc7d9c66" defer></script>
-<script src="js/radar.js?v=2a2bf81c" defer></script>
-<script src="js/app.js?v=689ae765" defer></script>
+<script src="js/radar.js?v=cebec244" defer></script>
+<script src="js/app.js?v=ae897459" defer></script>
 <script src="js/hero-mozaik.js?v=4b80f90e" defer></script>
 <script src="js/bista-scroll.js?v=ce60692e" defer></script>
 </head>
@@ -43,14 +43,14 @@
       <span class="brend-ime">LIMAN <span class="brend-broj">2</span></span>
       <span class="brend-mz">MZ Boško Buha</span>
     </a>
-    <nav class="nav" aria-label="Glavni meni">
+    <nav class="nav" id="glavni-meni" aria-label="Glavni meni">
       <a id="zbor" href="zbor.html">Zbor građana</a>
       <a href="radar.html">Komšijski radar</a>
       <a href="arhiva.html">Aktuelno</a>
       <a href="kontakti.html">Kontakti</a>
       <a href="nas-kraj/index.html">Naš kraj</a>
     </nav>
-    <a class="dugme dugme--crveno" href="#prijavi">Prijavi problem</a>
+    <button class="meni-dugme" type="button" aria-expanded="false" aria-controls="glavni-meni" aria-label="Otvori meni" hidden><span class="meni-crte" aria-hidden="true"></span></button>
   </div>
 </header>
 
@@ -61,8 +61,8 @@
   </div>
   <div class="omot omot--hero">
     <div class="hero-tekst">
-      <p class="natpis">NEZAVISNI SAJT GRAĐANA LIMANA 2</p>
-      <h1 class="hero-skriven-naslov">Liman 2 — Zbor građana MZ Boško Buha</h1>
+      <p class="natpis">SAJT NEZAVISNIH GRAĐANA LIMANA 2</p>
+      <h1 class="hero-skriven-naslov">Liman 2 - Zbor građana MZ Boško Buha</h1>
       <h2 class="hero-naslov">Naš kraj.<br>Naša stvar.</h2>
       <p class="hero-uvod">Informacije, akcije i komšijske inicijative za Liman 2, na jednom mestu.</p>
       <div class="dugmad">
@@ -195,7 +195,13 @@
     </div>
     <button class="dugme dugme--svetlo" type="button" data-dijalog="predlog">Pošalji predlog</button>
   </div>
-</section><section class="sekcija pocetna-kraj" id="nas-kraj"><div><p class="natpis">NAŠ KRAJ</p><h2 class="naslov-2">Priče koje čine Liman 2</h2><p>Od Bronksa i Štranda do ljudi i mesta koji su oblikovali naš komšiluk.</p><a class="dugme dugme--obrub" href="nas-kraj/index.html">Istraži naš kraj →</a></div><img src="assets/prvi-zbor/foto-01.jpg" alt="Komšije na prvom zboru građana Limana 2" loading="lazy"></section>
+</section><section class="sekcija pocetna-kraj" id="nas-kraj"><div><p class="natpis">NAŠ KRAJ</p><h2 class="naslov-2">Priče koje čine Liman 2</h2><p>Od Bronksa i Štranda do ljudi i mesta koji su oblikovali naš komšiluk.</p><a class="dugme dugme--obrub" href="nas-kraj/index.html">Istraži naš kraj →</a></div><div class="kraj-mozaik" aria-label="Priče iz kraja">
+    <a class="kraj-mozaik-polje kraj-mozaik-polje--veliko" href="nas-kraj/liman-2.html"><img src="assets/liman-2/mala/foto-03.jpg" srcset="assets/liman-2/mala/foto-03.jpg 400w, assets/liman-2/foto-03.jpg 1200w" sizes="(max-width: 760px) 100vw, 26vw" alt="Crno-bela fotografija: solitere i široki bulevar na Limanu 2" loading="lazy"><span>Liman 2 nekad</span></a>
+    <a class="kraj-mozaik-polje" href="nas-kraj/zuta-kuca.html"><img src="assets/nas-kraj/mala/zuta-kuca-01.jpg" srcset="assets/nas-kraj/mala/zuta-kuca-01.jpg 400w, assets/nas-kraj/zuta-kuca-01.jpg 1100w" sizes="(max-width: 760px) 50vw, 13vw" alt="Žuta kuća na Istarskom keju, oslikana grafitima" loading="lazy"><span>Žuta kuća</span></a>
+    <a class="kraj-mozaik-polje" href="nas-kraj/strand.html"><img src="assets/nas-kraj/mala/strand-01.jpg" srcset="assets/nas-kraj/mala/strand-01.jpg 400w, assets/nas-kraj/strand-01.jpg 781w" sizes="(max-width: 760px) 50vw, 13vw" alt="Arhivski prizor kupača na Štrandu" loading="lazy"><span>Štrand</span></a>
+    <a class="kraj-mozaik-polje" href="nas-kraj/liman-2.html#pruga"><img src="assets/nas-kraj/mala/liman-lokomotiva.jpg" srcset="assets/nas-kraj/mala/liman-lokomotiva.jpg 400w, assets/nas-kraj/liman-lokomotiva.jpg 634w" sizes="(max-width: 760px) 50vw, 13vw" alt="Stara parna lokomotiva u Novom Sadu" loading="lazy"><span>Pruga gde je danas Bulevar</span></a>
+    <a class="kraj-mozaik-polje" href="nas-kraj/bosko-buha.html"><img src="assets/nas-kraj/mala/bosko-buha-01.jpg" srcset="assets/nas-kraj/mala/bosko-buha-01.jpg 400w, assets/nas-kraj/bosko-buha-01.jpg 540w" sizes="(max-width: 760px) 50vw, 13vw" alt="Spomenik Bošku Buhi na Jabuci" loading="lazy"><span>Boško Buha</span></a>
+  </div></section>
 <div class="sekcija stare-veze" id="prvi-zbor"><a href="zbor.html#prvi-zbor">Kako je izgledao prvi zbor →</a></div>
 </main>
 

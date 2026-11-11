@@ -1,12 +1,12 @@
 /* Liman 2 - sajt Zbora građana MZ Boško Buha
    Boje su identitet Zbora: CRVENA pozadina, slova CRNA ili BELA (nijanse uzete iz
-   logotipa — vidi zbor/pripremi-logo.ps1). Mere i radijusi su iz dizajna (zbor/dizajn/). */
+   logotipa - vidi zbor/pripremi-logo.ps1). Mere i radijusi su iz dizajna (zbor/dizajn/). */
 
 :root {
   /* crvena porodica (iz bedža) */
-  --crvena: #b62a22;          /* glavna crvena — pozadina strane (belo slovo 6.3:1) */
-  --crvena-svetla: #c0342a;   /* svetlija crvena — akcenti, hover */
-  --crvena-tamna: #8f1f18;    /* tamnija crvena — obrubi, pritisnuto stanje */
+  --crvena: #b62a22;          /* glavna crvena - pozadina strane (belo slovo 6.3:1) */
+  --crvena-svetla: #c0342a;   /* svetlija crvena - akcenti, hover */
+  --crvena-tamna: #8f1f18;    /* tamnija crvena - obrubi, pritisnuto stanje */
   --crvena-na-crnom: #ff9c94; /* svetlija crvena za tekst na crnoj ploči (9.5:1) */
 
   --crna: #0f0f10;            /* crne ploče: zaglavlje, kartica zbora, traka, podnožje */
@@ -112,7 +112,7 @@ a:hover { color: var(--link-hover, var(--na-crvenoj-blaza)); }
   --link-hover: var(--akcent-svetli);
 }
 
-/* linkovi na crvenoj podlozi su beli — ali ne i dugmad (dugmad nose svoju boju) */
+/* linkovi na crvenoj podlozi su beli - ali ne i dugmad (dugmad nose svoju boju) */
 .hero a:not(.dugme),
 .podnozje a,
 .lista-predugo a,
@@ -358,7 +358,7 @@ a.kartica:hover { box-shadow: 0 12px 26px rgb(0 0 0 / .18); }
   gap: 20px;
 }
 
-/* Natpis iznad naslova ("NEZAVISNI SAJT GRAĐANA LIMANA 2") — kratka crta i razmaknuta slova */
+/* Natpis iznad naslova ("SAJT NEZAVISNIH GRAĐANA LIMANA 2") - kratka crta i razmaknuta slova */
 .hero-tekst .natpis {
   display: flex;
   align-items: center;
@@ -402,7 +402,7 @@ a.kartica:hover { box-shadow: 0 12px 26px rgb(0 0 0 / .18); }
   padding: 24px;
   display: flex;
   flex-direction: column;
-  /* sadržaj u sredini crne ploče — ploča je rastegnuta do visine teksta, pa ne sme da
+  /* sadržaj u sredini crne ploče - ploča je rastegnuta do visine teksta, pa ne sme da
      ostane praznina između datuma i linka */
   justify-content: center;
   gap: 12px;
@@ -2198,3 +2198,97 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 .radar-tabela thead th { position: sticky; top: 0; z-index: 1; box-shadow: inset 0 -1px var(--linija); }
 /* Zaglavlje koristi celu širinu ekrana. */
 .header .omot { width: 100%; max-width: none; padding-left: clamp(20px, 3vw, 48px); padding-right: clamp(20px, 3vw, 48px); }
+
+/* ---------- Zaglavlje: meni desno, na telefonu dugme ☰ (11. 11. 2026) ----------
+   Dugme "Prijavi problem" je skinuto iz zaglavlja (ostaje na naslovnoj i u radaru).
+   `.meni-dugme` ima `hidden` u HTML-u; js/app.js ga otkrije i doda klasu `ima-meni-dugme` na
+   <html>, pa se meni na uskom ekranu skriva samo kad dugme stvarno radi (bez skripte meni stoji). */
+.header .nav { margin-left: auto; }
+.meni-dugme {
+  display: none;
+  width: 44px; height: 44px;
+  margin-left: auto;
+  border: 1px solid rgb(255 255 255 / .28);
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  align-items: center; justify-content: center;
+}
+.meni-dugme:hover { background: rgb(255 255 255 / .08); }
+.meni-dugme:focus-visible { outline: 2px solid #ffb3ab; outline-offset: 2px; }
+.meni-crte, .meni-crte::before, .meni-crte::after {
+  display: block; width: 20px; height: 2px; border-radius: 2px; background: currentColor;
+  transition: transform .2s ease, background-color .2s ease;
+}
+.meni-crte { position: relative; }
+.meni-crte::before, .meni-crte::after { content: ""; position: absolute; left: 0; }
+.meni-crte::before { top: -6px; }
+.meni-crte::after { top: 6px; }
+.meni-dugme[aria-expanded="true"] .meni-crte { background: transparent; }
+.meni-dugme[aria-expanded="true"] .meni-crte::before { transform: translateY(6px) rotate(45deg); }
+.meni-dugme[aria-expanded="true"] .meni-crte::after { transform: translateY(-6px) rotate(-45deg); }
+@media (max-width: 760px) {
+  .ima-meni-dugme .meni-dugme:not([hidden]) { display: inline-flex; }
+  .ima-meni-dugme .header .nav { display: none; }
+  .ima-meni-dugme .header.meni-otvoren .nav {
+    display: flex; flex-direction: column; align-items: stretch;
+    order: 3; width: 100%; margin: 0; gap: 0;
+    padding: 6px 0 4px; border-top: 1px solid rgb(255 255 255 / .14); font-size: 16px;
+  }
+  .ima-meni-dugme .header.meni-otvoren .nav a { padding: 12px 4px; border-bottom: 1px solid rgb(255 255 255 / .08); }
+  .ima-meni-dugme .header.meni-otvoren .nav a:last-child { border-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .meni-crte, .meni-crte::before, .meni-crte::after { transition: none; } }
+
+/* ---------- Slika na kartici vesti: cela, bez odsecanja (11. 11. 2026) ----------
+   Letak ili fotografija se vide celi (`contain`), a prazan prostor oko njih popunjava zamućena
+   kopija iste slike (`--pozadina`, postavlja js/app.js) - okvir ostaje iste visine na svim karticama. */
+.kartica--vest .kartica-slika { height: 220px; padding: 0; overflow: hidden; isolation: isolate; background: #2b2f2c; }
+.kartica--vest .kartica-slika::before {
+  content: ""; position: absolute; inset: -24px; z-index: -1;
+  background: var(--pozadina, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.85) saturate(1.1);
+}
+.kartica--vest .kartica-slika-img { object-fit: contain; }
+@media (max-width: 620px) { .kartica--vest .kartica-slika { height: 200px; } }
+
+/* ---------- "Priče koje čine Liman 2": mozaik fotografija iz priča (11. 11. 2026, korisnik) ----------
+   Pet polja, svako vodi na svoju priču; veliko polje (Liman 2 nekad) zauzima levu polovinu.
+   Fotografije su samo one sa dozvolom ili javnim vlasništvom - CC BY-SA (škola, Danubius) bi ovde
+   tražile potpis autora, pa ih nema. */
+.kraj-mozaik {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 150px);
+  gap: 8px;
+}
+.kraj-mozaik-polje {
+  position: relative; display: block; overflow: hidden;
+  border-radius: 10px; background: #2b2f2c; color: #fff; text-decoration: none;
+}
+.kraj-mozaik-polje--veliko { grid-column: span 2; grid-row: span 2; }
+.pocetna-kraj .kraj-mozaik img {
+  display: block; width: 100%; height: 100%; max-height: none;
+  object-fit: cover; border-radius: 0;
+  transition: transform .45s ease, filter .45s ease;
+}
+.kraj-mozaik-polje span {
+  position: absolute; left: 8px; right: 8px; bottom: 8px; width: fit-content; max-width: calc(100% - 16px);
+  padding: 4px 10px; border-radius: 999px;
+  background: rgb(0 0 0 / .68); color: #fff;
+  font-size: 13px; font-weight: 600; line-height: 1.25;
+  transition: background-color .25s ease;
+}
+.kraj-mozaik-polje--veliko span { font-size: 15px; padding: 6px 12px; }
+.kraj-mozaik-polje:hover img, .kraj-mozaik-polje:focus-visible img { transform: scale(1.06); }
+.kraj-mozaik-polje:hover span, .kraj-mozaik-polje:focus-visible span { background: #a02c2c; }
+.kraj-mozaik-polje:focus-visible { outline: 3px solid #a02c2c; outline-offset: 2px; }
+@media (max-width: 760px) {
+  .kraj-mozaik { grid-template-columns: repeat(2, 1fr); grid-template-rows: 200px repeat(2, 130px); }
+  .kraj-mozaik-polje--veliko { grid-row: span 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pocetna-kraj .kraj-mozaik img, .kraj-mozaik-polje span { transition: none; }
+  .kraj-mozaik-polje:hover img, .kraj-mozaik-polje:focus-visible img { transform: none; }
+}
