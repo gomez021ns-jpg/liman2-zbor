@@ -2450,3 +2450,6 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
   background: #2b2f2c;
 }
 .galerija--jednako .galerija-lista img { height: 100%; object-fit: contain; }
+
+/* priča "Šampioni i rokenroleri": red sa linkovima na izvore ispod svakog odeljka (11. 11. 2026) */
+.zapisnik .clanak-izvor { font-size: 13px; color: var(--prigusen); }

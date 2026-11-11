@@ -24,6 +24,9 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-11", velika: false, nove: [
+    "Nova priča u \"Naš kraj\": \"Liman 2 - kvart koji je stvarao šampione i rokenrolere\" - basket, pank, rok, metal i škola \"Jovan Popović\" iz koje su izlazili bendovi, uz linkove na intervjue.",
+  ], dorade: [] },
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "U \"Naš kraj\" su sve fotografije ujednačene: kartice priča izgledaju isto kao kartice u \"Aktuelno i akcije\", a fotografije u pričama i njihove galerije su u okvirima iste veličine - slika se vidi cela.",
   ] },
