@@ -2292,3 +2292,105 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
   .pocetna-kraj .kraj-mozaik img, .kraj-mozaik-polje span { transition: none; }
   .kraj-mozaik-polje:hover img, .kraj-mozaik-polje:focus-visible img { transform: none; }
 }
+
+/* ---------- Galerija "Liman 2 u slikama": uža, mozaik (11. 11. 2026, korisnik) ----------
+   Najviše 980 px (ranije preko cele strane), 4 kolone, dve fotografije su duplo veće (2. i 6. -
+   pogled sa Dunava i grad iz vazduha); `dense` popuni rupe, pa 14 fotografija daje pun pravougaonik. */
+.galerija--mozaik { max-width: 980px; }
+.galerija--mozaik .galerija-lista {
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  grid-auto-flow: dense;
+  gap: 8px;
+}
+.galerija--mozaik .galerija-lista li:nth-child(2),
+.galerija--mozaik .galerija-lista li:nth-child(6) { grid-column: span 2; grid-row: span 2; }
+.galerija--mozaik .galerija-lista a { height: 100%; border-radius: 10px; }
+.galerija--mozaik .galerija-lista img { height: 100%; transition: transform .35s ease; }
+@media (max-width: 760px) {
+  .galerija--mozaik .galerija-lista { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+  .galerija--mozaik .galerija-lista li:nth-child(2),
+  .galerija--mozaik .galerija-lista li:nth-child(6) { grid-row: span 2; }
+}
+
+/* ---------- Pregled fotografija: blago otvaranje i zatvaranje (11. 11. 2026, korisnik) ----------
+   Ranije je pregled "iskakao". Sada se tamna podloga pojavi postepeno, a fotografija dođe iz pravca
+   sličice na koju je kliknuto, od njene veličine (`--polaziste`, računa js/app.js); zatvaranje ide
+   unazad, u sličicu. Pri listanju se fotografije pretapaju. Uz prefers-reduced-motion nema pokreta. */
+.pregled {
+  background: rgb(14 16 15 / .88);
+  opacity: 0;
+  transition: opacity .45s ease;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.pregled.je-otvoren { opacity: 1; }
+/* polazište (`--polaziste`) je sama sličica: pomeraj do nje i njena veličina - fotografija iz nje izraste */
+.pregled-okvir {
+  opacity: 0;
+  transform: var(--polaziste, scale(.94));
+  transform-origin: 50% 50%;
+  transition: opacity .32s ease, transform .5s cubic-bezier(.22, .8, .3, 1);
+}
+.pregled.je-otvoren .pregled-okvir { opacity: 1; transform: none; }
+
+.pregled-dugme, .pregled-zatvori, .pregled-broj { transition: opacity .3s ease, background-color .16s ease; }
+.pregled:not(.je-otvoren) .pregled-dugme,
+.pregled:not(.je-otvoren) .pregled-zatvori,
+.pregled:not(.je-otvoren) .pregled-broj { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .pregled, .pregled-okvir, .pregled-slika, .pregled-dugme, .pregled-zatvori, .pregled-broj { transition: none; }
+  .pregled-okvir { transform: none; }
+}
+
+/* ---------- Pregled: okvir iste veličine za sve fotografije, klizanje pri listanju (11. 11. 2026) ----------
+   Okvir je uvek 3:2 i iste veličine (portret i pejzaž isto), slika se vidi cela (`contain`), a prostor
+   oko nje popunjava njena zamućena kopija (`.pregled-pozadina`). Strelice stoje uz ivice okvira
+   (js/app.js - postaviStrelice). Pri listanju stara slika (`.odlazi`) klizne i izbledi, nova (`.ulazi`)
+   uđe sa druge strane; `--smer` je 1 ili -1. */
+.pregled-okvir {
+  --sirina: min(calc(100vw - 170px), calc((100vh - 130px) * 1.5), 1320px);
+  inset: 0;
+  margin: auto;
+  width: var(--sirina);
+  height: calc(var(--sirina) / 1.5);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1b1e1c;
+  box-shadow: 0 24px 70px rgb(0 0 0 / .45);
+}
+.pregled-sloj {
+  position: absolute;
+  inset: 0;
+  transition: opacity .42s ease, transform .55s cubic-bezier(.22, .8, .3, 1);
+}
+.pregled-sloj.ulazi {
+  opacity: 0;
+  transform: translateX(calc(var(--smer, 0) * 70px)) scale(.985);
+  transition: none;
+}
+.pregled-sloj.odlazi { pointer-events: none; }
+.pregled-sloj.odlazi.je-otisao {
+  opacity: 0;
+  transform: translateX(calc(var(--smer, 0) * 70px)) scale(.985);
+}
+.pregled-pozadina {
+  position: absolute;
+  inset: -40px;
+  background: center / cover no-repeat;
+  filter: blur(24px) brightness(.55) saturate(1.1);
+}
+.pregled-sloj .pregled-slika {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+@media (max-width: 620px) {
+  .pregled-okvir { --sirina: min(calc(100vw - 16px), calc((100vh - 150px) * 1.5)); inset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pregled-sloj, .pregled-sloj.odlazi.je-otisao { transition: none; transform: none; }
+}

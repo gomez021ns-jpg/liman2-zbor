@@ -25,6 +25,11 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "Galerija \"Liman 2 u slikama\" je uža i složena kao mozaik, sa dve veće fotografije.",
+    "Pregled fotografija se otvara i zatvara blago - fotografija izađe iz sličice na koju si kliknuo i vrati se u nju.",
+    "U pregledu su sve fotografije u okviru iste veličine (slika se vidi cela, oko nje je njena zamućena kopija), strelice stoje uz ivice okvira, a pri listanju slike klize i pretapaju se.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "U arhivi vesti dugme \"Nazad na aktuelno\" sada vodi na \"Aktuelno i akcije\" na naslovnoj (ranije se klikom ništa nije dešavalo).",
   ] },
   { datum: "2026-11-11", velika: false, nove: [], dorade: [

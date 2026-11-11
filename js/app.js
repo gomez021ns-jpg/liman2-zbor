@@ -415,12 +415,16 @@
       '<button class="pregled-zatvori" type="button" aria-label="Zatvori pregled">×</button>' +
       '<span class="pregled-broj" aria-live="polite"></span>' +
       '<button class="pregled-dugme pregled-dugme--levo" type="button" aria-label="Prethodna fotografija">‹</button>' +
-      '<div class="pregled-okvir"><img class="pregled-slika" alt=""></div>' +
+      '<div class="pregled-okvir"><div class="pregled-sloj"><span class="pregled-pozadina" aria-hidden="true"></span>' +
+        '<img class="pregled-slika" alt=""></div></div>' +
       '<button class="pregled-dugme pregled-dugme--desno" type="button" aria-label="Sledeća fotografija">›</button>';
     document.body.appendChild(pregled);
 
-    // strelice prate stvarnu veličinu fotografije: posle učitavanja i pri promeni prozora
-    pregled.querySelector(".pregled-slika").addEventListener("load", postaviStrelice);
+    // nova fotografija ulazi tek kad se učita (klizanje i pretapanje pri listanju)
+    pregled.querySelector(".pregled-slika").addEventListener("load", function () {
+      var sloj = pregled.querySelector(".pregled-sloj");
+      window.requestAnimationFrame(function () { sloj.classList.remove("ulazi"); });
+    });
     window.addEventListener("resize", postaviStrelice);
 
     pregled.querySelector(".pregled-zatvori").addEventListener("click", zatvoriPregled);
@@ -443,7 +447,7 @@
     });
 
     document.addEventListener("keydown", function (dogadjaj) {
-      if (pregled.hidden) { return; }
+      if (pregled.hidden || !pregled.classList.contains("je-otvoren")) { return; }
       if (dogadjaj.key === "Escape") { zatvoriPregled(); }
       else if (dogadjaj.key === "ArrowLeft") { pomeri(-1); }
       else if (dogadjaj.key === "ArrowRight") { pomeri(1); }
@@ -452,61 +456,76 @@
     return pregled;
   }
 
-  // Strelice idu uz samu fotografiju: `object-fit: contain` u okviru ostavlja prazne trake
-  // (portret je uži od okvira), pa se iz prirodne veličine računa gde se slika stvarno vidi.
+  // Okvir pregleda je uvek iste veličine i oblika (3:2, CSS), pa strelice stoje uz njegove ivice.
+  // Mere se `offset*` vrednosti - one ne zavise od animacije (transform), pa strelice ne "šetaju".
   function postaviStrelice() {
     if (!pregled || pregled.hidden) { return; }
-    var im = pregled.querySelector(".pregled-slika");
-    var okvir = pregled.querySelector(".pregled-okvir").getBoundingClientRect();
-    var omot = pregled.getBoundingClientRect();
+    var okvir = pregled.querySelector(".pregled-okvir");
     var levoDugme = pregled.querySelector(".pregled-dugme--levo");
     var desnoDugme = pregled.querySelector(".pregled-dugme--desno");
-    var sirina = okvir.width;
-    var visina = okvir.height;
-    if (!im.naturalWidth || !im.naturalHeight || !sirina || !visina) { return; }
-
-    var odnos = im.naturalWidth / im.naturalHeight;
-    var prikazW = sirina;
-    var prikazH = visina;
-    if (sirina / visina > odnos) {
-      prikazW = visina * odnos;                       // uska slika - prazne trake levo/desno
-    } else {
-      prikazH = sirina / odnos;                       // široka slika - prazne trake gore/dole
-    }
-    var levoSlike = okvir.left - omot.left + (sirina - prikazW) / 2;
-    var goreSlike = okvir.top - omot.top + (visina - prikazH) / 2;
-
+    if (!okvir.offsetWidth) { return; }
     var w = levoDugme.offsetWidth || 54;
     var h = levoDugme.offsetHeight || 54;
-    var unutra = Math.round(w / 2) + 6;               // strelica malo ulazi u fotografiju
-    var y = Math.round(goreSlike + prikazH / 2 - h / 2);
-
-    levoDugme.style.left = Math.round(levoSlike + unutra - w / 2) + "px";
+    var y = Math.round(okvir.offsetTop + okvir.offsetHeight / 2 - h / 2);
+    var unutra = 14;                                  // strelica stoji malo unutar okvira
+    levoDugme.style.left = Math.round(okvir.offsetLeft + unutra) + "px";
     levoDugme.style.top = y + "px";
     levoDugme.style.transform = "none";
-    desnoDugme.style.left = Math.round(levoSlike + prikazW - unutra - w / 2) + "px";
+    desnoDugme.style.left = Math.round(okvir.offsetLeft + okvir.offsetWidth - unutra - w) + "px";
     desnoDugme.style.right = "auto";
     desnoDugme.style.top = y + "px";
     desnoDugme.style.transform = "none";
   }
 
-  function pokaziSliku(koja) {
+  // `smer` (1 = sledeća, -1 = prethodna): stara slika klizne na tu stranu i izbledi, nova uđe sa
+  // suprotne. Pri otvaranju (bez smera) nova se samo pojavi.
+  function pokaziSliku(koja, smer) {
     if (!slike.length) { return; }
     naSlici = ((koja % slike.length) + slike.length) % slike.length;   // kruži
-    var im = pregled.querySelector(".pregled-slika");
-    im.src = slike[naSlici].puna;
+    var okvir = pregled.querySelector(".pregled-okvir");
+    var sloj = okvir.querySelector(".pregled-sloj");
+    var im = sloj.querySelector(".pregled-slika");
+    var puna = slike[naSlici].puna;
+    if (im.getAttribute("src") !== puna) {
+      if (smer && im.getAttribute("src")) {
+        // kopija stare slike odlazi preko nove i nestaje
+        var stari = sloj.cloneNode(true);
+        stari.classList.remove("ulazi");
+        stari.classList.add("odlazi");
+        stari.setAttribute("aria-hidden", "true");
+        stari.style.setProperty("--smer", String(-smer));
+        okvir.appendChild(stari);
+        void stari.offsetWidth;
+        stari.classList.add("je-otisao");
+        window.setTimeout(function () { stari.remove(); }, 600);
+      }
+      sloj.style.setProperty("--smer", String(smer || 0));
+      sloj.classList.add("ulazi");                     // skida se kad se slika učita
+      var adresa;
+      try { adresa = new URL(puna, location.href).href; } catch (greska) { adresa = puna; }
+      sloj.querySelector(".pregled-pozadina").style.backgroundImage =
+        'url("' + adresa.replace(/["\\]/g, "\\$&") + '")';
+      im.src = puna;
+      if (im.complete && im.naturalWidth) {
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () { sloj.classList.remove("ulazi"); });
+        });
+      }
+    }
     im.alt = slike[naSlici].alt;
     pregled.querySelector(".pregled-broj").textContent = (naSlici + 1) + " / " + slike.length;
     var imaVise = slike.length > 1;
     pregled.querySelector(".pregled-dugme--levo").hidden = !imaVise;
     pregled.querySelector(".pregled-dugme--desno").hidden = !imaVise;
-    postaviStrelice();                                 // i pre učitavanja i posle (na "load")
+    postaviStrelice();
   }
 
-  function pomeri(smer) { pokaziSliku(naSlici + smer); }
+  function pomeri(smer) { pokaziSliku(naSlici + smer, smer); }
 
+  var poslednjaGrupa = null;
   function otvoriPregled(grupa, indeks, izvor) {
     napraviPregled();
+    poslednjaGrupa = grupa;
     slike = [];
     grupa.querySelectorAll("a[href]").forEach(function (veza) {
       var im = veza.querySelector("img");
@@ -515,18 +534,61 @@
     });
     if (!slike.length) { return; }
     povratakFokusa = izvor || null;
-    document.documentElement.classList.add("pregled-otvoren");
+    window.clearTimeout(tajmerZatvaranja);
     pregled.hidden = false;
+    postaviPolaziste(izvor, true);
+    document.documentElement.classList.add("pregled-otvoren");
     pokaziSliku(indeks);
+    void pregled.offsetWidth;                          // da prelaz krene od zatvorenog stanja
+    pregled.classList.add("je-otvoren");
     pregled.querySelector(".pregled-zatvori").focus();
   }
 
+  // Fotografija kreće od mesta i veličine sličice na koju je kliknuto i raste do pune veličine
+  // (i vraća se u nju pri zatvaranju): CSS `--polaziste` je pomeraj i umanjenje okvira do sličice.
+  // `odmah` (pri otvaranju): okvir se BEZ animacije postavi na sličicu, pa tek onda kreće da raste.
+  // Inače bi prelaz krenuo iz podrazumevanog stanja (skoro pune veličine) i slika bi "iskočila".
+  function postaviPolaziste(izvor, odmah) {
+    var okvir = pregled.querySelector(".pregled-okvir");
+    if (odmah) {
+      okvir.style.transition = "none";
+      okvir.style.transform = "none";                // meri se prava veličina okvira, bez umanjenja
+    }
+    var slicica = izvor && izvor.querySelector ? (izvor.querySelector("img") || izvor) : null;
+    var sa = slicica && slicica.getBoundingClientRect ? slicica.getBoundingClientRect() : null;
+    var o = okvir.getBoundingClientRect();
+    if (!sa || !sa.width || !o.width || sa.bottom < 0 || sa.top > window.innerHeight) {
+      okvir.style.removeProperty("--polaziste");   // sličica nije na ekranu - samo blago poraste
+    } else {
+      var umanjenje = Math.max(0.06, Math.min(sa.width / o.width, sa.height / o.height));
+      var dx = Math.round(sa.left + sa.width / 2 - (o.left + o.width / 2));
+      var dy = Math.round(sa.top + sa.height / 2 - (o.top + o.height / 2));
+      okvir.style.setProperty("--polaziste",
+        "translate(" + dx + "px, " + dy + "px) scale(" + umanjenje.toFixed(3) + ")");
+    }
+    if (odmah) {
+      okvir.style.removeProperty("transform");       // sada važi --polaziste iz CSS-a, bez prelaza
+      void okvir.offsetWidth;                        // pregledač zapamti početno stanje (na sličici)
+      okvir.style.removeProperty("transition");
+    }
+  }
+
+  // Zatvaranje ide unazad (podloga bledi, fotografija se vraća u sličicu), pa se tek onda sakrije.
+  var tajmerZatvaranja = null;
   function zatvoriPregled() {
-    if (!pregled || pregled.hidden) { return; }
-    pregled.hidden = true;
+    if (!pregled || pregled.hidden || !pregled.classList.contains("je-otvoren")) { return; }
+    // pri listanju je možda prikazana druga fotografija - vraća se u njenu sličicu ako je ima
+    var veze = poslednjaGrupa ? poslednjaGrupa.querySelectorAll("a[href]") : [];
+    postaviPolaziste(veze[naSlici] || povratakFokusa);
+    pregled.classList.remove("je-otvoren");
     document.documentElement.classList.remove("pregled-otvoren");
-    pregled.querySelector(".pregled-slika").removeAttribute("src");
-    if (povratakFokusa && povratakFokusa.focus) { povratakFokusa.focus(); }
+    if (povratakFokusa && povratakFokusa.focus) { povratakFokusa.focus({ preventScroll: true }); }
+    var bezPokreta = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    tajmerZatvaranja = window.setTimeout(function () {
+      pregled.hidden = true;
+      pregled.querySelector(".pregled-slika").removeAttribute("src");
+      pregled.querySelectorAll(".pregled-sloj.odlazi").forEach(function (s) { s.remove(); });
+    }, bezPokreta ? 0 : 480);
   }
 
   // Jedan osluškivač za sve galerije (i one koje se nacrtaju kasnije, npr. kartice vesti).
