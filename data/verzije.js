@@ -24,6 +24,9 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-11", velika: false, nove: [
+    "Linkovi za Viber: \"Zbor građana MZ Boško Buha\" (u podnožju svake strane, u kartici \"Sledeći zbor\" na naslovnoj i na strani \"Zbor građana\") i \"Zajednica komšija MZ Boško Buha\" (u podnožju svake strane).",
+  ], dorade: [] },
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "U priči \"Šampioni i rokenroleri\" su fotografije ljudi i mesta o kojima se piše, svaka sa brojem i potpisom izvora.",
     "Izvori i napomene u toj priči su na kraju teksta, u jednom spisku, pa tekst teče bez prekida.",

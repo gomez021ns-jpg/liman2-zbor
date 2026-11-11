@@ -141,6 +141,18 @@
     veza.href = P.instagram;
   });
 
+  // Viber: data-viber="zbor" (Zbor građana) ili "komsije" (Zajednica komšija); linkovi iz
+  // podesavanja.js, a bez linka stavka se ne vidi
+  var VIBER = { zbor: P.viberZbor, komsije: P.viberKomsije };
+  document.querySelectorAll("[data-viber]").forEach(function (veza) {
+    var adresa = VIBER[veza.getAttribute("data-viber")];
+    if (!adresa) {
+      (veza.closest("li") || veza).hidden = true;
+      return;
+    }
+    veza.href = adresa;
+  });
+
   // Kartica "Sledeći zbor": podaci iz podesavanja.js (ništa se ne izmišlja)
   function kaoDatum(iso) {
     var d = new Date(iso + "T00:00:00");

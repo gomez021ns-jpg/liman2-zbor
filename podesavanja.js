@@ -9,6 +9,13 @@ window.LIMAN2 = {
   // Instagram nalog Zbora (link u podnožju svih strana)
   instagram: "https://www.instagram.com/zbor_boskobuha/",
 
+  // Viber - linkovi za pridruživanje (u Viberu: zajednica/grupa → Pozovi → Kopiraj link).
+  // Ako neki ostane prazan, njegove stavke se ne prikazuju.
+  // "Zbor građana MZ Boško Buha": podnožje svih strana, kartica "Sledeći zbor" i strana "Zbor građana"
+  viberZbor: "https://invite.viber.com/?g2=AQB2oY7LsvrE61RspPzBj2rVlm90j3mdehUrj45T89TK%2FwC%2Fyt6SFzgFN3Jb%2BaiF",
+  // "Zajednica komšija MZ Boško Buha": podnožje svih strana
+  viberKomsije: "https://invite.viber.com/?g2=AQACEn4wkGkofFUTTe%2Flkshqn6HZ25kP7EcIjff5XKgY883E%2Bpoyw4O3MWkxR20X",
+
   // Zapisnici sa zborova su strane na sajtu (zapisnici/index.html) - Google Drive fascikla se
   // više ne koristi, pa ovde nema adrese.
 

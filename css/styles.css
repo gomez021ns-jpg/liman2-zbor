@@ -2453,3 +2453,6 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 
 /* priča "Šampioni i rokenroleri": red sa linkovima na izvore ispod svakog odeljka (11. 11. 2026) */
 .zapisnik .clanak-izvor { font-size: 13px; color: var(--prigusen); }
+
+/* Viber zajednica u podnožju (11. 11. 2026): oblačić sa slušalicom, ista maska kao ostale ikonice */
+.podnozje-veze a[data-viber] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3c5 0 9 3.1 9 7.5S17 18 12 18c-.9 0-1.8-.1-2.6-.3L5 20.5l1.2-3.8C4.2 15.3 3 13 3 10.5 3 6.1 7 3 12 3z'/%3E%3Cpath d='M9.6 7.6c.4 2.3 2.2 4.2 4.6 4.7l.9-1 1.5.7-.3 1.5c-3.6 0-6.6-3-6.6-6.6l1.5-.3.6 1.5z' fill='%23000' stroke-width='.6'/%3E%3C/svg%3E"); }
