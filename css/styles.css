@@ -2303,14 +2303,14 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
   grid-auto-flow: dense;
   gap: 8px;
 }
-.galerija--mozaik .galerija-lista li:nth-child(2),
-.galerija--mozaik .galerija-lista li:nth-child(6) { grid-column: span 2; grid-row: span 2; }
+.galerija--liman .galerija-lista li:nth-child(2),
+.galerija--liman .galerija-lista li:nth-child(6) { grid-column: span 2; grid-row: span 2; }
 .galerija--mozaik .galerija-lista a { height: 100%; border-radius: 10px; }
 .galerija--mozaik .galerija-lista img { height: 100%; transition: transform .35s ease; }
 @media (max-width: 760px) {
   .galerija--mozaik .galerija-lista { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
-  .galerija--mozaik .galerija-lista li:nth-child(2),
-  .galerija--mozaik .galerija-lista li:nth-child(6) { grid-row: span 2; }
+  .galerija--liman .galerija-lista li:nth-child(2),
+  .galerija--liman .galerija-lista li:nth-child(6) { grid-row: span 2; }
 }
 
 /* ---------- Pregled fotografija: blago otvaranje i zatvaranje (11. 11. 2026, korisnik) ----------
@@ -2394,3 +2394,13 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   .pregled-sloj, .pregled-sloj.odlazi.je-otisao { transition: none; transform: none; }
 }
+
+/* ---------- Galerija sa prvog zbora (zbor.html): isti mozaik (11. 11. 2026, korisnik) ----------
+   Uspravne fotografije (1, 5, 6) su visoka polja, transparent "Slobodan Liman" (3) veliko, mase
+   (8, 12) široka - provereno simulacijom: 4 kolone = 5 punih redova, 2 kolone = 10, bez rupa. */
+.galerija--prvi-zbor .galerija-lista li:nth-child(1),
+.galerija--prvi-zbor .galerija-lista li:nth-child(5),
+.galerija--prvi-zbor .galerija-lista li:nth-child(6) { grid-row: span 2; }
+.galerija--prvi-zbor .galerija-lista li:nth-child(3) { grid-column: span 2; grid-row: span 2; }
+.galerija--prvi-zbor .galerija-lista li:nth-child(8),
+.galerija--prvi-zbor .galerija-lista li:nth-child(12) { grid-column: span 2; }

@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "Fotografije sa prvog zbora (strana \"Zbor građana\") složene su kao mozaik - uspravne i položene fotografije se lepo uklapaju, bez praznina.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "Galerija \"Liman 2 u slikama\" je uža i složena kao mozaik, sa dve veće fotografije.",
     "Pregled fotografija se otvara i zatvara blago - fotografija izađe iz sličice na koju si kliknuo i vrati se u nju.",
     "U pregledu su sve fotografije u okviru iste veličine (slika se vidi cela, oko nje je njena zamućena kopija), strelice stoje uz ivice okvira, a pri listanju slike klize i pretapaju se.",
