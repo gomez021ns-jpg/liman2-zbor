@@ -152,6 +152,16 @@ img { max-width: 100%; }
 }
 .preskoci:focus { top: 16px; }
 
+/* Radar bez servisa: poruka iznad obrasca (js/radar.js dodaje klasu) */
+.radar-api-nedostupan {
+  background: #fdf3d3;
+  color: var(--ink);
+  border-left: 4px solid #c98a00;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-weight: 500;
+}
+
 /* Polja koja domaćin treba da popuni (obrisati klasu kad se popuni) */
 .popuni {
   background: #fdf3d3;

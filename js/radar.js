@@ -5,21 +5,66 @@
   "use strict";
   var stanjeApi = {};
   var statusApi = document.getElementById('radar-api-status');
-  fetch('/api/health', {cache:'no-store'}).then(function(r) { return r.json(); }).then(function(data) {
-    stanjeApi = data;
-    if (statusApi && data.mail_mode !== 'smtp') statusApi.textContent = 'Test režim: mejl obaveštenja se ne šalju na stvarne adrese.';
-  }).catch(function() {});
-  var odgovorApi;
-  while (true) {
+  // Prijave dolaze sa servisa (/api/). Kad servisa nema (strana otvorena sa diska, pregled na GitHub
+  // Pages, servis pao), radar se ipak nacrta - iz data/prijave.js - a slanje prijava i podrške se
+  // isključi uz poruku. Strana u pozadini proverava da li se servis vratio (vidi cekajServis).
+  var SA_DISKA = location.protocol === "file:";
+  var NEDOSTUPAN = "Slanje prijava i podrške trenutno ne radi - radar nije povezan sa serverom. " +
+    "Pokušaj malo kasnije ili piši Zboru.";
+  var VEZA_PUKLA = "Veza sa radarom nije uspela - pokušaj ponovo malo kasnije.";
+  var POVEZAN = false;
+  if (!SA_DISKA) {
     try {
-      odgovorApi = await fetch('/api/reports', {cache:'no-store', signal:typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(12000) : undefined});
+      var odgovorApi = await fetch('/api/reports', {cache:'no-store', signal:typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(8000) : undefined});
       if (!odgovorApi.ok) throw new Error('API');
-      window.PRIJAVE = await odgovorApi.json();
-      break;
-    } catch (greska) {
-      if (statusApi) statusApi.textContent = 'Radar trenutno nije dostupan. Pokušavamo ponovo…';
-      await new Promise(function(resolve) { setTimeout(resolve, 3000); });
+      var podaciApi = await odgovorApi.json();
+      if (!Array.isArray(podaciApi)) throw new Error('API');
+      window.PRIJAVE = podaciApi;
+      POVEZAN = true;
+    } catch (greska) { /* ostaje data/prijave.js */ }
+  }
+  if (POVEZAN) {
+    fetch('/api/health', {cache:'no-store'}).then(function(r) { return r.json(); }).then(function(data) {
+      stanjeApi = data;
+      if (statusApi && data.mail_mode !== 'smtp') statusApi.textContent = 'Test režim: mejl obaveštenja se ne šalju na stvarne adrese.';
+    }).catch(function() {});
+  } else {
+    if (statusApi) {
+      statusApi.textContent = SA_DISKA
+        ? "Strana je otvorena sa diska - prijave se šalju samo preko sajta na internetu."
+        : NEDOSTUPAN;
+      statusApi.classList.add("radar-api-nedostupan");
     }
+    if (!SA_DISKA) { cekajServis(); }
+  }
+
+  // Servis se vratio: ako komšija još ništa nije uneo, strana se tiho osveži; inače se samo
+  // uključi slanje, da se ne izgubi ono što je napisao. Proverava se sve ređe (20 s → 5 min).
+  function cekajServis() {
+    var pauza = 20000;
+    function proveri() {
+      if (document.hidden) { setTimeout(proveri, pauza); return; }
+      fetch('/api/health', {cache:'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+        if (!d || !d.ok) { throw new Error('API'); }
+        var forma = document.getElementById("forma-radar");
+        var uneto = forma && Array.prototype.some.call(forma.elements, function (polje) {
+          if (polje.tagName === "SELECT") { return polje.selectedIndex > 0; }
+          return polje.type !== "submit" && polje.type !== "button" && !!polje.value;
+        });
+        if (!uneto) { location.reload(); return; }
+        POVEZAN = true; stanjeApi = d;
+        if (statusApi) {
+          statusApi.classList.remove("radar-api-nedostupan");
+          statusApi.textContent = "Veza sa radarom je ponovo tu - možeš da pošalješ prijavu.";
+        }
+        var dugme = forma.querySelector('button[type="submit"]');
+        if (dugme) { dugme.disabled = false; }
+      }).catch(function () {
+        pauza = Math.min(pauza * 2, 300000);
+        setTimeout(proveri, pauza);
+      });
+    }
+    setTimeout(proveri, pauza);
   }
 
   var R = window.RADAR;
@@ -100,9 +145,12 @@
     if (lista) {
       if (!SVE.length) {
         // bez dugmeta: u sekciji ispod liste stoji stalno dugme "Prijavi problem"
-        lista.innerHTML = praznoHtml("", "Trenutno nema prijava",
-          "Radar je prazan - nijedan problem iz kraja još nije prijavljen. Ako znaš za problem " +
-          "(rasveta, smeće, parking, zelenilo, trotoar), prijavi ga i prati šta se dešava.");
+        lista.innerHTML = POVEZAN
+          ? praznoHtml("", "Trenutno nema prijava",
+            "Radar je prazan - nijedan problem iz kraja još nije prijavljen. Ako znaš za problem " +
+            "(rasveta, smeće, parking, zelenilo, trotoar), prijavi ga i prati šta se dešava.")
+          : praznoHtml("", "Prijave trenutno ne mogu da se učitaju",
+            "Radar nije povezan sa serverom. Pokušaj ponovo malo kasnije.");
       } else {
         lista.innerHTML = najpodrzanije.map(function (prijava) {
           var status = R.statusInfo(prijava);
@@ -188,7 +236,9 @@
       if (lista && !SVE.length) {
         if (lista._radarObserver) lista._radarObserver.disconnect();
         lista.style.maxHeight = '';
-        lista.innerHTML = praznoHtml('', 'Trenutno nema prijava', 'Još nema objavljenih prijava. Ako znaš za problem u kraju, prijavi ga.');
+        lista.innerHTML = POVEZAN
+          ? praznoHtml('', 'Trenutno nema prijava', 'Još nema objavljenih prijava. Ako znaš za problem u kraju, prijavi ga.')
+          : praznoHtml('', 'Prijave trenutno ne mogu da se učitaju', 'Radar nije povezan sa serverom. Pokušaj ponovo malo kasnije.');
       } else { R.nacrtajListu(lista, prikazi); }
       if (brojac) {
         brojac.textContent = prikazi.length + " od " + SVE.length + " prijava";
@@ -247,7 +297,9 @@
         fotografija +
         '<h3 class="detalj-podnaslov">Tok prijave</h3>' +
         '<ol class="detalj-istorija">' + istorija + '</ol>' +
-        (R.prikaziPodrsku(prijava) ? '<p class="detalj-podrske">' + (prijava.podrske || 0) + ' komšija podržava</p>' +
+        (R.prikaziPodrsku(prijava) && !POVEZAN ? '<p class="detalj-podrske">' + (prijava.podrske || 0) + ' komšija podržava</p>' +
+          '<p class="detalj-napomena">' + R.bezbedno(NEDOSTUPAN) + '</p>' : '') +
+        (R.prikaziPodrsku(prijava) && POVEZAN ? '<p class="detalj-podrske">' + (prijava.podrske || 0) + ' komšija podržava</p>' +
           '<button class="dugme dugme--akcenat" type="button" id="podrzi-dugme">Podrži prijavu</button>' +
           '<form id="podrzi-forma" hidden><label for="podrzi-email">Tvoja e-pošta</label><input id="podrzi-email" type="email" autocomplete="email" maxlength="254" required placeholder="ime@primer.rs"><p class="detalj-napomena">Poslaćemo ti link za potvrdu podrške. Adresa nije javna.</p><button class="dugme dugme--akcenat" type="submit">Pošalji link za potvrdu</button><p id="podrzi-status" role="status"></p></form>' : '') +
         '<p class="detalj-status" role="status"></p>';
@@ -289,7 +341,7 @@
             input.hidden = true; formaPodrska.querySelector('label').hidden = true;
             formaPodrska.querySelector('.detalj-napomena').hidden = true; submit.hidden = true;
             message.textContent = data.message + (stanjeApi.mail_mode === 'test' ? ' Test režim: poruka je sačuvana lokalno, nije poslata.' : '');
-          } catch (err) { message.textContent = err.message || 'Slanje nije uspelo.'; submit.disabled = false; }
+          } catch (err) { message.textContent = (err instanceof TypeError ? VEZA_PUKLA : err.message) || 'Slanje nije uspelo.'; submit.disabled = false; }
         });
       }
     }
@@ -363,7 +415,9 @@
       } catch (_) { /* Sačuvaj poslednji prikaz; veza će pokušati ponovo. */ }
       finally { trajeOsvezavanje = false; if (ponovno) { ponovno = false; osveziPodatke(); } }
     }
-    if (window.EventSource) {
+    if (!POVEZAN) {
+      // bez servisa nema ni osvežavanja uživo; kad se servis vrati, cekajServis osveži stranu
+    } else if (window.EventSource) {
       var dogadjaji = new EventSource('/api/events');
       dogadjaji.addEventListener('update', osveziPodatke);
       window.addEventListener('pagehide', function() { dogadjaji.close(); }, {once:true});
@@ -642,8 +696,13 @@
 
     if (!forma) { return; }
 
+    // bez servisa se prijava ne može poslati - dugme je isključeno dok se veza ne vrati
+    var dugmeSlanje = forma.querySelector('button[type="submit"]');
+    if (dugmeSlanje && !POVEZAN) { dugmeSlanje.disabled = true; }
+
     forma.addEventListener("submit", function (dogadjaj) {
       dogadjaj.preventDefault();
+      if (!POVEZAN) { if (status) { status.textContent = NEDOSTUPAN; } return; }
 
       var nedostaje = [];
       if (!tacka || !R.uGranici(tacka[0], tacka[1])) { nedostaje.push("tačka unutar označene granice na mapi"); }
@@ -687,7 +746,7 @@
           if (ocistiFoto) ocistiFoto.hidden = true;
           ispisiTacku(); if (brojacOpisa) brojacOpisa.textContent = '0 / 500';
           if (status) status.textContent = result.message + ' Broj prijave: ' + result.id + '.';
-        }).catch(function (e) { if (status) status.textContent = e.message + ' Pokušaj ponovo.'; })
+        }).catch(function (e) { if (status) status.textContent = e instanceof TypeError ? VEZA_PUKLA : e.message + ' Pokušaj ponovo.'; })
           .finally(function () { if (submit) submit.disabled = false; });
       }
       if (ociscenaFotografija) {

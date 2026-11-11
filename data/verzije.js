@@ -24,6 +24,19 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "Komšijski radar se prikazuje i kad server ne radi: mapa, granica i spisak su tu, a jasno piše da slanje prijava i podrške trenutno ne radi; kad se server vrati, strana se sama osveži.",
+    "Prijava poslata posle ponoći više ne dobija jučerašnji datum - datum se računa po vremenu Novog Sada.",
+    "Radar je zaštićen od zloupotrebe: sa iste adrese ne može da stigne gomila prijava ili zahteva za podršku, a na istu e-poštu ne može da ode gomila poruka.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [
+    "Nov izgled sajta: svetlije boje, naslovna sa mozaikom fotografija iz kraja i bistom Boška Buhe u pozadini, a Komšijski radar je odmah na naslovnoj.",
+    "Nova strana \"Zbor građana\" - šta je zbor, zašto je važan i kako je sve počelo na Bronxu.",
+    "Nova strana \"Važni telefoni i adrese\" (u meniju \"Kontakti\", u podnožju \"Korisni kontakti\").",
+    "Komšijski radar ima novi tok: prijavu prvo pregleda moderator, pa je tek onda objavi na mapi; podrška prijavi se potvrđuje linkom koji stigne e-poštom, a prijave su i u tabeli sa filterima.",
+  ], dorade: [
+    "Vraćen je broj verzije u podnožju svake strane i strana na koju vodi link za potvrdu podrške.",
+  ] },
   { datum: "2026-11-10", velika: false, nove: [], dorade: [
     "Sajt je sređen po folderima: zapisnici su u \"zapisnici\", priče u \"nas-kraj\", akcije u \"akcije\", a stil i skripte u \"css\" i \"js\" - adrese strana su kraće i jasnije.",
     "Stari linkovi koje ste već podelili i dalje rade: sa stare adrese strana sama prebaci na novu.",
