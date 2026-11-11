@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "Kad Zbor ukloni zakazani termin zbora, na naslovnoj odmah piše da sledeći zbor još nije zakazan - bez osvežavanja strane.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "Uz \"Priče koje čine Liman 2\" na naslovnoj stoji mozaik fotografija iz priča - Liman 2 nekad, Žuta kuća, Štrand, pruga gde je danas Bulevar i Boško Buha; klik vodi na priču.",
   ] },
   { datum: "2026-11-11", velika: false, nove: [

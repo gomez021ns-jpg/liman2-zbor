@@ -334,14 +334,18 @@
   }
   if (kada && location.protocol !== 'file:') {
     var terminSekvenca = 0;
+    // termin iz podesavanja.js - vraća se kad Zbor u aplikaciji ukloni termin sa servisa
+    var terminIzPodesavanja = P.sledeciZbor || {};
     function osveziTermin() {
       var broj = ++terminSekvenca;
       fetch('/api/assembly', {cache:'no-store'}).then(function(response) {
         if (!response.ok) throw new Error('API');
         return response.json();
       }).then(function(termin) {
-        if (broj !== terminSekvenca || !termin || !termin.datum || !termin.vreme) return;
-        P.sledeciZbor = {datum:termin.datum, vreme:termin.vreme, mesto:termin.mesto || '', dnevniRed:[]};
+        if (broj !== terminSekvenca) return;
+        P.sledeciZbor = (termin && termin.datum && termin.vreme)
+          ? {datum:termin.datum, vreme:termin.vreme, mesto:termin.mesto || '', dnevniRed:[]}
+          : terminIzPodesavanja;           // servis kaže "nema termina" (null) - nije zakazan
         prikaziSledeciZbor(); osveziKalendar();
       }).catch(function() { /* Pri nedostupnom serveru ostaje postojeći prikaz. */ });
     }
