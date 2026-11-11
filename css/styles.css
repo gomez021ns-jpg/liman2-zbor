@@ -2244,14 +2244,17 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 /* ---------- Slika na kartici vesti: cela, bez odsecanja (11. 11. 2026) ----------
    Letak ili fotografija se vide celi (`contain`), a prazan prostor oko njih popunjava zamućena
    kopija iste slike (`--pozadina`, postavlja js/app.js) - okvir ostaje iste visine na svim karticama. */
-.kartica--vest .kartica-slika { height: 220px; padding: 0; overflow: hidden; isolation: isolate; background: #2b2f2c; }
-.kartica--vest .kartica-slika::before {
+.kartica--vest .kartica-slika,
+.kartica--kraj .kartica-slika { height: 220px; padding: 0; overflow: hidden; isolation: isolate; background: #2b2f2c; }
+.kartica--vest .kartica-slika::before,
+.kartica--kraj .kartica-slika::before {
   content: ""; position: absolute; inset: -24px; z-index: -1;
   background: var(--pozadina, none) center / cover no-repeat;
   filter: blur(18px) brightness(.85) saturate(1.1);
 }
-.kartica--vest .kartica-slika-img { object-fit: contain; }
-@media (max-width: 620px) { .kartica--vest .kartica-slika { height: 200px; } }
+.kartica--vest .kartica-slika-img,
+.kartica--kraj .kartica-slika-img { object-fit: contain; }
+@media (max-width: 620px) { .kartica--vest .kartica-slika, .kartica--kraj .kartica-slika { height: 200px; } }
 
 /* ---------- "Priče koje čine Liman 2": mozaik fotografija iz priča (11. 11. 2026, korisnik) ----------
    Pet polja, svako vodi na svoju priču; veliko polje (Liman 2 nekad) zauzima levu polovinu.
@@ -2404,3 +2407,46 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 .galerija--prvi-zbor .galerija-lista li:nth-child(3) { grid-column: span 2; grid-row: span 2; }
 .galerija--prvi-zbor .galerija-lista li:nth-child(8),
 .galerija--prvi-zbor .galerija-lista li:nth-child(12) { grid-column: span 2; }
+
+/* ---------- Naš kraj: sve fotografije u istom okviru (11. 11. 2026, korisnik: "da bude uniformisano sve") ----------
+   - kartice priča (.kartica--kraj) su iste kao kartice vesti: okvir 220 px, slika cela, zamućena pozadina
+     (pravila su gore, uz .kartica--vest; `--pozadina` postavlja js/app.js);
+   - fotografija u tekstu priče (figure.kraj-slika) je u okviru 3:2 (`.kraj-slika-okvir`, pravi ga js/app.js);
+   - galerija u priči (.galerija--jednako) ima polja iste veličine 3:2, slika cela.
+   Bez skripte slike se i dalje vide (bez zamućene pozadine). */
+.kraj-slika-okvir {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 8px;
+  background: #2b2f2c;
+}
+.kraj-slika-okvir::before,
+.galerija--jednako .galerija-lista a::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background: var(--pozadina, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.85) saturate(1.1);
+}
+.clanak-slika .kraj-slika-okvir img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+.galerija--jednako { max-width: 980px; }
+.galerija--jednako .galerija-lista {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.galerija--jednako .galerija-lista a {
+  aspect-ratio: 3 / 2;
+  isolation: isolate;
+  border-radius: 10px;
+  background: #2b2f2c;
+}
+.galerija--jednako .galerija-lista img { height: 100%; object-fit: contain; }

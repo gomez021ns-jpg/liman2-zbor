@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "U \"Naš kraj\" su sve fotografije ujednačene: kartice priča izgledaju isto kao kartice u \"Aktuelno i akcije\", a fotografije u pričama i njihove galerije su u okvirima iste veličine - slika se vidi cela.",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "Fotografije sa prvog zbora (strana \"Zbor građana\") složene su kao mozaik - uspravne i položene fotografije se lepo uklapaju, bez praznina.",
   ] },
   { datum: "2026-11-11", velika: false, nove: [], dorade: [

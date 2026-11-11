@@ -885,6 +885,33 @@
     window.setTimeout(prekini, 6000);
   })();
 
+  /* ---------- Naš kraj: sve fotografije u istom okviru (vidi kraj styles.css) ----------
+     Kartice priča i galerije u pričama dobijaju zamućenu kopiju svoje slike kao pozadinu, a
+     fotografija u tekstu priče se uvija u okvir 3:2. Adresa je apsolutna, jer bi se relativna
+     u CSS promenljivoj tumačila prema styles.css. */
+  function pozadinaOd(element, src) {
+    if (!element || !src) { return; }
+    try {
+      element.style.setProperty("--pozadina",
+        'url("' + new URL(src, location.href).href.replace(/["\\]/g, "\\$&") + '")');
+    } catch (greska) { /* bez pozadine - slika se i dalje vidi cela */ }
+  }
+  document.querySelectorAll(".kartica--kraj .kartica-slika").forEach(function (okvir) {
+    var im = okvir.querySelector("img");
+    if (im) { pozadinaOd(okvir, im.getAttribute("src")); }
+  });
+  document.querySelectorAll("figure.kraj-slika > img").forEach(function (im) {
+    var okvir = document.createElement("span");
+    okvir.className = "kraj-slika-okvir";
+    im.parentNode.insertBefore(okvir, im);
+    okvir.appendChild(im);
+    pozadinaOd(okvir, im.getAttribute("src"));
+  });
+  document.querySelectorAll(".galerija--jednako .galerija-lista a").forEach(function (veza) {
+    var im = veza.querySelector("img");
+    if (im) { pozadinaOd(veza, im.getAttribute("src")); }
+  });
+
   /* ---------- Meni na telefonu (dugme ☰ u zaglavlju) ----------
      Dugme stoji u HTML-u sa `hidden`; tek ovde se otkriva, pa bez skripte meni ostaje vidljiv. */
   var meniDugme = document.querySelector(".meni-dugme");
