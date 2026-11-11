@@ -24,6 +24,10 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "U priči \"Šampioni i rokenroleri\" su fotografije ljudi i mesta o kojima se piše, svaka sa brojem i potpisom izvora.",
+    "Izvori i napomene u toj priči su na kraju teksta, u jednom spisku, pa tekst teče bez prekida.",
+  ] },
   { datum: "2026-11-11", velika: false, nove: [
     "Nova priča u \"Naš kraj\": \"Liman 2 - kvart koji je stvarao šampione i rokenrolere\" - basket, pank, rok, metal i škola \"Jovan Popović\" iz koje su izlazili bendovi, uz linkove na intervjue.",
   ], dorade: [] },
