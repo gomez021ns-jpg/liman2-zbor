@@ -805,6 +805,24 @@
       .catch(function () { /* servis nije tu - ostaju vesti iz data/vesti.js */ });
   }
 
+  /* ---------- Skok na deo strane (#aktuelno, #radar…) posle učitavanja ----------
+     Radar i vesti sa servisa se crtaju posle učitavanja, pa deo iznad sidra poraste i pregledač
+     promaši mesto na koje je skočio. Zato se prvih 6 sekundi, kad god se visina strane promeni,
+     sidro ponovo dovede na vrh - dok posetilac sam ne počne da skroluje ili klikne. */
+  (function () {
+    var id = decodeURIComponent((location.hash || "").slice(1));
+    var cilj = id && !/^p-/.test(id) ? document.getElementById(id) : null;
+    if (!cilj || !window.ResizeObserver) { return; }
+    var gotovo = false;
+    var prekini = function () { gotovo = true; posmatrac.disconnect(); };
+    var posmatrac = new ResizeObserver(function () { if (!gotovo) { cilj.scrollIntoView(); } });
+    posmatrac.observe(document.body);
+    ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (vrsta) {
+      window.addEventListener(vrsta, prekini, { once: true, passive: true });
+    });
+    window.setTimeout(prekini, 6000);
+  })();
+
   /* ---------- Meni na telefonu (dugme ☰ u zaglavlju) ----------
      Dugme stoji u HTML-u sa `hidden`; tek ovde se otkriva, pa bez skripte meni ostaje vidljiv. */
   var meniDugme = document.querySelector(".meni-dugme");

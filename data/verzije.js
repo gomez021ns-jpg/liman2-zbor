@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
+    "U arhivi vesti dugme \"Nazad na aktuelno\" sada vodi na \"Aktuelno i akcije\" na naslovnoj (ranije se klikom ništa nije dešavalo).",
+  ] },
+  { datum: "2026-11-11", velika: false, nove: [], dorade: [
     "Kad Zbor ukloni zakazani termin zbora, na naslovnoj odmah piše da sledeći zbor još nije zakazan - bez osvežavanja strane.",
   ] },
   { datum: "2026-11-11", velika: false, nove: [], dorade: [
