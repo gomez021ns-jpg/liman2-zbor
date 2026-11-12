@@ -24,6 +24,9 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-12", velika: false, nove: [
+    "Nova strana u \"Naš kraj\": \"Limani kroz vreme\" - 55 arhivskih fotografija Limana, Štranda i Mosta slobode od 1937. do 1991, poređanih po razdobljima, sa opisima Andreja Semnica; parovi \"nekad i danas\" stoje jedan ispod drugog.",
+  ], dorade: [] },
   { datum: "2026-11-11", velika: false, nove: [
     "Linkovi za Viber: \"Zbor građana MZ Boško Buha\" (u podnožju svake strane, u kartici \"Sledeći zbor\" na naslovnoj i na strani \"Zbor građana\") i \"Zajednica komšija MZ Boško Buha\" (u podnožju svake strane).",
   ], dorade: [] },

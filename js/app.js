@@ -919,7 +919,7 @@
     okvir.appendChild(im);
     pozadinaOd(okvir, im.getAttribute("src"));
   });
-  document.querySelectorAll(".galerija--jednako .galerija-lista a").forEach(function (veza) {
+  document.querySelectorAll(".galerija--jednako .galerija-lista a, a.vreme-foto").forEach(function (veza) {
     var im = veza.querySelector("img");
     if (im) { pozadinaOd(veza, im.getAttribute("src")); }
   });

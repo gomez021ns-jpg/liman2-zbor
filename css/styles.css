@@ -2456,3 +2456,103 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
 
 /* Viber zajednica u podnožju (11. 11. 2026): oblačić sa slušalicom, ista maska kao ostale ikonice */
 .podnozje-veze a[data-viber] { --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3c5 0 9 3.1 9 7.5S17 18 12 18c-.9 0-1.8-.1-2.6-.3L5 20.5l1.2-3.8C4.2 15.3 3 13 3 10.5 3 6.1 7 3 12 3z'/%3E%3Cpath d='M9.6 7.6c.4 2.3 2.2 4.2 4.6 4.7l.9-1 1.5.7-.3 1.5c-3.6 0-6.6-3-6.6-6.6l1.5-.3.6 1.5z' fill='%23000' stroke-width='.6'/%3E%3C/svg%3E"); }
+
+/* ---------- "Limani kroz vreme" (nas-kraj/limani-kroz-vreme.html, 12. 11. 2026) ----------
+   Vremenska linija arhivskih fotografija po razdobljima: levo crvena linija sa tačkom uz svaku
+   fotografiju, slika u okviru 3:2 (cela, zamućena pozadina - `--pozadina` postavlja js/app.js),
+   opis desno. Parovi "nekad / danas" stoje jedan ispod drugog, sa oznakom u uglu.
+   Sve fotografije su jedna galerija (`data-galerija`), pa pregled lista kroz celu stranu. */
+.zapisnik .vreme-meni ul { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
+.vreme-meni a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--linija);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.vreme-meni a span { color: var(--prigusen); font-weight: 500; font-size: 13px; }
+.vreme-meni a:hover { border-color: var(--akcent); color: var(--akcent); }
+.vreme-razdoblje { margin-top: 18px; scroll-margin-top: 90px; }
+.vreme-razdoblje h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.vreme-raspon { color: var(--akcent); font-size: 15px; font-weight: 600; letter-spacing: .04em; }
+.zapisnik .vreme {
+  list-style: none;
+  display: block;
+  margin: 12px 0 0 6px;
+  padding: 0 0 0 22px;
+  border-left: 3px solid var(--akcent);
+}
+.vreme-stavka {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 12px 0;
+  scroll-margin-top: 90px;
+}
+.vreme-stavka::before {
+  content: "";
+  position: absolute;
+  left: -29px;
+  top: 28px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--akcent);
+  box-shadow: 0 0 0 4px var(--povrsina);
+}
+.vreme-slike { display: grid; gap: 8px; }
+.vreme-foto {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 8px;
+  background: #2b2f2c;
+}
+.vreme-foto::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background: var(--pozadina, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.85) saturate(1.1);
+}
+.vreme-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .35s ease;
+}
+.vreme-foto:hover img { transform: scale(1.03); }
+.vreme-oznaka {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 1;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / .72);
+  color: #ffffff;
+  font: 600 11px/1 "Space Grotesk", sans-serif;
+  letter-spacing: .08em;
+}
+.vreme-opis { margin: 0; font-size: 15px; line-height: 1.55; }
+.vreme-opis strong { color: var(--akcent); }
+@media (max-width: 640px) {
+  .zapisnik .vreme { padding-left: 16px; }
+  .vreme-stavka { grid-template-columns: 1fr; gap: 10px; }
+  .vreme-stavka::before { left: -23px; top: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vreme-foto img { transition: none; }
+  .vreme-foto:hover img { transform: none; }
+}
