@@ -2579,3 +2579,9 @@ a.kraj-slika-okvir:focus-visible { outline: 3px solid var(--akcent); outline-off
   a.kraj-slika-okvir:hover img { transform: none; }
 }
 .vreme-autor { display: block; margin-top: 4px; font-size: 13px; color: var(--prigusen); }
+
+/* Dugme "← Nazad" poravnato sa levom ivicom bele ploče ispod njega (13. 11. 2026, korisnik) - ranije je
+   stajalo uz ivicu široke sekcije (1200 px) i delovalo pomereno. Širina prati ploču: .zapisnik 820 px,
+   priča (.clanak) 760 px. Pregledač bez :has() ostavlja dugme kao ranije. */
+.zapisnik-nazad:has(~ .zapisnik) { width: 100%; max-width: 820px; margin-left: auto; margin-right: auto; }
+.zapisnik-nazad:has(~ .clanak) { max-width: 760px; }

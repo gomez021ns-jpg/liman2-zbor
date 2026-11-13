@@ -25,6 +25,10 @@
 
 window.VERZIJE = [
   { datum: "2026-11-13", velika: false, nove: [], dorade: [
+    "Dugme \"← Sve priče iz kraja\" (i \"nazad\" u zapisnicima i na strani akcije) poravnato je sa levom ivicom teksta ispod njega.",
+    "Na strani \"Limani kroz vreme\" dugmad za razdoblja su kraća i ujednačena, a uvod je kraći.",
+  ] },
+  { datum: "2026-11-13", velika: false, nove: [], dorade: [
     "Iz priče \"Šampioni i rokenroleri\" je sklonjena arhivska fotografija benda Blitzkrieg.",
   ] },
   { datum: "2026-11-13", velika: false, nove: [], dorade: [
