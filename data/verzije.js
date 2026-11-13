@@ -25,6 +25,9 @@
 
 window.VERZIJE = [
   { datum: "2026-11-13", velika: false, nove: [], dorade: [
+    "Iz priče \"Šampioni i rokenroleri\" je sklonjena arhivska fotografija benda Blitzkrieg.",
+  ] },
+  { datum: "2026-11-13", velika: false, nove: [], dorade: [
     "Na naslovnoj, u mozaiku \"Priče koje čine Liman 2\", fotografije su bez natpisa - naziv priče se pojavi tek kad se pređe mišem preko slike.",
     "Iz podnožja su sklonjeni broj verzije i rečenica \"Bez praćenja posetilaca\"; broj verzije i \"Šta je novo\" vidi samo domaćin na svom računaru.",
     "U pričama \"Naš kraj\" i na strani \"Limani kroz vreme\" na fotografijama više nema brojeva - ispod svake slike piše ko ju je snimio ili odakle je.",
