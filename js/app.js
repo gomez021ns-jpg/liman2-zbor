@@ -609,11 +609,14 @@
       return;                                   // novi tab i dalje radi kao bez skripte
     }
     var veza = dogadjaj.target.closest ? dogadjaj.target.closest("a[href]") : null;
-    if (!veza) { return; }
+    if (!veza || !veza.querySelector("img")) { return; }   // obične veze u tekstu priče rade kao i do sada
     var grupa = veza.closest("[data-galerija]");
     if (!grupa) { return; }
-    var veze = grupa.querySelectorAll("a[href]");
-    var indeks = Array.prototype.indexOf.call(veze, veza);
+    // u grupi se broje samo veze sa slikom (cela priča je galerija, a u tekstu ima i običnih veza)
+    var veze = Array.prototype.filter.call(grupa.querySelectorAll("a[href]"), function (v) {
+      return v.querySelector("img");
+    });
+    var indeks = veze.indexOf(veza);
     if (indeks < 0) { return; }
     dogadjaj.preventDefault();
     otvoriPregled(grupa, indeks, veza);
@@ -919,7 +922,7 @@
     okvir.appendChild(im);
     pozadinaOd(okvir, im.getAttribute("src"));
   });
-  document.querySelectorAll(".galerija--jednako .galerija-lista a, a.vreme-foto").forEach(function (veza) {
+  document.querySelectorAll(".galerija--jednako .galerija-lista a, a.vreme-foto, a.kraj-slika-okvir").forEach(function (veza) {
     var im = veza.querySelector("img");
     if (im) { pozadinaOd(veza, im.getAttribute("src")); }
   });

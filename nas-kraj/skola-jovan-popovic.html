@@ -17,11 +17,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="../css/styles.css?v=6e696cca">
+<link rel="stylesheet" href="../css/styles.css?v=24984add">
 <script src="../podesavanja.js?v=3276da44" defer></script>
-<script src="../data/verzije.js?v=3754119b" defer></script>
-<script src="../js/verzije.js?v=c4a8ba88" defer></script>
-<script src="../js/app.js?v=017bcc4a" defer></script>
+<script src="../data/verzije.js?v=0e424e47" defer></script>
+<script src="../js/verzije.js?v=f16f2515" defer></script>
+<script src="../js/app.js?v=883c1048" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#prica">Preskoči meni, idi na priču</a>
@@ -50,16 +50,15 @@
     <a class="dugme dugme--obrub" href="index.html">← Sve priče iz kraja</a>
   </p>
 
-  <article class="zapisnik clanak">
+  <article class="zapisnik clanak" data-galerija>
     <p class="natpis">NAŠ KRAJ · ŠKOLA</p>
     <h1>OŠ "Jovan Popović": škola u kojoj je odrastao Liman</h1>
     <p class="clanak-uvod">Ako ste odrasli na Limanu 2, velika je verovatnoća da ste bar jednom u životu kasnili na prvi čas u Ravaničkoj ulici. Osnovna škola "Jovan Popović" za mnoge komšije nije samo zgrada. To je mesto gde su naučili da čitaju, prvi put se zaljubili, igrali fudbal posle nastave i dobili prvu jedinicu koju su krili od roditelja.</p>
     <p>Škola je osnovana 1960. godine, kada je Liman tek nicao na nekadašnjem močvarnom terenu uz Dunav, koji se od 1945. nasipao peskom. Nastava je počela u staroj školskoj zgradi na Limanu 1, u ulici dr Ilije Đuričića 2. Te prve godine škola je imala oko 180 učenika u šest odeljenja i šest nastavnika.</p>
     <p>Kako su na Limanu nicali soliteri i blokovi, dece je bilo sve više, pa je stara zgrada postala tesna. Zato je započeta gradnja nove, a 1975. godine škola se uselila u Ravaničku ulicu na Limanu 2. Od tada ima dve zgrade: Veliku školu u Ravaničkoj 2 i Malu školu u ulici dr Ilije Đuričića 2, gde i danas idu prvaci i drugaci.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">1</span>
-      <img src="../assets/nas-kraj/skola-01.jpg" alt="OŠ &quot;Jovan Popović&quot;, Novi Sad" width="1100" height="825">
-      <figcaption>OŠ "Jovan Popović", Novi Sad · foto 1 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/skola-01.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/skola-01.jpg" alt="OŠ &quot;Jovan Popović&quot;, Novi Sad" width="1100" height="825"></a>
+      <figcaption>OŠ "Jovan Popović", Novi Sad · Foto: Micki, Wikimedia Commons, CC BY-SA 3.0</figcaption>
     </figure>
     <p>Danas škola ima 22 specijalizovane učionice, sportsku dvoranu i otvorene terene. Neka odeljenja imaju dvojezičnu nastavu na srpskom i ruskom jeziku.</p>
     <p>Ime je dobila po Jovanu Popoviću, piscu i pesniku iz Kikinde, rođenom 1905. godine. Popović se 1941. pridružio partizanima, posle rata postao član Srpske akademije nauka i umetnosti, a umro je 1952. godine u Beogradu, sa samo 46 godina.</p>
@@ -88,9 +87,9 @@
   <aside class="zapisnik izvori" aria-labelledby="izvori-naslov">
     <h2 id="izvori-naslov">Izvori</h2>
     <h3>Izvori fotografija</h3>
-    <ol class="izvori-lista">
+    <ul class="izvori-lista">
       <li>OŠ "Jovan Popović", Novi Sad - <a href="https://commons.wikimedia.org/wiki/File:Osnovna_%C5%A1kola_Jovan_Popovi%C4%87,_Novi_Sad.JPG" target="_blank" rel="noopener">Micki, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.sr_Latn" target="_blank" rel="noopener">CC BY-SA 3.0</a>; smanjeno, registarske tablice zamućene</li>
-    </ol>
+    </ul>
     <h3>Još fotografija na drugim sajtovima</h3>
     <ul class="izvori-lista">
       <li><a href="https://novisad.com/vesti/u-toku-rekonstrukcija-skole-jovan-popovic-4284" target="_blank" rel="noopener">Školski hodnik tokom rekonstrukcije - NoviSad.com</a></li>
@@ -143,9 +142,6 @@
           <li><a href="#" data-eposta>Piši Zboru</a></li>
         </ul>
       </nav>
-    </div>
-    <div class="podnozje-dno">
-      <p class="podnozje-privatnost">Bez praćenja posetilaca</p>
     </div>
   </div>
 </footer>

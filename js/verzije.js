@@ -62,10 +62,26 @@
 
   // Red sa brojem verzije ide u podnožje svake strane. Ubacuje se iz koda, a ne piše se u
   // svakom HTML-u: jedan izvor istine, pa broj ne može da se raziđe od strane do strane.
+  // Od 13. 11. 2026 (korisnik): broj verzije i link "Šta je novo" vidi samo domaćin - kad sajt otvori
+  // sa svog računara (dvoklik, lokalni server, Docker na localhost-u). Posetioci na webu ih ne vide;
+  // strana verzije.html i dalje postoji (noindex, bez linka). To nije zaključavanje, samo sklanjanje.
+  function lokalno() {
+    var h = location.hostname;
+    return location.protocol === "file:" || h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h === "::1";
+  }
+
   function uPodnozje() {
-    // donja traka podnožja (.podnozje-dno), a ako je nema - kraj omota
-    var omot = document.querySelector(".podnozje .podnozje-dno") || document.querySelector(".podnozje .omot");
-    if (!omot || omot.querySelector(".podnozje-verzija")) { return; }
+    if (!lokalno()) { return; }
+    var podnozje = document.querySelector(".podnozje .omot");
+    if (!podnozje) { return; }
+    // donja traka podnožja (.podnozje-dno) se pravi tek ovde - na webu je nema
+    var omot = podnozje.querySelector(".podnozje-dno");
+    if (!omot) {
+      omot = document.createElement("div");
+      omot.className = "podnozje-dno";
+      podnozje.appendChild(omot);
+    }
+    if (omot.querySelector(".podnozje-verzija")) { return; }
     var red = document.createElement("p");
     red.className = "podnozje-verzija";
     // formatDatum() već vraća tačku na kraju (9. 11. 2026.), pa se ovde ne dodaje druga.

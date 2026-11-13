@@ -17,11 +17,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="../css/styles.css?v=6e696cca">
+<link rel="stylesheet" href="../css/styles.css?v=24984add">
 <script src="../podesavanja.js?v=3276da44" defer></script>
-<script src="../data/verzije.js?v=3754119b" defer></script>
-<script src="../js/verzije.js?v=c4a8ba88" defer></script>
-<script src="../js/app.js?v=017bcc4a" defer></script>
+<script src="../data/verzije.js?v=0e424e47" defer></script>
+<script src="../js/verzije.js?v=f16f2515" defer></script>
+<script src="../js/app.js?v=883c1048" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#prica">Preskoči meni, idi na priču</a>
@@ -50,20 +50,23 @@
     <a class="dugme dugme--obrub" href="index.html">← Sve priče iz kraja</a>
   </p>
 
-  <article class="zapisnik clanak">
+  <article class="zapisnik clanak" data-galerija>
     <p class="natpis">NAŠ KRAJ · DUNAV</p>
     <h1>Štrand: plaža koju je Crnjanski nazvao simbolom grada</h1>
     <p class="clanak-uvod">Kad Novosađanin kaže "idem na plažu", ne mora da kaže na koju. Štrand je samo nekoliko minuta od Limana 2 i deo je našeg komšiluka koliko i park ispred zgrade. Na njemu su generacije sa Limana naučile da plivaju, prvi put pocrvenele na suncu i provele leta kojih se i danas sećaju.</p>
     <p>Ime je dobio po nemačkoj reči Strand, što znači plaža. Novosađani su se u Dunavu kupali i mnogo pre nego što je plaža postojala. Krajem 19. veka radila su Štenglova kupališta: plivačka škola na drvenom splavu, sa kabinama i bazenima odvojenim za muškarce, žene i decu. Kupaći kostim dobijao se uz ulaznicu, a već tada su postojali spasioci i učitelji plivanja.</p>
     <p>Štrand je zvanično otvoren 1911. godine. Već 1913. dobio je drvene kabine, blagajnu, tuševe, restoran i čamce za iznajmljivanje. Dvadesetih godina muški i ženski deo su spojeni, a niknule su kafane, sportski tereni i ljuljaške. Do plaže se išlo "trčikom", malim tramvajem koji je vukao tri vagona, ali i čamcima i fijakerima. Oko 1930. godine Štrand je bio dugačak oko 700 metara i mogao je da primi desetak hiljada kupača, u gradu koji je tada imao oko 40.000 stanovnika. Miloš Crnjanski ga je nazvao najvećim simbolom grada na Dunavu.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">1</span>
-      <img src="../assets/nas-kraj/strand-01.jpg" alt="Štrand - arhivski prizor kupača" width="781" height="562">
-      <figcaption>Štrand - arhivski prizor kupača · foto 1 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/strand-01.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/strand-01.jpg" alt="Štrand - arhivski prizor kupača" width="781" height="562"></a>
+      <figcaption>Štrand - arhivski prizor kupača · Foto: 021.rs, uz dozvolu</figcaption>
     </figure>
     <p>Štrand pamti i najtamniji dan Novog Sada. U januaru 1942. godine, za vreme racije, mađarske fašističke snage ubijale su Srbe i Jevreje na obali Dunava kod Štranda. U tri dana stradalo je više od hiljadu Novosađana. Zato je ova obala za grad i mesto sećanja, a ne samo leta.</p>
     <p>Posle rata Štrand je ostao gradsko kupalište, sa usponima i padovima. Veliki drveni restoran izgoreo je u požaru. Godine 1981. izgrađen je Most slobode, koji je plažu podelio na dva dela. Taj most je 1999. srušen u NATO bombardovanju, a ruševine su neko vreme ostale u reci. Godine 2000. Štrand je postao deo priče koja će prerasti u EXIT, pa i danas tokom festivala tu kampuju ljudi iz cele Evrope.</p>
     <p>Danas Štrand ima terene za košarku i odbojku na pesku, mini golf, zid za penjanje, igrališta za decu i više od 400 stabala. Kapije su od 2008. otvorene i van sezone, pa je plaža i šetalište preko cele godine. Leti kroz njih prođe i do dvadesetak hiljada ljudi dnevno.</p>
+    <figure class="clanak-slika kraj-slika">
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/strand-02.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/strand-02.jpg" alt="Drvene kabine na Štrandu" width="1024" height="683" loading="lazy"></a>
+      <figcaption>Drvene kabine na Štrandu · Foto: RTV, uz dozvolu</figcaption>
+    </figure>
     <p>I na kraju, Štrand ima i sopstvene igre. Kečket, tenis bez reketa u kome se loptica udara rukama, i tenis glavom vezuju se baš za ovu plažu. Ako ste odrasli na Limanu, verovatno ste bar jedno leto proveli u jednom od njih.</p>
     <aside class="zanimljivosti" aria-labelledby="zanimljivosti-naslov">
       <h2 id="zanimljivosti-naslov">Zanimljivosti</h2>
@@ -85,26 +88,14 @@
   </article>
 </section>
 
-<section class="sekcija sekcija--tesna">
-  <div class="galerija galerija--jednako" data-galerija>
-    <p class="natpis">FOTOGRAFIJE · ŠTRAND</p>
-    <ul class="galerija-lista">
-      <li><a href="../assets/nas-kraj/strand-01.jpg" target="_blank" rel="noopener"><span class="foto-broj" aria-hidden="true">1</span>
-        <img src="../assets/nas-kraj/mala/strand-01.jpg" alt="Štrand - arhivski prizor kupača (foto 1)" width="400" height="288" loading="lazy"></a></li>
-      <li><a href="../assets/nas-kraj/strand-02.jpg" target="_blank" rel="noopener"><span class="foto-broj" aria-hidden="true">2</span>
-        <img src="../assets/nas-kraj/mala/strand-02.jpg" alt="Drvene kabine na Štrandu (foto 2)" width="400" height="267" loading="lazy"></a></li>
-    </ul>
-    <p class="galerija-potpis">Klik na fotografiju otvara pregled; broj u uglu odgovara spisku izvora na dnu strane.</p>
-  </div>
-</section>
 <section class="sekcija sekcija--tesna" id="izvori">
   <aside class="zapisnik izvori" aria-labelledby="izvori-naslov">
     <h2 id="izvori-naslov">Izvori</h2>
     <h3>Izvori fotografija</h3>
-    <ol class="izvori-lista">
+    <ul class="izvori-lista">
       <li>Štrand - arhivski prizor kupača - <a href="https://www.021.rs/images/2123a70be2a70946422cc94a11b64d3b/60700700dacb7-Clipboard.jpg" target="_blank" rel="noopener">021.rs</a>, uz dozvolu</li>
       <li>Drvene kabine na Štrandu - <a href="https://static.rtv.rs/slike/2024/04/05/strand-kucice-kabine.jpg" target="_blank" rel="noopener">RTV</a>, uz dozvolu</li>
-    </ol>
+    </ul>
     <h3>Još fotografija na drugim sajtovima</h3>
     <ul class="izvori-lista">
       <li><a href="https://novisad.rs/lat/strand" target="_blank" rel="noopener">Štrand danas - galerija Grada Novog Sada</a></li>
@@ -155,9 +146,6 @@
           <li><a href="#" data-eposta>Piši Zboru</a></li>
         </ul>
       </nav>
-    </div>
-    <div class="podnozje-dno">
-      <p class="podnozje-privatnost">Bez praćenja posetilaca</p>
     </div>
   </div>
 </footer>

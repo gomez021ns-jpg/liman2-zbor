@@ -24,6 +24,13 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-13", velika: false, nove: [], dorade: [
+    "Na naslovnoj, u mozaiku \"Priče koje čine Liman 2\", fotografije su bez natpisa - naziv priče se pojavi tek kad se pređe mišem preko slike.",
+    "Iz podnožja su sklonjeni broj verzije i rečenica \"Bez praćenja posetilaca\"; broj verzije i \"Šta je novo\" vidi samo domaćin na svom računaru.",
+    "U pričama \"Naš kraj\" i na strani \"Limani kroz vreme\" na fotografijama više nema brojeva - ispod svake slike piše ko ju je snimio ili odakle je.",
+    "Fotografije sa dna priča o Štrandu, Kabelu i Danubiusu su prebačene u sam tekst; klik na bilo koju fotografiju u priči je uveličava, a strelicama se lista kroz sve slike te priče.",
+    "Galerija \"Liman 2 u slikama\" je u širini teksta, sve slike su iste veličine, tri u redu.",
+  ] },
   { datum: "2026-11-12", velika: false, nove: [
     "Nova strana u \"Naš kraj\": \"Limani kroz vreme\" - 55 arhivskih fotografija Limana, Štranda i Mosta slobode od 1937. do 1991, poređanih po razdobljima, sa opisima Andreja Semnica; parovi \"nekad i danas\" stoje jedan ispod drugog.",
   ], dorade: [] },
@@ -231,4 +238,4 @@ window.VERZIJE = [
   { datum: "2026-11-08", velika: false, nove: [
     "Sajt Liman 2 - Zbor građana MZ Boško Buha: naslovna strana, radar prijava, zapisnici zborova i priča o kraju.",
   ], dorade: [] },
-];
+];

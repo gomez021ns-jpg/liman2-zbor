@@ -1422,7 +1422,7 @@ a.kartica:hover { border-color: var(--akcent); transform: translateY(-2px); colo
   border-top: 1px solid rgb(255 255 255 / .1);
 }
 .podnozje-dno .podnozje-verzija { flex: 0 1 auto; }
-.podnozje-privatnost { margin: 0; font-size: 13px; color: var(--podnozje-tekst); opacity: .85; }
+
 @media (max-width: 760px) {
   .podnozje-kolone { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .podnozje-brend { grid-column: 1 / -1; }
@@ -2281,8 +2281,12 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
   padding: 4px 10px; border-radius: 999px;
   background: rgb(0 0 0 / .68); color: #fff;
   font-size: 13px; font-weight: 600; line-height: 1.25;
-  transition: background-color .25s ease;
+  /* natpis se vidi tek na prelaz mišem ili fokus tastaturom (korisnik, 13. 11. 2026: slike bez naziva);
+     na dodir ga nema - čitač ekrana ga i dalje čita kao ime veze */
+  opacity: 0; transform: translateY(4px);
+  transition: background-color .25s ease, opacity .25s ease, transform .25s ease;
 }
+.kraj-mozaik-polje:hover span, .kraj-mozaik-polje:focus-visible span { opacity: 1; transform: none; }
 .kraj-mozaik-polje--veliko span { font-size: 15px; padding: 6px 12px; }
 .kraj-mozaik-polje:hover img, .kraj-mozaik-polje:focus-visible img { transform: scale(1.06); }
 .kraj-mozaik-polje:hover span, .kraj-mozaik-polje:focus-visible span { background: #a02c2c; }
@@ -2556,3 +2560,22 @@ body:has(> main > .hero) > .podnozje { position: relative; z-index: 1; }
   .vreme-foto img { transition: none; }
   .vreme-foto:hover img { transform: none; }
 }
+
+/* ---------- Naš kraj bez brojeva na fotografijama (13. 11. 2026, korisnik) ----------
+   Fotografija u tekstu priče je veza (`a.kraj-slika-okvir`): klik je uveličava u pregledu, a strelice
+   listaju sve slike te priče (`data-galerija` je na celom članku). Autor/izvor stoji u potpisu ispod.
+   Galerija "Liman 2 u slikama" je u širini teksta, sve slike iste veličine, tri u redu. */
+a.kraj-slika-okvir { cursor: zoom-in; }
+a.kraj-slika-okvir img { transition: transform .35s ease; }
+a.kraj-slika-okvir:hover img { transform: scale(1.03); }
+a.kraj-slika-okvir:focus-visible { outline: 3px solid var(--akcent); outline-offset: 3px; }
+.galerija--clanak { width: 100%; max-width: 760px; margin: 0 auto; }
+.galerija--clanak .galerija-lista { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) {
+  .galerija--clanak .galerija-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.kraj-slika-okvir img { transition: none; }
+  a.kraj-slika-okvir:hover img { transform: none; }
+}
+.vreme-autor { display: block; margin-top: 4px; font-size: 13px; color: var(--prigusen); }

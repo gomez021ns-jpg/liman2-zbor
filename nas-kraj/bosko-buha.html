@@ -17,11 +17,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="../css/styles.css?v=6e696cca">
+<link rel="stylesheet" href="../css/styles.css?v=24984add">
 <script src="../podesavanja.js?v=3276da44" defer></script>
-<script src="../data/verzije.js?v=3754119b" defer></script>
-<script src="../js/verzije.js?v=c4a8ba88" defer></script>
-<script src="../js/app.js?v=017bcc4a" defer></script>
+<script src="../data/verzije.js?v=0e424e47" defer></script>
+<script src="../js/verzije.js?v=f16f2515" defer></script>
+<script src="../js/app.js?v=883c1048" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#prica">Preskoči meni, idi na priču</a>
@@ -50,16 +50,15 @@
     <a class="dugme dugme--obrub" href="index.html">← Sve priče iz kraja</a>
   </p>
 
-  <article class="zapisnik clanak">
+  <article class="zapisnik clanak" data-galerija>
     <p class="natpis">NAŠ KRAJ · IME NAŠE MZ</p>
     <h1>Ko je bio Boško Buha i zašto se naša mesna zajednica zove po njemu</h1>
     <p class="clanak-uvod">Kada kažemo "MZ Boško Buha", većina nas pomisli na zgradu mesne zajednice, zbor građana ili ulicu Boška Buhe u kojoj neki od nas žive. Iza tog imena stoji priča o dečaku koji je u rat otišao sa petnaest godina, a iz njega se nije vratio.</p>
     <p>Boško Buha rođen je 1926. godine u selu Gradina kod Virovitice, u Slavoniji. Bio je dete iz srpske porodice. Posle stvaranja Nezavisne Države Hrvatske 1941. godine porodica je postala meta ustaša i morala je da potraži utočište u Srbiji. Tako je petnaestogodišnji Boško stigao u Mačvu.</p>
     <p>Iste godine pridružio se Mačvanskom partizanskom odredu, a neko vreme bio je i u oslobođenom Užicu. Posle povlačenja partizana iz Srbije borio se u 4. bataljonu Druge proleterske brigade. Pamtili su ga kao jednog od najveštijih bombaša u brigadi. Iako je bio među najmlađima, drugovi su ga izabrali za svog delegata na Prvom kongresu Ujedinjenog saveza antifašističke omladine Jugoslavije.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">1</span>
-      <img src="../assets/nas-kraj/bosko-buha-01.jpg" alt="Spomenik Bošku Buhi na Jabuci" width="540" height="720">
-      <figcaption>Spomenik Bošku Buhi na Jabuci · foto 1 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/bosko-buha-01.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/bosko-buha-01.jpg" alt="Spomenik Bošku Buhi na Jabuci" width="540" height="720"></a>
+      <figcaption>Spomenik Bošku Buhi na Jabuci · Foto: Pinki, Wikimedia Commons, javno vlasništvo</figcaption>
     </figure>
     <p>Poginuo je 27. septembra 1943. godine kod sela Jabuka, između Pljevalja i Prijepolja. Kamionom se sa lekarkom Sašom Božović i komandantom brigadne bolnice Bogdanom Radanom vozio u Prijepolje po sanitetski materijal, kada su upali u četničku zasedu. Boško i Radan su pružili otpor, ali su bili savladani. Imao je samo sedamnaest godina.</p>
     <p>Za narodnog heroja Jugoslavije proglašen je posthumno, 20. decembra 1951. godine. Na mestu pogibije 1964. godine podignut je spomen-dom, a pored kamena koji obeležava mesto zasađeno je sedamnaest borova, po jedan za svaku godinu njegovog života. Danas je taj memorijalni kompleks zaštićen kao kulturno dobro od izuzetnog značaja, ali je, nažalost, prepušten propadanju.</p>
@@ -88,9 +87,9 @@
   <aside class="zapisnik izvori" aria-labelledby="izvori-naslov">
     <h2 id="izvori-naslov">Izvori</h2>
     <h3>Izvori fotografija</h3>
-    <ol class="izvori-lista">
+    <ul class="izvori-lista">
       <li>Spomenik Bošku Buhi na Jabuci - <a href="https://commons.wikimedia.org/wiki/File:Bosko_Buha_spomenik_Jabuka.jpg" target="_blank" rel="noopener">Pinki (srpska Vikipedija), Wikimedia Commons</a>, javno vlasništvo (public domain); smanjeno</li>
-    </ol>
+    </ul>
     <h3>Još fotografija na drugim sajtovima</h3>
     <ul class="izvori-lista">
       <li><a href="https://www.slobodnaevropa.org/a/bosko-buha-memorijal-prodaja/29784973.html" target="_blank" rel="noopener">Memorijalni kompleks Boško Buha na Jabuci - Radio Slobodna Evropa</a></li>
@@ -142,9 +141,6 @@
           <li><a href="#" data-eposta>Piši Zboru</a></li>
         </ul>
       </nav>
-    </div>
-    <div class="podnozje-dno">
-      <p class="podnozje-privatnost">Bez praćenja posetilaca</p>
     </div>
   </div>
 </footer>

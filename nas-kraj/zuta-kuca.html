@@ -17,11 +17,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="../css/styles.css?v=6e696cca">
+<link rel="stylesheet" href="../css/styles.css?v=24984add">
 <script src="../podesavanja.js?v=3276da44" defer></script>
-<script src="../data/verzije.js?v=3754119b" defer></script>
-<script src="../js/verzije.js?v=c4a8ba88" defer></script>
-<script src="../js/app.js?v=017bcc4a" defer></script>
+<script src="../data/verzije.js?v=0e424e47" defer></script>
+<script src="../js/verzije.js?v=f16f2515" defer></script>
+<script src="../js/app.js?v=883c1048" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#prica">Preskoči meni, idi na priču</a>
@@ -50,14 +50,13 @@
     <a class="dugme dugme--obrub" href="index.html">← Sve priče iz kraja</a>
   </p>
 
-  <article class="zapisnik clanak">
+  <article class="zapisnik clanak" data-galerija>
     <p class="natpis">NAŠ KRAJ · KULTURA</p>
     <h1>Žuta kuća: pet godina slobode na livadi kod Štranda</h1>
     <p class="clanak-uvod">Ko je krajem osamdesetih bio mlad u Novom Sadu, zna gde je bila. Na livadi između Limana i Štranda, na tadašnjem Istarskom keju, stajala je jedna žuta kuća. Pet godina je bila mesto gde su se sretali slikari, muzičari, psiholozi, filmadžije i svi koji nisu znali gde bi drugde. Danas je nema, ali je generacije pamte kao jedno od najvažnijih mesta novosadske alternativne kulture.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">1</span>
-      <img src="../assets/nas-kraj/zuta-kuca-01.jpg" alt="Žuta kuća na Istarskom keju, sa muralom na fasadi, između Limana i Štranda" width="1100" height="721">
-      <figcaption>Žuta kuća na Istarskom keju · foto 1 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/zuta-kuca-01.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/zuta-kuca-01.jpg" alt="Žuta kuća na Istarskom keju, sa muralom na fasadi, između Limana i Štranda" width="1100" height="721"></a>
+      <figcaption>Žuta kuća na Istarskom keju · Foto: <span class="popuni">[autor ili izvor fotografije]</span></figcaption>
     </figure>
     <p>Kuću je 1939. godine sagradio Pal Čaki i u njoj je decenijama živela njegova porodica. Urbanistički plan iz šezdesetih predviđao je da se sruši, jer je ceo taj deo uz kej trebalo da postane zelena površina. Porodica se iselila oko 1980, kuća je eksproprisana i ostala je prazna.</p>
     <p>Onda je 1988. godine, na predlog Saveza socijalističke omladine Novog Sada, grad odlučio da prazan prostor ustupi mladima. Ključeve su dobili 1. oktobra 1988, a svečano otvaranje bilo je 15. oktobra. Mladima je rečeno da mogu da ostanu oko pet godina, dok kuća ne dođe na red za rušenje. Tih pet godina su iskoristili do kraja.</p>
@@ -88,9 +87,9 @@
   <aside class="zapisnik izvori" aria-labelledby="izvori-naslov">
     <h2 id="izvori-naslov">Izvori</h2>
     <h3>Izvori fotografija</h3>
-    <ol class="izvori-lista">
+    <ul class="izvori-lista">
       <li>Žuta kuća na Istarskom keju - <span class="popuni">[autor ili izvor fotografije]</span>, uz dozvolu</li>
-    </ol>
+    </ul>
     <h3>Još fotografija na drugim sajtovima</h3>
     <ul class="izvori-lista">
       <li><a href="https://old.vreme.com/cms/view.php?id=1818030" target="_blank" rel="noopener">Žuta kuća - arhivske fotografije u tekstu "Vremena"</a></li>
@@ -144,9 +143,6 @@
           <li><a href="#" data-eposta>Piši Zboru</a></li>
         </ul>
       </nav>
-    </div>
-    <div class="podnozje-dno">
-      <p class="podnozje-privatnost">Bez praćenja posetilaca</p>
     </div>
   </div>
 </footer>

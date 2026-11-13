@@ -16,11 +16,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="../css/styles.css?v=6e696cca">
+<link rel="stylesheet" href="../css/styles.css?v=24984add">
 <script src="../podesavanja.js?v=3276da44" defer></script>
-<script src="../data/verzije.js?v=3754119b" defer></script>
-<script src="../js/verzije.js?v=c4a8ba88" defer></script>
-<script src="../js/app.js?v=017bcc4a" defer></script>
+<script src="../data/verzije.js?v=0e424e47" defer></script>
+<script src="../js/verzije.js?v=f16f2515" defer></script>
+<script src="../js/app.js?v=883c1048" defer></script>
 </head>
 <body>
 <a class="preskoci" href="#prica">Preskoči meni, idi na priču</a>
@@ -54,7 +54,7 @@
     <p class="foto-pojas-potpis">Liman 2 danas · foto: Gradski info</p>
   </div>
 
-  <article class="zapisnik clanak">
+  <article class="zapisnik clanak" data-galerija>
     <p class="natpis">NAŠ KRAJ · ISTORIJA</p>
     <h1>Liman 2 - od dunavske močvare do komšiluka koji ima svoj karakter</h1>
     <p class="clanak-uvod">Priča o jednom novosadskom kraju, njegovim ulicama, zgradama, ljudima i
@@ -72,10 +72,9 @@
       Dunav je ovaj teren redovno plavio i nanosio pesak i mulj. Kako kaže Istorijski arhiv grada, Liman
       "počiva na nekadašnjoj zabarenoj ravni Dunava".</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">1</span>
-      <img src="../assets/liman-2/foto-03.jpg" alt="Liman 2 - stara crno-bela fotografija naselja"
-           width="1200" height="865" loading="lazy">
-      <figcaption>Iz arhive: Liman pre izgradnje · foto 1 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/liman-2/foto-03.jpg" target="_blank" rel="noopener"><img src="../assets/liman-2/foto-03.jpg" alt="Liman 2 - stara crno-bela fotografija naselja"
+           width="1200" height="865" loading="lazy"></a>
+      <figcaption>Iz arhive: Liman pre izgradnje · Foto: Gradski info, uz dozvolu</figcaption>
     </figure>
 
     <h2 id="pruga">Pruga tamo gde je danas Bulevar</h2>
@@ -84,10 +83,9 @@
       idete trasom te nekadašnje pruge. Stara železnička stanica radila je do 1964, kada je stanica
       preseljena, a njena zgrada je srušena.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">2</span>
-      <img src="../assets/nas-kraj/liman-lokomotiva.jpg" alt="Stara lokomotiva u Novom Sadu"
-           width="634" height="390" loading="lazy">
-      <figcaption>Stara lokomotiva u Novom Sadu · foto 2 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/nas-kraj/liman-lokomotiva.jpg" target="_blank" rel="noopener"><img src="../assets/nas-kraj/liman-lokomotiva.jpg" alt="Stara lokomotiva u Novom Sadu"
+           width="634" height="390" loading="lazy"></a>
+      <figcaption>Stara lokomotiva u Novom Sadu · Foto: Gradski info, uz dozvolu</figcaption>
     </figure>
 
     <h2>Trčika na Fruškogorskoj</h2>
@@ -118,10 +116,9 @@
     <p>Ostao je pesak ispod nas. Ostala je i Fruškogorska, kojom je nekad zviždala Trčika. Ostao je
       Bulevar kojim je nekad prolazio voz. Ostalo je i ime, koje i dalje kaže da smo kraj uz vodu.</p>
     <figure class="clanak-slika kraj-slika">
-      <span class="foto-broj" aria-hidden="true">3</span>
-      <img src="../assets/liman-2/foto-07.jpg" alt="Liman 2 - istorijska fotografija izgradnje naselja"
-           width="1200" height="846" loading="lazy">
-      <figcaption>Izgradnja naselja · foto 3 (izvor je na dnu strane)</figcaption>
+      <a class="kraj-slika-okvir" href="../assets/liman-2/foto-07.jpg" target="_blank" rel="noopener"><img src="../assets/liman-2/foto-07.jpg" alt="Liman 2 - istorijska fotografija izgradnje naselja"
+           width="1200" height="846" loading="lazy"></a>
+      <figcaption>Izgradnja naselja · Foto: Gradski info, uz dozvolu</figcaption>
     </figure>
 
     <h2>Betonski blokovi, dvorišta i Bronks</h2>
@@ -212,9 +209,9 @@
 </section>
 
 <section class="sekcija sekcija--tesna" id="fotografije">
-  <h2 class="naslov-2">Liman 2 u slikama</h2>
-  <p class="tekst">Fotografije iz arhive - naselje kroz decenije.</p>
-  <div class="galerija galerija--mozaik galerija--liman" data-galerija>
+  <div class="galerija galerija--jednako galerija--clanak" data-galerija>
+    <h2 class="naslov-2">Liman 2 u slikama</h2>
+    <p class="tekst">Fotografije iz arhive - naselje kroz decenije.</p>
     <ul class="galerija-lista">
       <li><a href="../assets/liman-2/foto-01.jpg" target="_blank" rel="noopener"><img src="../assets/liman-2/mala/foto-01.jpg" alt="Liman 2 - fotografija iz arhive, 1" width="500" height="367" loading="lazy"></a></li>
       <li><a href="../assets/liman-2/foto-02.jpg" target="_blank" rel="noopener"><img src="../assets/liman-2/mala/foto-02.jpg" alt="Liman 2 - fotografija iz arhive, 2" width="492" height="500" loading="lazy"></a></li>
@@ -232,7 +229,7 @@
       <li><a href="../assets/liman-2/foto-16.jpg" target="_blank" rel="noopener"><img src="../assets/liman-2/mala/foto-16.jpg" alt="Liman 2 - fotografija iz arhive, 16" width="500" height="333" loading="lazy"></a></li>
     </ul>
     <p class="galerija-potpis">Klik na fotografiju otvara pregled; listanje ide strelicama levo-desno.
-      Izvori fotografija su na dnu strane. Ako imaš stariju fotografiju Limana 2 - pošalji je,
+      Sve fotografije: Gradski info, uz dozvolu. Ako imaš stariju fotografiju Limana 2 - pošalji je,
       objavićemo je uz tvoje ime.</p>
   </div>
 </section>
@@ -241,11 +238,11 @@
   <aside class="zapisnik izvori" aria-labelledby="izvori-naslov">
     <h2 id="izvori-naslov">Izvori</h2>
     <h3>Izvori fotografija</h3>
-    <ol class="izvori-lista">
+    <ul class="izvori-lista">
       <li>Liman pre izgradnje - <a href="https://gradskeinfo.rs/" target="_blank" rel="noopener">Gradski info</a>, uz dozvolu</li>
       <li>Stara lokomotiva u Novom Sadu - <a href="https://gradskeinfo.rs/wp-content/uploads/2023/03/426176-550738738316262-1542535893-n.jpg" target="_blank" rel="noopener">Gradski info</a>, uz dozvolu</li>
       <li>Izgradnja naselja - <a href="https://gradskeinfo.rs/" target="_blank" rel="noopener">Gradski info</a>, uz dozvolu</li>
-    </ol>
+    </ul>
     <p class="izvori-dodatak">Uvodna fotografija ("Liman 2 danas") i sve fotografije u galeriji "Liman 2
       u slikama" - <a href="https://gradskeinfo.rs/" target="_blank" rel="noopener">Gradski info</a>, uz dozvolu.</p>
     <h3>Još fotografija na drugim sajtovima</h3>
@@ -299,9 +296,6 @@
           <li><a href="#" data-eposta>Piši Zboru</a></li>
         </ul>
       </nav>
-    </div>
-    <div class="podnozje-dno">
-      <p class="podnozje-privatnost">Bez praćenja posetilaca</p>
     </div>
   </div>
 </footer>
