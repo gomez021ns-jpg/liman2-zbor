@@ -740,6 +740,15 @@
     return broj + " objava";
   }
 
+  // Mala kopija za karticu: `assets/vesti/x.jpg` -> `assets/vesti/mala/x.jpg`. Objave iz
+  // aplikacije je dobiju uz sliku sa servisa (`slikeMale`), pa se ovde ništa ne izmišlja.
+  // Ako male nema (stara objava), slika se sama vrati na veliku - zato `onerror` ispod.
+  function malaPutanja(putanja) {
+    if (!putanja || /^(https?:|data:)/i.test(putanja) || putanja.indexOf("/mala/") >= 0) { return ""; }
+    var i = putanja.lastIndexOf("/");
+    return i < 0 ? "" : putanja.slice(0, i) + "/mala/" + putanja.slice(i + 1);
+  }
+
   // jedna kartica vesti - isti izgled i na naslovnoj i u arhivi
   function napraviKarticuVesti(vest) {
     var kartica = document.createElement("article");
@@ -748,6 +757,8 @@
     var slikeVesti = (vest.slike && vest.slike.length)
       ? vest.slike
       : (vest.slika ? [vest.slika] : []);
+    // kartica (220 px visine) uzima malu sliku; uvećani prikaz i dalje veliku
+    var malaNaslovna = (vest.slikeMale && vest.slikeMale[0]) || malaPutanja(slikeVesti[0]);
     if (slikeVesti.length) {
       var okvir = document.createElement("div");
       okvir.className = "kartica-slika";
@@ -755,7 +766,7 @@
       // apsolutna adresa, jer bi se relativna u CSS promenljivoj tumačila prema styles.css
       try {
         okvir.style.setProperty("--pozadina",
-          'url("' + new URL(slikeVesti[0], location.href).href.replace(/["\\]/g, "\\$&") + '")');
+          'url("' + new URL(malaNaslovna || slikeVesti[0], location.href).href.replace(/["\\]/g, "\\$&") + '")');
       } catch (greska) { /* bez pozadine - slika se i dalje vidi cela */ }
 
       // sve fotografije su u jednoj grupi: prva se vidi na kartici, klik otvara pregled svih;
@@ -776,7 +787,13 @@
         if (i > 0) { veza.className = "u-galeriji"; }
         var im = document.createElement("img");
         im.className = "kartica-slika-img";
-        im.src = putanja;
+        if (i === 0 && malaNaslovna) {
+          im.src = malaNaslovna;
+          // stara objava nema malu - slika se vrati na veliku, strana ne ostaje bez slike
+          im.addEventListener("error", function () { im.src = putanja; }, { once: true });
+        } else {
+          im.src = putanja;
+        }
         im.alt = vest.alt || "";
         im.loading = "lazy";
         veza.appendChild(im);

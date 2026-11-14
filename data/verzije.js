@@ -25,6 +25,10 @@
 
 window.VERZIJE = [
   { datum: "2026-11-14", velika: false, nove: [], dorade: [
+    "Kartice u „Aktuelno i akcije“ sada učitavaju malu kopiju fotografije (do 700 px), a uvećana slika ostaje velika - strana je na telefonu nekoliko puta lakša, a slika izgleda isto.",
+  ] },
+
+  { datum: "2026-11-14", velika: false, nove: [], dorade: [
     "Klik na sliku u kartici „Aktuelno i akcije“ vodi na stranu kao i naslov (izveštaj sa akcije, zapisnik), a ne otvara uvećanu sliku; uvećanje ostaje kad kartica ne vodi nigde.",
   ] },
 
