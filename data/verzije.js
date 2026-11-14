@@ -24,6 +24,17 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-14", velika: false, nove: [], dorade: [
+    "Uz tekst o Dimitriju Banjcu ide i njegova fotografija iz 2013 (Wikimedia Commons, CC BY-SA 3.0).",
+  ] },
+
+  { datum: "2026-11-14", velika: false, nove: [
+    "Dimitrije Banjac (Dime), glumac iz „Državnog posla“, dodat u priču o ljudima sa Limana 2 - uz podatak da je išao u OŠ „Jovan Popović“ i da je kao gimnazijalac bio frontmen pank benda Triton gospodar mora.",
+  ], dorade: [] },
+
+  { datum: "2026-11-14", velika: false, nove: [], dorade: [
+    "Dugme „Pošalji fotografiju ili sećanje“ na stranama „Naš kraj“ više ne izlazi iz okvira na telefonu - sada je preko cele širine, a tekst se prelama u dva reda.",
+  ] },
   { datum: "2026-11-13", velika: false, nove: [], dorade: [
     "Dugme \"← Sve priče iz kraja\" (i \"nazad\" u zapisnicima i na strani akcije) poravnato je sa levom ivicom teksta ispod njega.",
     "Na strani \"Limani kroz vreme\" dugmad za razdoblja su kraća i ujednačena, a uvod je kraći.",

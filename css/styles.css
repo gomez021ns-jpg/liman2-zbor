@@ -2023,9 +2023,15 @@ a.kartica-slika .kartica-slika-img { transition: transform .4s ease; }
 }
 .poziv-kraj p { flex: 1 1 300px; color: var(--ink-2); line-height: 1.55; }
 .zapisnik .poziv-kraj .dugme { color: var(--bela); flex: none; }
+/* Dugme nikad ne sme da izađe iz kartice (korisnik, 14. 11. 2026: „dugmad mi beže iz okvira“). */
+.poziv-kraj .dugme { max-width: 100%; }
 @media (max-width: 560px) {
   .poziv-kraj { padding: 76px 18px 18px; }
   .poziv-kraj::before { left: 18px; top: 18px; }
+  /* „Pošalji fotografiju ili sećanje“ je duže od unutrašnje širine kartice, pa se dosad
+     prelivalo 19 px preko desne ivice. Na telefonu dugme ide preko cele širine, a tekst
+     se prelama u dva reda (kao u dijalozima). */
+  .poziv-kraj .dugme { flex: 1 1 100%; }
 }
 
 /* Izvori - poseban deo na dnu priče */
