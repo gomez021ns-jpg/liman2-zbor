@@ -344,6 +344,27 @@
     });
     osveziKalendar();
   }
+  /* ---------- Promene sa servisa (SSE) ----------
+     Servis javi `update` kad se u aplikaciji za moderatora promeni termin zbora ili objava u
+     "Aktuelno i akcije". Jedna veza služi svim delovima strane; bez servisa (dvoklik, GitHub
+     Pages) nema veze i prikaz ostaje kakav je bio. */
+  var oslusaciServisa = [], dogadjajiServisa = null;
+  function naPromenuServisa(oslusac) {
+    if (location.protocol === 'file:' || !window.EventSource) { return; }
+    oslusaciServisa.push(oslusac);
+    if (dogadjajiServisa) { return; }
+    dogadjajiServisa = new EventSource('/api/events');
+    dogadjajiServisa.addEventListener('update', function () {
+      oslusaciServisa.forEach(function (fn) { fn(); });
+    });
+    window.addEventListener('pagehide', function () {
+      dogadjajiServisa.close(); dogadjajiServisa = null;
+    }, {once:true});
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) { oslusaciServisa.forEach(function (fn) { fn(); }); }
+    });
+  }
+
   if (kada && location.protocol !== 'file:') {
     var terminSekvenca = 0;
     // termin iz podesavanja.js - vraća se kad Zbor u aplikaciji ukloni termin sa servisa
@@ -362,12 +383,7 @@
       }).catch(function() { /* Pri nedostupnom serveru ostaje postojeći prikaz. */ });
     }
     osveziTermin();
-    if (window.EventSource) {
-      var zborDogadjaji = new EventSource('/api/events');
-      zborDogadjaji.addEventListener('update', osveziTermin);
-      window.addEventListener('pagehide', function() { zborDogadjaji.close(); }, {once:true});
-    }
-    document.addEventListener('visibilitychange', function() { if (!document.hidden) osveziTermin(); });
+    naPromenuServisa(osveziTermin);
   }
 
   /* ---------- Zarobljavanje fokusa u pregledima (a11y) ----------
@@ -610,6 +626,7 @@
     }
     var veza = dogadjaj.target.closest ? dogadjaj.target.closest("a[href]") : null;
     if (!veza || !veza.querySelector("img")) { return; }   // obične veze u tekstu priče rade kao i do sada
+    if (veza.hasAttribute("data-veza-kartice")) { return; } // slika kartice vodi na stranu, ne u pregled
     var grupa = veza.closest("[data-galerija]");
     if (!grupa) { return; }
     // u grupi se broje samo veze sa slikom (cela priča je galerija, a u tekstu ima i običnih veza)
@@ -741,15 +758,21 @@
           'url("' + new URL(slikeVesti[0], location.href).href.replace(/["\\]/g, "\\$&") + '")');
       } catch (greska) { /* bez pozadine - slika se i dalje vidi cela */ }
 
-      // sve fotografije su u jednoj grupi: prva se vidi na kartici, klik otvara pregled svih
+      // sve fotografije su u jednoj grupi: prva se vidi na kartici, klik otvara pregled svih;
+      // ako kartica ima `link`, klik na sliku vodi na tu stranu (kao i naslov), a ne u pregled
       var grupa = document.createElement("div");
       grupa.className = "kartica-slika-grupa";
       grupa.setAttribute("data-galerija", "");
       slikeVesti.forEach(function (putanja, i) {
         var veza = document.createElement("a");
-        veza.href = putanja;
-        veza.target = "_blank";                   // bez skripte otvara samu sliku
-        veza.rel = "noopener";
+        if (vest.link) {
+          veza.href = vest.link;
+          veza.setAttribute("data-veza-kartice", "");   // pregled fotografija ovakvu vezu preskače
+        } else {
+          veza.href = putanja;
+          veza.target = "_blank";                 // bez skripte otvara samu sliku
+          veza.rel = "noopener";
+        }
         if (i > 0) { veza.className = "u-galeriji"; }
         var im = document.createElement("img");
         im.className = "kartica-slika-img";
@@ -828,15 +851,16 @@
   var kutijaAkcija = document.getElementById("akcije");
   var arhiva = document.getElementById("arhiva-vesti");
 
-  // Crta naslovnu (najviše 2) i arhivu (sve ostale). Poziva se dvaput: odmah sa data/vesti.js,
-  // pa još jednom kad stignu vesti iz aplikacije za moderatora (servis, /api/vesti).
+  // Crta naslovnu (najviše 2) i arhivu (sve ostale). Poziva se odmah sa data/vesti.js, pa ponovo
+  // kad stignu vesti iz aplikacije za moderatora (servis, /api/vesti) i posle svake promene tamo.
   function prikaziVesti(vesti) {
   if (kutijaAkcija) {
     kutijaAkcija.querySelectorAll(".kartica--vest").forEach(function (k) { k.remove(); });
+    // kad poslednja objava nestane (obrisana u aplikaciji), vraća se kartica sa žutim poljima
+    var praznaKartica = kutijaAkcija.querySelector("[data-vest-prazna]");
+    if (praznaKartica) { praznaKartica.hidden = vesti.length > 0; }
   }
   if (kutijaAkcija && vesti.length) {
-    var praznaKartica = kutijaAkcija.querySelector("[data-vest-prazna]");
-    if (praznaKartica) { praznaKartica.hidden = true; }
     vesti.slice(0, NA_NASLOVNOJ).forEach(function (vest) {
       kutijaAkcija.appendChild(napraviKarticuVesti(vest));
     });
@@ -868,11 +892,15 @@
 
   // Vesti koje Zbor unese kroz aplikaciju za moderatora stoje na servisu. Bez servisa (dvoklik,
   // GitHub Pages) ostaju samo one iz data/vesti.js - ništa se ne kvari, samo ih nema.
-  if ((kutijaAkcija || arhiva) && location.protocol !== "file:") {
+  // Poziva se i posle svake promene na servisu (nova, izmenjena ili obrisana objava), pa se
+  // "Aktuelno i akcije" osveži samo, bez osvežavanja strane.
+  var vestiSekvenca = 0;
+  function osveziVesti() {
+    var broj = ++vestiSekvenca;
     fetch("/api/vesti", { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (saServisa) {
-        if (!Array.isArray(saServisa) || !saServisa.length) { return; }
+        if (broj !== vestiSekvenca || !Array.isArray(saServisa)) { return; }
         var naServisu = {};
         saServisa.forEach(function (v) { naServisu[v.id] = true; });
         var staticke = (window.VESTI || []).filter(function (v) { return !naServisu[v.id]; });
@@ -880,6 +908,11 @@
         podesiUvode();
       })
       .catch(function () { /* servis nije tu - ostaju vesti iz data/vesti.js */ });
+  }
+
+  if ((kutijaAkcija || arhiva) && location.protocol !== "file:") {
+    osveziVesti();
+    naPromenuServisa(osveziVesti);
   }
 
   /* ---------- Skok na deo strane (#aktuelno, #radar…) posle učitavanja ----------

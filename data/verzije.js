@@ -25,6 +25,14 @@
 
 window.VERZIJE = [
   { datum: "2026-11-14", velika: false, nove: [], dorade: [
+    "Klik na sliku u kartici „Aktuelno i akcije“ vodi na stranu kao i naslov (izveštaj sa akcije, zapisnik), a ne otvara uvećanu sliku; uvećanje ostaje kad kartica ne vodi nigde.",
+  ] },
+
+  { datum: "2026-11-14", velika: false, nove: [
+    "„Aktuelno i akcije“ se osveži samo kad Zbor u aplikaciji doda, izmeni ili obriše objavu - nema više osvežavanja strane (radi i na arhivi; kad obrisana objava nestane, vraća se kartica sa žutim poljima).",
+  ], dorade: [] },
+
+  { datum: "2026-11-14", velika: false, nove: [], dorade: [
     "Uz tekst o Dimitriju Banjcu ide i njegova fotografija iz 2013 (Wikimedia Commons, CC BY-SA 3.0).",
   ] },
 
