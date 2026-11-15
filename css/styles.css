@@ -2591,35 +2591,3 @@ a.kraj-slika-okvir:focus-visible { outline: 3px solid var(--akcent); outline-off
    priča (.clanak) 760 px. Pregledač bez :has() ostavlja dugme kao ranije. */
 .zapisnik-nazad:has(~ .zapisnik) { width: 100%; max-width: 820px; margin-left: auto; margin-right: auto; }
 .zapisnik-nazad:has(~ .clanak) { max-width: 760px; }
-
-/* ---------- PROTOTIP: širenje kartice vesti (14. 11. 2026) ----------
-   Kartica iz spiska „Aktuelno i akcije" pređe u ploču preko strane i vrati se na ×, Escape ili
-   klik van nje. Animaciju (FLIP) radi js/app.js, pa se menja samo transform - ne secka na telefonu.
-   Isključuje se jednom rečju u js/app.js (`PROTOTIP_SIRENJA = false`). */
-.kartica-sire-pozadina { position: fixed; inset: 0; background: rgba(15, 15, 16, .55); z-index: 80; }
-.kartica--sire {
-  position: fixed; inset: 2.5vh 3vw; z-index: 81; margin: 0;
-  max-height: 95vh; overflow: auto; background: var(--bela); border-radius: 14px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, .45);
-}
-/* ceo tekst umesto 6 redova; dugme „Pročitaj više" nema šta da otvori kad je sve već tu */
-.kartica--sire .kartica-uvod { display: block; -webkit-line-clamp: unset; overflow: visible; }
-.kartica--sire .kartica-vise { display: none; }
-/* slika u proširenom prikazu je veća, ali ne preko celog ekrana */
-.kartica--sire .kartica-slika { height: clamp(200px, 36vh, 420px); }
-.kartica--sire .kartica-telo { padding: 18px 20px 24px; }
-.kartica-sire-zatvori {
-  position: absolute; top: 10px; right: 10px; z-index: 2; width: 40px; height: 40px;
-  border: 0; border-radius: 50%; background: rgba(15, 15, 16, .72); color: var(--bela);
-  font-size: 24px; line-height: 1; cursor: pointer;
-}
-.kartica-sire-zatvori:hover, .kartica-sire-zatvori:focus-visible { background: var(--crvena); }
-/* veza na pravu stranu (akcija, zapisnik) stoji kao dugme u proširenoj kartici */
-.kartica-sire-veza { display: inline-block; margin-top: 16px; text-decoration: none; }
-html.kartica-sire-otvorena,
-html.kartica-sire-otvorena body { overflow: hidden; }
-@media (max-width: 620px) {
-  .kartica--sire { inset: 0; height: 100%; max-height: none; border-radius: 0; }
-  .kartica--sire .kartica-slika { height: 200px; }
-}
-

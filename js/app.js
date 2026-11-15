@@ -913,8 +913,6 @@
   // "Aktuelno i akcije" osveži samo, bez osvežavanja strane.
   var vestiSekvenca = 0;
   function osveziVesti() {
-    // kartice se crtaju iznova - ako je neka proširena, prvo je vrati u spisak
-    if (sirenje && sirenje.kartica) { zatvoriSirenje(); }
     var broj = ++vestiSekvenca;
     fetch("/api/vesti", { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
@@ -1102,122 +1100,6 @@
     if (fokusPrePregleda && fokusPrePregleda.focus) { fokusPrePregleda.focus(); }
   }
 
-  /* ---------- PROTOTIP: širenje kartice u mesto (14. 11. 2026) ----------
-     Za razgovor: umesto ploče preko strane, kartica se animira iz svog mesta u prošireni prikaz
-     (FLIP: izmeri pre, prebaci u `fixed`, izmeri posle, animiraj razliku), pa vrati na ×/Escape.
-     Tekst je već u kartici - nema dohvatanja sa mreže. Isključivanje: `PROTOTIP_SIRENJA = false`. */
-  var PROTOTIP_SIRENJA = true;
-  var sirenje = { kartica: null, mesto: null, pozadina: null, fokus: null, dugme: null, veza: null };
-  var brojacSirenja = 0;
-
-  function otvoriSirenje(kartica, izvor) {
-    if (!PROTOTIP_SIRENJA || !kartica || sirenje.kartica) { return; }
-    var pre = kartica.getBoundingClientRect();
-
-    // mesto u spisku ostaje da se strana ne bi skupila kad kartica pređe u `fixed`
-    var mesto = document.createElement("div");
-    mesto.className = "kartica-sire-mesto";
-    mesto.style.height = pre.height + "px";
-    kartica.parentNode.insertBefore(mesto, kartica);
-
-    var pozadina = document.createElement("div");
-    pozadina.className = "kartica-sire-pozadina";
-    document.body.appendChild(pozadina);
-
-    var zatvori = document.createElement("button");
-    zatvori.type = "button";
-    zatvori.className = "kartica-sire-zatvori";
-    zatvori.setAttribute("aria-label", "Zatvori objavu");
-    zatvori.textContent = "×";
-    kartica.appendChild(zatvori);
-
-    // kartica koja vodi na stranu sajta: u proširenom prikazu link stoji kao dugme na dnu
-    var vezaStrane = null;
-    var vezaNaslova = kartica.querySelector(".kartica-telo h3 a");
-    if (vezaNaslova) {
-      vezaStrane = document.createElement("a");
-      vezaStrane.className = "dugme dugme--akcenat kartica-sire-veza";
-      vezaStrane.href = vezaNaslova.getAttribute("href");
-      vezaStrane.textContent = "Otvori celu stranu →";
-      kartica.querySelector(".kartica-telo").appendChild(vezaStrane);
-    }
-
-    kartica.classList.add("kartica--sire");
-    kartica.setAttribute("role", "dialog");
-    kartica.setAttribute("aria-modal", "true");
-    var naslov = kartica.querySelector(".kartica-telo h3");
-    if (naslov) {
-      if (!naslov.id) { naslov.id = "kartica-sire-naslov-" + (++brojacSirenja); }
-      kartica.setAttribute("aria-labelledby", naslov.id);
-    }
-    document.documentElement.classList.add("kartica-sire-otvorena");
-    kartica.scrollTop = 0;
-
-    var posle = kartica.getBoundingClientRect();
-    if (!smanjiPokrete && posle.width && posle.height) {
-      kartica.style.transformOrigin = "top left";
-      kartica.animate([
-        { transform: "translate(" + (pre.left - posle.left) + "px," + (pre.top - posle.top) + "px) " +
-                     "scale(" + (pre.width / posle.width) + "," + (pre.height / posle.height) + ")" },
-        { transform: "none" }
-      ], { duration: 340, easing: "cubic-bezier(.2, .8, .2, 1)" });
-    }
-
-    sirenje = { kartica: kartica, mesto: mesto, pozadina: pozadina, fokus: izvor || document.activeElement, dugme: zatvori, veza: vezaStrane };
-    zatvori.addEventListener("click", zatvoriSirenje);
-    pozadina.addEventListener("click", zatvoriSirenje);
-    zatvori.focus();
-  }
-
-  function zatvoriSirenje() {
-    var s = sirenje;
-    if (!s.kartica) { return; }
-    var kartica = s.kartica;
-    s.kartica = null;                       // dalji pozivi (Esc dvaput, animacija + tajmer) ne rade ništa
-
-    function pocisti() {
-      kartica.classList.remove("kartica--sire");
-      kartica.removeAttribute("role");
-      kartica.removeAttribute("aria-modal");
-      kartica.removeAttribute("aria-labelledby");
-      kartica.style.transformOrigin = "";
-      if (s.dugme && s.dugme.parentNode) { s.dugme.parentNode.removeChild(s.dugme); }
-      if (s.veza && s.veza.parentNode) { s.veza.parentNode.removeChild(s.veza); }
-      if (s.pozadina && s.pozadina.parentNode) { s.pozadina.parentNode.removeChild(s.pozadina); }
-      if (s.mesto && s.mesto.parentNode) { s.mesto.parentNode.removeChild(s.mesto); }
-      document.documentElement.classList.remove("kartica-sire-otvorena");
-      if (s.fokus && s.fokus.focus) { s.fokus.focus(); }
-      // uvod je običan <p> i ne može da primi fokus - tada fokus ide na samu karticu, a ne na vrh strane
-      if (!document.activeElement || document.activeElement === document.body) {
-        kartica.setAttribute("tabindex", "-1");
-        kartica.focus();
-        kartica.addEventListener("blur", function () { kartica.removeAttribute("tabindex"); }, { once: true });
-      }
-      sirenje = { kartica: null, mesto: null, pozadina: null, fokus: null, dugme: null, veza: null };
-    }
-
-    if (smanjiPokrete) { pocisti(); return; }
-    // nazad u mesto u spisku, istim putem (FLIP unazad)
-    var sada = kartica.getBoundingClientRect();
-    var kraj = s.mesto.getBoundingClientRect();
-    if (!sada.width || !sada.height) { pocisti(); return; }
-    var anim = kartica.animate([
-      { transform: "none" },
-      { transform: "translate(" + (kraj.left - sada.left) + "px," + (kraj.top - sada.top) + "px) " +
-                   "scale(" + (kraj.width / sada.width) + "," + (kraj.height / sada.height) + ")" }
-    ], { duration: 280, easing: "cubic-bezier(.4, 0, .6, 1)" });
-    anim.onfinish = pocisti;
-    // ako animacija ne krene (sakriven tab, stari pregledač), svejedno se počisti
-    window.setTimeout(function () { if (kartica.classList.contains("kartica--sire")) { pocisti(); } }, 700);
-  }
-
-  document.addEventListener("keydown", function (dogadjaj) {
-    if (sirenje.kartica && dogadjaj.key === "Escape") {
-      dogadjaj.preventDefault();
-      zatvoriSirenje();
-    }
-  });
-
   // jedan osluškivač za sve kartice (i one koje se nacrtaju kasnije, npr. u arhivi)
   document.addEventListener("click", function (dogadjaj) {
     var dugme = dogadjaj.target.closest ? dogadjaj.target.closest(".kartica-vise") : null;
@@ -1225,22 +1107,7 @@
     var kartica = dugme.closest(".kartica");
     if (!kartica) { return; }
     dogadjaj.preventDefault();
-    if (PROTOTIP_SIRENJA) { otvoriSirenje(kartica, dugme); return; }
     otvoriPregledTeksta(kartica, dugme);
-  });
-
-  // prototip: klik na karticu (slika, naslov, tekst) širi je; galerija kartice bez linka radi kao i do sada
-  document.addEventListener("click", function (dogadjaj) {
-    if (!PROTOTIP_SIRENJA || sirenje.kartica) { return; }
-    var kartica = dogadjaj.target.closest ? dogadjaj.target.closest(".kartica--vest") : null;
-    if (!kartica) { return; }
-    var veza = dogadjaj.target.closest("a[href]");
-    if (veza && !veza.hasAttribute("data-veza-kartice") &&
-        !veza.classList.contains("kartica-veza-tekst") && !veza.closest("h3")) {
-      return;                       // obična veza (npr. galerija kartice bez linka) radi kao i do sada
-    }
-    if (veza) { dogadjaj.preventDefault(); }
-    otvoriSirenje(kartica, veza || dogadjaj.target);
   });
 
   podesiUvode();
