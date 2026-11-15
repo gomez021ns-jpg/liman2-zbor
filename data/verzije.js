@@ -24,6 +24,10 @@
 // upozorenje. Bez novog unosa posao nije gotov.
 
 window.VERZIJE = [
+  { datum: "2026-11-14", velika: false, nove: [
+    "Prototip: kartica u „Aktuelno i akcije“ se na klik (slika, naslov ili tekst) širi u svoje mesto i pokaže ceo tekst, uz animaciju; kartica koja vodi na stranu ima u proširenom prikazu dugme „Otvori celu stranu“. Vraća se na × ili Escape (isključuje se jednom rečju dok se ne dogovorimo da li ostaje).",
+  ], dorade: [] },
+
   { datum: "2026-11-14", velika: false, nove: [], dorade: [
     "Kartice u „Aktuelno i akcije“ sada učitavaju malu kopiju fotografije (do 700 px), a uvećana slika ostaje velika - strana je na telefonu nekoliko puta lakša, a slika izgleda isto.",
   ] },
